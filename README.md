@@ -12,7 +12,7 @@ npm install
 npm run dev
 ```
 
-Откройте `http://localhost:3002/`. Для локального просмотра конкретного города задайте `PREVIEW_SITE_HOST`, например `kursk.warpoint.ru`. В продакшене используется хост запроса. Нужен сетевой доступ к `https://gserver.warpoint.ru/api/site/v2/countries`; его можно переопределить через `ERP_COUNTRIES_URL`.
+Откройте `http://localhost:3002/`. На `/` временно расположен список страниц; основная страница находится на `/indexpage/`. Для локального просмотра конкретного города задайте `PREVIEW_SITE_HOST` равным хосту из ERP. На адресах `*.vercel.app` эта же переменная выбирает город для предпросмотра; на рабочих доменах используется хост запроса. Нужен сетевой доступ к `https://gserver.warpoint.ru/api/site/v2/countries`; его можно переопределить через `ERP_COUNTRIES_URL`.
 
 ```powershell
 $env:PREVIEW_SITE_HOST = 'kursk.warpoint.ru'
@@ -30,7 +30,17 @@ npm run start
 
 Весь код и все медиафайлы находятся в этом проекте: JSX в `components`, SCSS в `styles`, изображения, шрифты, видео и SVG-спрайт в `public`. Next.js собирает SCSS напрямую. Классический проект на Vite не нужен для запуска или сборки приложения. Новые изображения и видео добавляйте в `public`.
 
-Маршруты: `/`, `/games`, `/tariffs`, `/articles`, `/legal/privacy`, `/events/birthday`, `/events/corporate`, `/events/graduation`, `/locations`, `/sitemap.xml`, `/robots.txt`.
+Маршруты: `/` (временный список), `/indexpage`, `/games`, `/tariffs`, `/promotions`, `/articles`, `/articles/birthday-ekaterinburg`, `/faq`, `/events`, `/events/birthday`, `/events/corporate`, `/events/graduation`, `/locations`, `/legal/privacy`, `/sitemap.xml`, `/robots.txt`.
+
+## Развёртывание на Vercel
+
+1. Отправьте изменения в отдельный GitHub-репозиторий `Soveliy/warpoint-next`.
+2. В Vercel выберите **Add New → Project**, импортируйте `Soveliy/warpoint-next`. Корневая папка проекта — `./`, Framework Preset — **Next.js**. Команды сборки и папку результата оставьте определёнными автоматически.
+3. В **Settings → Environment Variables** добавьте `PREVIEW_SITE_HOST=warpoint.ru` для Preview и Production, чтобы адреса `*.vercel.app` открывали Екатеринбург. Для предпросмотра другого города укажите точный хост из поля `links.site_url` в ERP. `ERP_COUNTRIES_URL` и `ERP_REVALIDATE_SECONDS` необязательны: по умолчанию используются публичный API и 300 секунд.
+4. Запустите Deploy и проверьте `/`, `/indexpage/`, `/events/birthday/`, `/robots.txt` на выданном адресе `.vercel.app`. Такие адреса закрыты от индексации; canonical указывает на выбранный рабочий домен.
+5. Рабочие домены добавьте через **Project Settings → Domains** после проверки предпросмотра. Внесите `warpoint.ru` и нужные поддомены, которые указаны в ERP. Для wildcard-домена (`*.warpoint.ru` или другого) Vercel требует перенос DNS на его nameservers. До переключения рабочего домена убедитесь, что запись ERP и SSL готовы.
+
+Поддомены с неизвестным для ERP хостом получают 404. Настройка доменов и DNS выполняется отдельно от первого деплоя на `.vercel.app`.
 
 ## Данные и ограничения
 
