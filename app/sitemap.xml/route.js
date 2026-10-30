@@ -4,7 +4,7 @@ export async function GET() {
   const site = await getSite();
   if (!site) return new Response('Not found', { status: 404 });
 
-  const urls = ['/', '/games', '/tariffs', '/events/birthday', '/events/corporate', '/events/graduation', '/locations'].map((path) =>
+  const urls = ['/', '/games', '/tariffs', '/articles', '/legal/privacy', '/events/birthday', '/events/corporate', '/events/graduation', '/locations'].map((path) =>
     new URL(path, site.canonicalUrl).toString(),
   );
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
