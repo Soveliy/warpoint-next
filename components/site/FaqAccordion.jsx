@@ -45,7 +45,7 @@ export default function FaqAccordion() {
             </div>
           );
         })}
-        <a href="#" className="faq__more">Смотреть все вопросы</a>
+        <a href="/faq/" className="faq__more">Смотреть все вопросы</a>
       </div>
     </>
   );

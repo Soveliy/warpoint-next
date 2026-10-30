@@ -443,10 +443,10 @@
 
     &__character {
       &--boy {
-        top: 43%;
-        left: 41%;
+        top: 46%;
+        left: 14%;
         z-index: 3;
-        width: clamp(#{rem(145px)}, 38vw, #{rem(200px)});
+        width: clamp(#{rem(135px)}, 36vw, #{rem(180px)});
       }
 
       &--girl {

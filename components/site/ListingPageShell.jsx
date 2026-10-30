@@ -11,7 +11,7 @@ export function ListingHero({ title, accent, description, crumb }) {
   return <section className="listing-hero" data-header-theme="brand">
     <div className='listing-hero__wrap'>
       <div className="container">
-        <nav className="listing-hero__breadcrumbs" aria-label="Навигационная цепочка"><a href="/">Главная</a><span aria-hidden="true">/</span><span aria-current="page">{crumb}</span></nav>
+        <nav className="listing-hero__breadcrumbs" aria-label="Навигационная цепочка"><a href="/indexpage/">Главная</a><span aria-hidden="true">/</span><span aria-current="page">{crumb}</span></nav>
         <h1>{title} <span>{accent}</span></h1>
         <p>{description}</p>
       </div>

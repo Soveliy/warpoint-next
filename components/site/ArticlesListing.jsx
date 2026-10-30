@@ -27,7 +27,9 @@ function ArticleCard({ article, featured = false }) {
       <ArticleMeta article={article} />
       <h2>{article.title}</h2>
       <p>{article.excerpt}</p>
-      <span className="articles-card__pending" title="Полный текст статьи ещё не добавлен">Материал готовится</span>
+      {article.id === 'birthday-ekaterinburg'
+        ? <a className="articles-card__pending" href={`/articles/${article.id}/`}>Читать статью</a>
+        : <span className="articles-card__pending" title="Полный текст статьи ещё не добавлен">Материал готовится</span>}
     </div>
   </article>;
 }

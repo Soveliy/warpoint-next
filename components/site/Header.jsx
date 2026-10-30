@@ -25,7 +25,7 @@ export default function Header({ site }) {
 
   useEffect(() => {
     const close = (event) => {
-      if (!event || !messengerRef.current?.contains(event.target)) setMessengerOpen(false);
+      if (!event || !(event.target instanceof Node) || !messengerRef.current?.contains(event.target)) setMessengerOpen(false);
     };
     document.addEventListener('pointerdown', close);
     window.addEventListener('scroll', close, { passive: true });
@@ -337,7 +337,7 @@ export default function Header({ site }) {
             {'\n      '}
             <div className="header__row">
               {'\n        '}
-              <a href="/" className="header__logo">
+              <a href="/indexpage/" className="header__logo">
                 {'\n          '}
                 <img src="/img/logo.svg" alt="" />
                 {'\n        '}
@@ -355,7 +355,7 @@ export default function Header({ site }) {
                 {'\n          '}
                 <div className="menu__top">
                   {'\n            '}
-                  <a className="menu__logo" href="/" aria-label="Warpoint — на главную">
+                  <a className="menu__logo" href="/indexpage/" aria-label="Warpoint — на главную">
                     {'\n              '}
                     <img src="/img/logo.svg" alt="" />
                     {'\n            '}

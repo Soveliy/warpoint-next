@@ -1,20 +1,20 @@
 import { notFound } from 'next/navigation';
 import { getSite, metadataFor } from '../lib/site';
-import SitePage from '../components/SitePage';
+import HomePageLinks from '../components/site/HomePageLinks';
+import PageIndexReady from '../components/site/PageIndexReady';
 
 export async function generateMetadata() {
   const site = await getSite();
   if (!site) return {};
-  return metadataFor(
-    site,
-    `WARPOINT — парк виртуальной реальности, ${site.city}`,
-    `VR-арены WARPOINT в городе ${site.city}: игры и праздники для друзей, семей и команд. Адреса и бронирование.`,
-  );
+  return {
+    ...metadataFor(site, 'Страницы сайта WARPOINT', 'Временный список доступных страниц сайта.'),
+    robots: { index: false, follow: true },
+  };
 }
 
-export default async function HomePage() {
+export default async function PageIndex() {
   const site = await getSite();
   if (!site) notFound();
 
-  return <SitePage page="home" site={site} />;
+  return <main className="main page-index"><PageIndexReady /><HomePageLinks site={site} /></main>;
 }

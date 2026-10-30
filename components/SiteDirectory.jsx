@@ -11,7 +11,7 @@ export default function SiteDirectory({ currentCity, sites }) {
 
   return (
     <main className="site-directory container">
-      <a className="site-directory__back" href="/">← На главную</a>
+      <a className="site-directory__back" href="/indexpage/">← На главную</a>
       <h1>Выберите <span>город</span></h1>
       <p>Сейчас выбран: {currentCity}. Ссылка откроет сайт WARPOINT для нужного города.</p>
       <label className="site-directory__search">
