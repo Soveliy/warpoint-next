@@ -1,0 +1,327 @@
+@use '../fluid' as *;
+@use '../mixins' as *;
+@use '../mixins/disable-mob-hover' as *;
+@use '../vars' as *;
+
+.extras {
+  @include section-spacing;
+
+  position: relative;
+  overflow: hidden;
+  background-color: var(--gray-950);
+  color: var(--white);
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: fluid(16px, 24px);
+  }
+
+  &__item {
+    @include hover {
+      border-color: rgb(var(--white-rgb) / 0.45);
+      background-color: var(--gray-700);
+
+      .extras__image {
+        scale: 1.04;
+      }
+    }
+
+    position: relative;
+    isolation: isolate;
+    min-width: 0;
+    min-height: fluid(292px, 340px);
+    padding: fluid(16px, 32px);
+    overflow: hidden;
+    border: rem(1px) solid rgb(var(--white-rgb) / 0.2);
+    border-radius: fluid(28px, 44px);
+    background:
+      linear-gradient(125deg, rgb(var(--white-rgb) / 0.035), transparent 58%), var(--gray-900);
+    box-shadow: inset 0 rem(1px) 0 rgb(var(--white-rgb) / 0.025);
+    transition:
+      border-color $duration-base $ease-base,
+      background-color $duration-base $ease-base;
+
+    &:focus-within {
+      border-color: rgb(var(--white-rgb) / 0.45);
+      background-color: var(--gray-700);
+    }
+
+    // &::after {
+    //   content: '';
+    //   position: absolute;
+    //   inset: 0;
+    //   z-index: -1;
+    //   background: linear-gradient(
+    //     90deg,
+    //     var(--gray-900) 0 36%,
+    //     rgb(var(--gray-900-rgb) / 0.82) 52%,
+    //     transparent 76%
+    //   );
+    //   pointer-events: none;
+    // }
+  }
+
+  &__content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    min-height: calc(#{fluid(292px, 340px)} - #{fluid(56px, 76px)});
+  }
+
+  &__title {
+    margin: 0;
+    font-family: $font-family-second;
+    font-size: fluid(24px, 36px);
+    font-weight: 700;
+    line-height: 88%;
+    text-transform: uppercase;
+    color: var(--gray-50);
+    letter-spacing: 1px;
+    font-variation-settings:
+      'GRAD' 150,
+      'XOPQ' 110,
+      'YTDE' -198,
+      'YTUC' 760,
+      'wdth' 75,
+      'opsz' 144;
+  }
+
+  &__description {
+    max-width: 46%;
+    margin: rem(12px) 0 0;
+    color: var(--gray-400);
+    font-size: fluid(15px, 18px);
+    font-weight: 600;
+    line-height: 1.22;
+  }
+
+  &__link {
+    @include hover {
+      color: var(--red-300);
+      transform: translateX(rem(3px));
+    }
+
+    margin-top: auto;
+    padding-top: rem(24px);
+    color: var(--red-500);
+    font-size: rem(11px);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    line-height: 1;
+    text-align: left;
+    text-transform: uppercase;
+    transition:
+      color $duration-fast $ease-base,
+      transform $duration-fast $ease-base;
+
+    &:focus-visible {
+      outline: $focus-outline-width solid var(--focus-color);
+      outline-offset: $focus-outline-offset;
+    }
+  }
+
+  &__image-container {
+    position: absolute;
+    top: rem(78px);
+    right: 0;
+    bottom: 0;
+    z-index: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    width: 56%;
+    pointer-events: none;
+  }
+
+  &__image {
+    max-height: 100%;
+    object-fit: contain;
+    object-position: right bottom;
+    transition: scale 600ms $ease-base;
+  }
+
+  &__item--certificate &__image {
+    width: 100%;
+    height: auto;
+    margin-right: fluid(4px, 20px);
+    transform: rotate(-4deg);
+  }
+
+  &__item--merch &__image {
+    width: 100%;
+    height: auto;
+    margin-right: fluid(4px, 18px);
+  }
+
+  &__item--tournaments &__image-container {
+    display: flex;
+    align-items: flex-end;
+  }
+
+  &__item--bonus &__image-container {
+    right: rem(-12px);
+    width: 61%;
+  }
+
+  &__item--bonus &__image {
+    width: 100%;
+    height: 100%;
+    object-position: right bottom;
+  }
+
+  &__bonus-device {
+    position: absolute;
+    right: fluid(42px, 86px);
+    bottom: rem(-34px);
+    z-index: 0;
+    width: fluid(122px, 158px);
+    height: fluid(236px, 286px);
+    padding: rem(13px);
+    border: rem(4px) solid var(--gray-700);
+    border-radius: fluid(24px, 34px);
+    background: linear-gradient(165deg, #282932, #0c0d10 70%);
+    box-shadow:
+      0 rem(26px) rem(50px) rgb(var(--black-rgb) / 0.5),
+      0 0 rem(80px) rgb(var(--red-600-rgb) / 0.12);
+    transform: rotate(3deg);
+  }
+
+  &__bonus-screen {
+    display: grid;
+    padding: rem(14px);
+    border: rem(1px) solid rgb(var(--white-rgb) / 0.12);
+    border-radius: rem(14px);
+    background: linear-gradient(
+      145deg,
+      rgb(var(--white-rgb) / 0.08),
+      rgb(var(--white-rgb) / 0.015)
+    );
+    color: var(--white);
+    line-height: 1;
+
+    small {
+      color: var(--gray-400);
+      font-size: rem(8px);
+      font-weight: 600;
+    }
+
+    strong {
+      margin: rem(5px) 0 rem(2px);
+      font-size: fluid(24px, 32px);
+      font-weight: 800;
+    }
+  }
+
+  &__bonus-line {
+    display: block;
+    width: 100%;
+    height: rem(42px);
+    margin-top: rem(10px);
+    border-radius: rem(12px);
+    background: linear-gradient(
+      100deg,
+      rgb(var(--white-rgb) / 0.08),
+      rgb(var(--white-rgb) / 0.025)
+    );
+
+    &--short {
+      width: 72%;
+    }
+  }
+}
+
+@media (max-width: $breakpoint-tablet) {
+  .extras {
+    &__item {
+      min-height: rem(300px);
+      padding: rem(28px);
+    }
+
+    &__content {
+      min-height: rem(244px);
+    }
+
+    &__title {
+      font-size: fluid(28px, 34px, 768px, 1024px);
+    }
+
+    &__bonus-device {
+      right: rem(32px);
+    }
+  }
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .extras {
+    &__grid {
+      grid-template-columns: minmax(0, 1fr);
+      gap: rem(14px);
+    }
+
+    &__item {
+      min-height: rem(300px);
+      padding: rem(24px);
+      border-radius: rem(28px);
+    }
+
+    &__content {
+      min-height: rem(252px);
+    }
+
+    &__title {
+      font-size: fluid(24px, 36px, 320px, 767px);
+    }
+
+    &__image-container {
+      width: 56%;
+    }
+
+    &__item--tournaments &__image-container {
+      width: 56%;
+    }
+
+    &__item--bonus &__image-container {
+      right: rem(-8px);
+      width: 62%;
+    }
+
+    &__bonus-device {
+      right: rem(18px);
+      width: rem(112px);
+      height: rem(224px);
+    }
+  }
+}
+
+@media (width <= rem(420px)) {
+  .extras {
+    &__item::after {
+      background: linear-gradient(
+        90deg,
+        var(--gray-900) 0 42%,
+        rgb(var(--gray-900-rgb) / 0.9) 60%,
+        transparent 88%
+      );
+    }
+
+    &__description {
+      max-width: 46%;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .extras__link,
+  .extras__item,
+  .extras__image {
+    transition: none;
+  }
+
+  .extras__item:hover .extras__image {
+    scale: none;
+  }
+}

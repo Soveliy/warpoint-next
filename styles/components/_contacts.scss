@@ -1,0 +1,618 @@
+@use '../fluid' as *;
+@use '../mixins' as *;
+@use '../mixins/disable-mob-hover' as *;
+@use '../vars' as *;
+
+.contacts {
+  @include section-spacing;
+
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background-color: var(--gray-950);
+  color: var(--white);
+  scroll-margin-top: rem(72px);
+  scroll-snap-align: start;
+
+  [hidden] {
+    display: none;
+  }
+
+  &__title {
+    @include section-title;
+
+    margin-bottom: fluid(32px, 48px);
+    text-align: center;
+
+    span {
+      color: var(--red-600);
+    }
+  }
+
+  &__card {
+    display: grid;
+    grid-template-columns: minmax(rem(360px), 31.9%) minmax(0, 1fr);
+    min-height: rem(762px);
+    overflow: hidden;
+    border-radius: rem(24px);
+    background-color: var(--gray-800);
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: rem(32px);
+    background:
+      repeating-linear-gradient(
+          138deg,
+          transparent 0 rem(54px),
+          rgb(var(--white-rgb) / 0.015) rem(54px) rem(78px),
+          transparent rem(78px) rem(112px)
+        )
+        top left / 100% rem(180px) no-repeat,
+      linear-gradient(145deg, rgb(var(--white-rgb) / 0.035), transparent 40%),
+      var(--gray-800);
+  }
+
+  &__city {
+    margin: 0;
+    overflow-wrap: anywhere;
+    font-family: $font-family-heading;
+    font-size: fluid(38px, 50px);
+    font-weight: 800;
+    line-height: 0.95;
+    text-transform: uppercase;
+  }
+
+  &__title,
+  &__city {
+    font-family: $font-family-second;
+    font-weight: 700;
+    font-variation-settings:
+      'GRAD' 150,
+      'XOPQ' 110,
+      'YTDE' -198,
+      'YTUC' 760,
+      'wdth' 75,
+      'opsz' 144;
+  }
+
+  &__select {
+    position: relative;
+    z-index: 3;
+    align-self: flex-start;
+    width: rem(263px);
+    max-width: 100%;
+    margin-top: rem(8px);
+  }
+
+  &__location {
+    @include hover {
+      border-color: rgb(var(--white-rgb) / 0.3);
+      background-color: var(--gray-600);
+    }
+
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: rem(24px);
+    width: 100%;
+    min-height: rem(44px);
+    padding: rem(10px) rem(16px);
+    border: rem(1px) solid rgb(var(--white-rgb) / 0.08);
+    border-radius: $radius-pill;
+    background-color: var(--gray-700);
+    color: var(--white);
+    font-size: rem(18px);
+    font-weight: 600;
+    line-height: 1.2;
+    text-align: left;
+    transition:
+      border-color $duration-fast $ease-base,
+      background-color $duration-fast $ease-base;
+
+    span {
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
+    svg {
+      flex: 0 0 rem(16px);
+      width: rem(16px);
+      height: rem(16px);
+      fill: none;
+      stroke: currentcolor;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-width: 1.5;
+      transition: transform $duration-fast $ease-base;
+    }
+
+    &[aria-expanded='true'] {
+      border-color: var(--red-500);
+      background-color: var(--gray-700);
+
+      svg {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  &__location-list {
+    position: absolute;
+    top: calc(100% - #{rem(22px)});
+    right: 0;
+    left: 0;
+    padding: rem(32px) rem(15px) rem(8px);
+    border-radius: 0 0 rem(36px) rem(36px);
+    background-color: var(--gray-700);
+    box-shadow: 0 rem(12px) rem(24px) rgb(var(--black-rgb) / 0.12);
+  }
+
+  &__location-option {
+    @include hover {
+      color: var(--red-500);
+    }
+
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+    min-height: rem(42px);
+    padding: rem(5px) rem(16px) rem(5px) 0;
+    border-bottom: rem(1px) solid rgb(var(--white-rgb) / 0.05);
+    color: var(--white);
+    text-align: left;
+    transition: color $duration-fast $ease-base;
+
+    &:last-child {
+      border-bottom: 0;
+    }
+
+    &[aria-selected='true'] {
+      color: var(--red-500);
+
+      &::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        right: rem(4px);
+        width: rem(6px);
+        height: rem(6px);
+        border-radius: 50%;
+        background-color: currentcolor;
+        box-shadow: 0 0 0 rem(3px) rgb(var(--red-500-rgb) / 0.25);
+        transform: translateY(-50%);
+      }
+    }
+
+    &:focus-visible {
+      color: var(--red-500);
+      outline: $focus-outline-width solid var(--focus-color);
+      outline-offset: rem(2px);
+      border-radius: rem(4px);
+    }
+  }
+
+  &__location-option-name {
+    font-size: rem(16px);
+    font-weight: 600;
+    line-height: 1.15;
+    overflow-wrap: anywhere;
+  }
+
+  &__location-option-details {
+    margin-top: rem(4px);
+    color: rgb(var(--white-rgb) / 0.65);
+    font-size: rem(12px);
+    font-weight: 400;
+    line-height: 1.2;
+    overflow-wrap: anywhere;
+  }
+
+  &__details {
+    margin-top: rem(22px);
+  }
+
+  &__label {
+    margin: 0 0 rem(12px);
+    color: rgb(var(--white-rgb) / 0.35);
+    font-size: rem(14px);
+    font-weight: 700;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  &__address {
+    display: grid;
+    gap: rem(20px);
+    margin: 0;
+    font-style: normal;
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    gap: rem(16px);
+    min-height: rem(32px);
+    font-size: rem(18px);
+    font-weight: 600;
+    line-height: 1.25;
+
+    > :last-child {
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
+    a {
+      @include hover {
+        color: var(--red-400);
+      }
+
+      transition: color $duration-fast $ease-base;
+    }
+  }
+
+  &__icon {
+    flex: 0 0 rem(30px);
+    width: rem(30px);
+    height: rem(30px);
+    color: var(--red-500);
+    fill: none;
+    stroke: currentcolor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2;
+
+    &--metro {
+      height: rem(36px);
+    }
+  }
+
+  &__hours {
+    margin-top: rem(24px);
+  }
+
+  &__schedule {
+    display: grid;
+    gap: rem(4px);
+    margin: 0;
+    font-size: rem(18px);
+    font-weight: 650;
+    line-height: 1.25;
+
+    div {
+      display: grid;
+      grid-template-columns: rem(58px) 1fr;
+      gap: rem(16px);
+    }
+
+    dd {
+      margin: 0;
+      color: rgb(var(--white-rgb) / 0.5);
+      font-variant-numeric: tabular-nums;
+    }
+  }
+
+  &__socials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: rem(12px);
+    margin-top: rem(26px);
+    margin-bottom: rem(38px);
+  }
+
+  &__social {
+    @include hover {
+      border-color: var(--red-500);
+      background-color: rgb(var(--white-rgb) / 0.08);
+    }
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: rem(44px);
+    height: rem(44px);
+    border: rem(1px) solid rgb(var(--white-rgb) / 0.3);
+    border-radius: rem(13px);
+    color: var(--white);
+    transition:
+      border-color $duration-fast $ease-base,
+      background-color $duration-fast $ease-base;
+  }
+
+  &__social-icon {
+    width: rem(20px);
+    height: rem(20px);
+    fill: currentcolor;
+  }
+
+  &__booking {
+    @include hover {
+      filter: brightness(1.1);
+    }
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    gap: rem(16px);
+    width: 100%;
+    min-height: rem(80px);
+    margin-top: auto;
+    padding: rem(20px) rem(16px);
+    border-radius: rem(24px);
+    background: linear-gradient(
+      170deg,
+      var(--red-900),
+      color-mix(in srgb, var(--red-600) 75%, var(--violet-500))
+    );
+    color: var(--white);
+    font-size: rem(14px);
+    font-weight: 800;
+    letter-spacing: 0.06em;
+    line-height: 1.2;
+    text-transform: uppercase;
+    transition: filter $duration-fast $ease-base;
+  }
+
+  &__booking-icon {
+    flex: 0 0 rem(30px);
+    width: rem(30px);
+    height: rem(30px);
+    fill: currentcolor;
+  }
+
+  &__location,
+  &__row a,
+  &__social,
+  &__booking {
+    &:focus-visible {
+      outline: $focus-outline-width solid var(--focus-color);
+      outline-offset: $focus-outline-offset;
+    }
+  }
+
+  &__map {
+    position: relative;
+    min-width: 0;
+    overflow: hidden;
+    background-color: var(--gray-200);
+  }
+
+  &__map-placeholder {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgb(var(--gray-600-rgb) / 0.09) rem(1px), transparent rem(1px)),
+      linear-gradient(90deg, rgb(var(--gray-600-rgb) / 0.09) rem(1px), transparent rem(1px));
+    background-size: rem(48px) rem(48px);
+    transition: opacity $duration-base $ease-base;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: rem(80px);
+      height: rem(104px);
+      background: url('/img/map-pin.svg') center / contain no-repeat;
+      transform: translate(-50%, -93.27%);
+    }
+  }
+
+  &__map-pin {
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    left: 50%;
+    width: rem(80px);
+    height: rem(104px);
+    background: url('/img/map-pin.svg') center / contain no-repeat;
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, -93.27%);
+  }
+
+  &__map-open {
+    position: absolute;
+    z-index: 3;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  &__map-frame,
+  &__map-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    opacity: 0;
+    transition: opacity $duration-base $ease-base;
+
+    &.contacts__map-frame--noscript {
+      opacity: 1;
+    }
+  }
+
+  &__map.is-loaded {
+    .contacts__map-placeholder {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .contacts__map-frame,
+    .contacts__map-canvas {
+      opacity: 1;
+    }
+
+    &:not(.is-api-map) {
+      .contacts__map-pin {
+        opacity: 1;
+      }
+
+      .contacts__map-frame {
+        pointer-events: none;
+      }
+
+      .contacts__map-open {
+        pointer-events: auto;
+      }
+    }
+  }
+
+  &__parking {
+    position: absolute;
+    z-index: 4;
+    right: rem(32px);
+    bottom: rem(32px);
+    left: rem(32px);
+    display: flex;
+    align-items: center;
+    gap: rem(18px);
+    width: fit-content;
+    max-width: calc(100% - #{rem(64px)});
+    min-height: rem(102px);
+    padding: rem(24px);
+    border-radius: rem(24px);
+    background-color: color-mix(in srgb, var(--gray-800) 85%, var(--white));
+    pointer-events: none;
+
+    p {
+      margin: 0;
+      font-size: rem(18px);
+      font-weight: 600;
+      line-height: 1.25;
+    }
+  }
+
+  &__parking-icon {
+    flex: 0 0 rem(46px);
+    width: rem(46px);
+    height: rem(40px);
+    color: var(--red-500);
+  }
+}
+
+@media (max-width: $breakpoint-tablet) {
+  .contacts {
+    &__card {
+      grid-template-columns: minmax(rem(320px), 43%) minmax(0, 1fr);
+    }
+
+    &__content {
+      padding: rem(24px);
+    }
+
+    &__row {
+      gap: rem(12px);
+      font-size: rem(16px);
+    }
+
+    &__booking {
+      gap: rem(12px);
+      font-size: rem(12px);
+    }
+
+    &__parking {
+      right: rem(20px);
+      bottom: rem(20px);
+      left: rem(20px);
+      gap: rem(12px);
+      max-width: calc(100% - #{rem(40px)});
+      padding: rem(18px);
+
+      p {
+        font-size: rem(16px);
+      }
+    }
+  }
+}
+
+.contacts__route {
+  display: none;
+
+  svg {
+    fill: none;
+  }
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .contacts {
+    &__card {
+      grid-template-columns: minmax(0, 1fr);
+      min-height: 0;
+    }
+
+    &__content {
+      padding: rem(24px) rem(20px);
+    }
+
+    &__location {
+      font-size: rem(16px);
+    }
+
+    &__booking:not(.contacts__route) {
+      display: none;
+    }
+
+    &__route {
+      display: inline-flex;
+    }
+
+    &__booking {
+      min-height: rem(64px);
+      margin-top: rem(32px);
+      border-radius: rem(20px);
+    }
+
+    &__socials {
+      margin-bottom: 0;
+    }
+
+    &__map {
+      min-height: clamp(#{rem(360px)}, 100vw, #{rem(480px)});
+    }
+
+    &__parking {
+      right: rem(16px);
+      bottom: rem(16px);
+      left: rem(16px);
+      min-height: rem(88px);
+      max-width: calc(100% - #{rem(32px)});
+      padding: rem(14px);
+      border-radius: rem(20px);
+
+      p {
+        font-size: rem(14px);
+      }
+    }
+
+    &__parking-icon {
+      flex-basis: rem(36px);
+      width: rem(36px);
+      height: rem(32px);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contacts {
+    &__location,
+    &__location svg,
+    &__location-option,
+    &__row a,
+    &__social,
+    &__booking,
+    &__map-placeholder,
+    &__map-canvas,
+    &__map-frame {
+      transition: none;
+    }
+  }
+}

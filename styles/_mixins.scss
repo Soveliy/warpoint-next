@@ -1,0 +1,71 @@
+@use 'vars' as *;
+
+@mixin font-face($font-family, $url, $weight: 400, $style: normal, $format: 'woff2') {
+  @font-face {
+    font-display: swap;
+    font-family: $font-family;
+    font-style: $style;
+    font-weight: $weight;
+    src: url('/resources/fonts/#{$url}') format($format);
+  }
+}
+
+@mixin flex-center {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+@mixin heading-text {
+  font-family: $font-family-heading;
+  letter-spacing: 0;
+  line-height: $line-height-heading;
+  text-transform: uppercase;
+}
+
+@mixin section-spacing {
+  padding-top: $section-space-y;
+  padding-bottom: $section-space-y;
+
+  @media (max-width: $breakpoint-tablet) {
+    padding-top: $section-space-y-tablet;
+    padding-bottom: $section-space-y-tablet;
+  }
+
+  @media (max-width: $breakpoint-mobile) {
+    padding-top: $section-space-y-mobile;
+    padding-bottom: $section-space-y-mobile;
+  }
+}
+
+@mixin section-title {
+  @include heading-text;
+  font-family: $font-family-second;
+  margin: 0;
+  font-size: $section-title-size;
+  line-height: $section-title-line-height;
+  font-variation-settings:
+    'GRAD' 150,
+    'XOPQ' 110,
+    'YTDE' -198,
+    'YTUC' 760,
+    'wdth' 75,
+    'opsz' 144;
+
+  @media (max-width: $breakpoint-tablet) {
+    font-size: $section-title-size-tablet;
+  }
+
+  @media (max-width: $breakpoint-mobile) {
+    font-size: $section-title-size-mobile;
+  }
+}
+
+@mixin label-text {
+  font-family: $font-family-primary;
+  font-size: $font-size-label;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  line-height: $line-height-label;
+  text-transform: uppercase;
+}

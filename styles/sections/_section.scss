@@ -1,0 +1,119 @@
+@use '../vars' as *;
+@use '../fluid' as *;
+
+.section {
+  padding: $space-80 0;
+}
+
+.section--compact {
+  padding: $space-48 0;
+}
+
+.section--light {
+  background-color: var(--color-bg-inverse);
+  color: var(--color-text-inverse);
+}
+
+.section__header {
+  display: grid;
+  gap: $space-16;
+  margin-bottom: $space-40;
+  max-width: 46rem;
+}
+
+.section-head {
+  display: flex;
+  gap: $space-16;
+  align-items: end;
+  justify-content: space-between;
+
+  &__title {
+    font-size: 88px;
+    line-height: 82%;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+    font-family: $font-family-second;
+    margin: 0;
+    font-variation-settings:
+      'GRAD' 150,
+      'XOPQ' 110,
+      'YTDE' -198,
+      'YTUC' 760,
+      'wdth' 75,
+      'opsz' 144;
+
+    span {
+      color: var(--red-600);
+    }
+  }
+
+  &__lead {
+    padding-left: 15px;
+    border-left: 1px solid var(--red-600);
+    font-size: fluid(15px, 18px);
+    line-height: 120%;
+    margin: 0;
+
+    &--big-width {
+      max-width: 26.375rem;
+    }
+
+    &--lit-width {
+      max-width: 18.75rem;
+    }
+  }
+}
+
+.section-head--center {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+
+  .section-head__lead {
+    max-width: rem(480px);
+    padding-left: 0;
+    border-left: 0;
+  }
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .section {
+    padding: $space-56 0;
+  }
+
+  .section-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $space-16;
+  }
+
+  .section--compact {
+    padding: $space-36 0;
+  }
+}
+
+@media (max-width: $breakpoint-tablet) {
+  .section-head__title {
+    font-size: $section-title-size-tablet;
+  }
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .section-head {
+    align-items: flex-start;
+
+    &__title {
+      font-size: $section-title-size-mobile;
+      line-height: $section-title-line-height;
+    }
+
+    &__lead {
+      font-size: $font-size-t1;
+    }
+  }
+
+  .section-head--center {
+    align-items: center;
+  }
+}

@@ -1,0 +1,211 @@
+@use '../vars' as *;
+@use '../fluid' as *;
+
+.hero {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--color-bg);
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    height: 75%;
+    width: 100%;
+    bottom: 0;
+    background: linear-gradient(180deg, rgb(0 0 0 / 0) 64.88%, #000000 90.13%);
+    z-index: 2;
+  }
+
+  &__image {
+    position: absolute;
+    right: 0;
+    height: 100%;
+    object-fit: contain;
+    width: 100%;
+    object-position: right bottom;
+    max-width: 1700px;
+  }
+
+  &__content {
+    position: relative;
+    z-index: 10;
+  }
+
+  &__wrap {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: rem(640px);
+    min-height: max(100svh, #{rem(640px)});
+    padding: rem(144px) 0 rem(132px);
+  }
+
+  &__pretitle {
+    position: relative;
+    padding-left: 18px;
+    margin: 0 0 12px;
+    font-weight: 600;
+    font-size: 1.125rem;
+    line-height: 110%;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 12px;
+      width: 12px;
+      background-color: var(--red-900);
+    }
+  }
+
+  &__title {
+    margin: 0;
+    font-family: $font-family-second;
+    font-size: fluid(48px, 80px);
+    line-height: 88%;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-variation-settings:
+      'GRAD' 150,
+      'XOPQ' 110,
+      'YTDE' -198,
+      'YTUC' 760,
+      'wdth' 75,
+      'opsz' 144;
+
+    span {
+      color: var(--red-600);
+    }
+  }
+
+  &__buttons {
+    position: absolute;
+    left: 0;
+    bottom: 24px;
+    display: flex;
+    gap: rem(12px);
+  }
+
+  &__button {
+    border-radius: 24px;
+    padding: 36px 39px;
+    font-size: 14px;
+    line-height: 100%;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-align: center;
+    border: 1px solid transparent;
+    transition: all 0.3s ease-in-out;
+
+    &--red {
+      color: var(--white);
+
+      background: linear-gradient(134.84deg, var(--red-500) 0%, var(--red-800) 100%);
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+
+    &--purple {
+      color: var(--white);
+
+      background: linear-gradient(134.84deg, var(--violet-500) 0%, var(--violet-800) 100%);
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+
+  &__allerts {
+    max-width: 348px;
+    position: absolute;
+    right: rem(24px);
+    bottom: rem(24px);
+  }
+}
+
+@media (width > $breakpoint-tablet) {
+  .hero {
+    &__image {
+      right: max($container-offset, calc((100vw - 94.5rem) / 2));
+    }
+  }
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .hero {
+    &__wrap {
+      align-items: flex-start;
+      justify-content: flex-start;
+      min-height: 0;
+      padding-top: rem(126px);
+      padding-bottom: 0;
+      gap: rem(12px);
+    }
+
+    &__title {
+      order: -1;
+      max-width: 100%;
+      font-size: fluid(34px, 48px, 320px, 480px);
+    }
+
+    &__buttons {
+      display: none;
+    }
+
+    &__pretitle {
+      margin-bottom: 0;
+      text-indent: rem(16px);
+      padding-left: 0;
+
+      &::before {
+        top: 4px;
+        transform: none;
+      }
+    }
+
+    &__city {
+      display: block;
+      text-indent: 0;
+    }
+
+    &__content {
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding-bottom: rem(96px);
+    }
+
+    &__allerts {
+      position: relative;
+      right: auto;
+      bottom: auto;
+      width: 100%;
+      max-width: none;
+      margin-top: rem(24px);
+    }
+
+    &__image {
+      width: 1055px;
+      height: 710px;
+      max-width: initial;
+      right: rem(-161px);
+      bottom: rem(-70px);
+    }
+  }
+}
+
+@media (width > $breakpoint-mobile) and (width <= $breakpoint-tablet) {
+  .hero__allerts {
+    bottom: rem(120px);
+    max-width: rem(280px);
+  }
+}

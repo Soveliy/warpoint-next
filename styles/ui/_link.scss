@@ -1,0 +1,21 @@
+@use '../vars' as *;
+@use '../mixins/disable-mob-hover' as *;
+@use '../fluid' as *;
+.link {
+  font-size: rem(12px);
+  color: var(--color-text);
+  text-decoration: none;
+  transition:
+    color $duration-fast $ease-base,
+    text-decoration-color $duration-fast $ease-base;
+}
+@include hover {
+  .link:hover {
+    color: var(--color-accent);
+    text-decoration-color: currentColor;
+  }
+}
+
+.link--muted {
+  color: var(--color-muted);
+}

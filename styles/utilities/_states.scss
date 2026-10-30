@@ -1,0 +1,16 @@
+.is-scroll-locked {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+.is-hidden {
+  display: none !important;
+}
+
+.is-visible {
+  display: block !important;
+}
+
+.is-muted {
+  color: var(--color-muted) !important;
+}

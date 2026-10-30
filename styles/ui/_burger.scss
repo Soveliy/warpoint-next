@@ -1,0 +1,65 @@
+@use '../fluid' as *;
+@use '../vars' as *;
+
+.burger {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: rem(24px);
+  height: rem(24px);
+  color: var(--white);
+
+  &:focus-visible {
+    outline: $focus-outline-width solid var(--focus-color);
+    outline-offset: $focus-outline-offset;
+  }
+}
+
+.burger__line {
+  background-color: currentColor;
+  border-radius: $radius-pill;
+  display: block;
+  height: rem(2px);
+  position: relative;
+  transition:
+    background-color $duration-fast $ease-base,
+    transform $duration-fast $ease-base;
+  width: rem(18px);
+}
+
+.burger__line::before,
+.burger__line::after {
+  background-color: currentColor;
+  border-radius: 10px;
+  content: '';
+  height: 100%;
+  right: 0;
+  position: absolute;
+  transition:
+    transform $duration-fast $ease-base,
+    width $duration-fast $ease-base;
+}
+
+.burger__line::before {
+  transform: translateY(rem(-6px));
+  width: 100%;
+}
+
+.burger__line::after {
+  transform: translateY(rem(6px));
+  width: 60%;
+}
+
+.burger.is-active .burger__line {
+  background-color: transparent;
+}
+
+.burger.is-active .burger__line::before {
+  width: 100%;
+  transform: rotate(45deg);
+}
+
+.burger.is-active .burger__line::after {
+  width: 100%;
+  transform: rotate(-45deg);
+}

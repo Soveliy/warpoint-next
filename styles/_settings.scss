@@ -1,0 +1,93 @@
+@use 'vars' as *;
+@use 'fluid' as *;
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scrollbar-gutter: stable;
+}
+
+@supports (scrollbar-gutter: stable) {
+  // The root already reserves the scrollbar gutter; Fancybox must not add it again.
+  html.with-fancybox body.hide-scrollbar {
+    margin-right: var(--f-body-margin, 0);
+  }
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: $font-family;
+  margin: 0;
+  min-width: min(#{rem(320px)}, 100%);
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.page {
+  min-height: 100vh;
+}
+
+.container {
+  margin: 0 auto;
+  max-width: $container-width;
+  padding: 0 $container-offset;
+}
+
+.footer {
+  border-top: rem(1px) solid var(--color-border);
+  padding: rem(24px) 0;
+}
+
+.footer__copy {
+  color: var(--color-muted);
+}
+
+::selection {
+  background-color: var(--color-accent);
+  color: var(--white);
+}
+
+.button-reset {
+  background-color: transparent;
+  padding: 0;
+  border: 0;
+}
+
+.visually-hidden {
+  border: 0;
+  clip-path: inset(50%);
+  height: rem(1px);
+  margin: rem(-1px);
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: rem(1px);
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .container {
+    padding: 0 rem(16px);
+  }
+}
