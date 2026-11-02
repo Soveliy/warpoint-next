@@ -1,4 +1,9 @@
 // Font faces, preload links and metric-adjusted fallbacks come from app/fonts.js.
 :root {
   --second-family: var(--font-inter-tight), Arial, sans-serif;
+  --font-secondary: var(--font-oceanic), var(--font-inter-tight), Arial, sans-serif;
+}
+
+:root[data-secondary-font='roboto-flex'] {
+  --font-secondary: var(--font-roboto-flex), var(--font-inter-tight), Arial, sans-serif;
 }

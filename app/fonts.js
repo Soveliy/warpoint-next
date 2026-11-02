@@ -28,6 +28,7 @@ export const robotoFlex = localFont({
   style: 'normal',
   variable: '--font-roboto-flex',
   display: 'block',
-  preload: true,
+  // Retain the original face for rollback; do not download it while unused.
+  preload: false,
   adjustFontFallback: 'Arial',
 });

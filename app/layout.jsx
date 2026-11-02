@@ -7,6 +7,7 @@ import 'air-datepicker/air-datepicker.css';
 import '../styles/main.scss';
 import './bridge.css';
 import { getSite } from '../lib/site';
+import { secondaryFont } from '../lib/typography';
 import { interTight, oceanic, robotoFlex } from './fonts';
 
 export const metadata = {
@@ -16,7 +17,7 @@ export const metadata = {
 export default async function RootLayout({ children }) {
   const site = await getSite();
   return (
-    <html lang="ru" className={`${interTight.variable} ${oceanic.variable} ${robotoFlex.variable} is-preloading`} data-city={site?.city} data-country={site?.countryId} data-location={site?.arenas?.length ? 'erp-0' : undefined} data-location-confirmed={site?.arenas?.length ? 'true' : undefined}>
+    <html lang="ru" className={`${interTight.variable} ${oceanic.variable} ${robotoFlex.variable} is-preloading`} data-secondary-font={secondaryFont} data-city={site?.city} data-country={site?.countryId} data-location={site?.arenas?.length ? 'erp-0' : undefined} data-location-confirmed={site?.arenas?.length ? 'true' : undefined}>
       <body className="page">
         {children}
         <Script id="preloader-fallback" strategy="beforeInteractive">
