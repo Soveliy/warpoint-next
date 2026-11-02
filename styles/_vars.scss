@@ -1,9 +1,9 @@
 @use 'fluid' as *;
 
-$font-family-primary: 'Inter Tight', Arial, sans-serif;
-$font-family-heading: 'Oceanic Grotesk Condensed', 'Inter Tight', Arial, sans-serif;
+$font-family-primary: var(--font-inter-tight), Arial, sans-serif;
+$font-family-heading: var(--font-oceanic), var(--font-inter-tight), Arial, sans-serif;
 $font-family: $font-family-primary;
-$font-family-second: 'Roboto Flex', 'Inter Tight', Arial, sans-serif;
+$font-family-second: var(--font-roboto-flex), var(--font-inter-tight), Arial, sans-serif;
 
 $viewport-min: 375px;
 $viewport-max: 1472px;
