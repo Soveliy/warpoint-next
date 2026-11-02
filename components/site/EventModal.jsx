@@ -5,7 +5,7 @@ import { siteFields } from '../../lib/site-fields';
 import { toggleScrollLock } from '../../interactions/_functions';
 import { Calendar } from './ProgramPicker';
 
-export default function EventModal({ site }) {
+export default function EventModal({ site, defaultEventType = '' }) {
   const fields = siteFields(site);
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState(1);
@@ -29,15 +29,17 @@ export default function EventModal({ site }) {
       if (!trigger) return;
       opener.current = trigger;
       form.current?.reset();
+      const typeFields = form.current?.elements.namedItem('eventType');
+      if (typeFields) typeFields.value = defaultEventType;
       setStep(1);
-      setEventType('');
+      setEventType(defaultEventType);
       setGuestCount('');
       setDate(null);
       setOpen(true);
     };
     document.addEventListener('click', onOpen);
     return () => document.removeEventListener('click', onOpen);
-  }, []);
+  }, [defaultEventType]);
 
   useEffect(() => {
     if (!open) return;

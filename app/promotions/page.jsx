@@ -13,7 +13,7 @@ export default async function PromotionsPage() {
   const site = await getSite();
   if (!site) notFound();
   return <ListingPageShell site={site}>
-    <ListingHero title="Наши" accent="акции" crumb="Акции" description={<>Акции и специальные предложения<br />в парках виртуальной реальности WARPOINT</>} />
+    <ListingHero className="listing-hero--editorial" title="Наши" accent="акции" crumb="Акции" description={<>Акции и специальные предложения<br />в парках виртуальной реальности WARPOINT</>} />
     <PromotionsListing site={site} />
   </ListingPageShell>;
 }

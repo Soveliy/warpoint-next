@@ -1,0 +1,71 @@
+@use '../fluid' as *;
+@use '../vars' as *;
+
+.page:has(.hero-event--adult) .header:not([data-theme='dark']) {
+  --header-logo-filter: brightness(0) invert(1);
+}
+
+.hero-event--adult {
+  min-height: max(100svh, min(64.95vw, 982px));
+
+  .hero-event__wrap {
+    min-height: max(100svh, min(64.95vw, 982px));
+    align-items: flex-start;
+    padding-top: 100px;
+  }
+
+  .hero-event__title { max-width: 640px; margin-left: 16px; }
+  .hero-event__title span { transform: scaleX(1.06); transform-origin: left center; }
+  .hero-event__desc { max-width: 350px; margin-left: 16px; }
+  .hero-event__params { margin-left: 16px; }
+  .hero-event__line { top: 25.7%; left: 39.2%; width: min(59.65vw, 902px); }
+  .hero-event__character--adult-man { top: 28.3%; left: 46%; z-index: 3; width: min(29.3vw, 443px); }
+  .hero-event__character--adult-woman { top: 6%; left: 59%; z-index: 2; width: min(40.28vw, 609px); }
+  .hero-event__character--adult-w { top: 52%; left: 35.5%; z-index: 2; width: min(29.7vw, 449px); }
+  .hero-event__character--adult-dog { top: 11.2%; left: 62%; z-index: 2; width: min(15.48vw, 234px); }
+  .hero-event__character--adult-balloon-small { top: 28.5%; left: 43.25%; z-index: 2; width: min(9.85vw, 149px); }
+  .hero-event__character--adult-balloon-big { top: 60%; left: 78.7%; z-index: 4; width: min(17.4vw, 263px); }
+  .hero-event__adult-actions { position: absolute; right: 0; bottom: 24px; left: 0; z-index: 4; }
+  .hero-event__buttons { position: static; }
+  .hero-event__calculate .btn__icon { fill: none; }
+}
+
+.main--adult-birthday .about-game__lead { display: none; }
+.main--adult-birthday .event-program__icon-container svg { fill: none; }
+
+@media (max-width: $breakpoint-mobile) {
+  .hero-event--adult {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+
+    .hero-event__content { order: 0; padding-top: 132px; }
+    .hero-event__wrap { min-height: 0; padding: 0; }
+    .hero-event__title { max-width: 100%; margin-left: 0; font-size: clamp(38px, 12vw, 46px); }
+    .hero-event__title span { transform: none; }
+    .hero-event__desc { max-width: 350px; margin-left: 0; }
+    .hero-event__params { margin-left: 0; }
+    .hero-event__param { font-size: 18px; }
+    .hero-event__scene { position: relative; inset: auto; order: 1; flex: none; height: clamp(350px, 100vw, 500px); margin-top: 16px; }
+    .hero-event__line { top: 22%; left: -12%; width: 125vw; }
+    .hero-event__character--adult-man { top: 12%; left: 7%; width: 55vw; }
+    .hero-event__character--adult-woman { top: -6%; left: 29%; width: 78vw; }
+    .hero-event__character--adult-w { top: 43%; left: -18%; width: 58vw; }
+    .hero-event__character--adult-dog { top: 0; left: 46%; width: 34vw; }
+    .hero-event__character--adult-balloon-small { top: 5%; left: 1%; width: 22vw; }
+    .hero-event__character--adult-balloon-big { top: 57%; left: 65%; width: 35vw; }
+    .hero-event__adult-actions { position: relative; inset: auto; order: 2; width: 100%; padding-top: 8px; padding-bottom: calc(20px + env(safe-area-inset-bottom)); }
+  }
+}
+
+@media (width >= 560px) and (max-width: $breakpoint-mobile) {
+  .hero-event--adult {
+    .hero-event__scene { height: 530px; }
+    .hero-event__character--adult-man { left: 13%; width: min(42vw, 280px); }
+    .hero-event__character--adult-woman { left: 44%; width: min(65vw, 400px); }
+    .hero-event__line { left: 5%; width: 100vw; }
+    .hero-event__character--adult-w { left: -2%; width: 45vw; }
+    .hero-event__character--adult-dog { left: 43%; width: 25vw; }
+    .hero-event__character--adult-balloon-big { top: 57%; left: 68%; width: 28vw; }
+  }
+}

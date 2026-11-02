@@ -14,6 +14,7 @@ const groups = [
     title: 'Мероприятия',
     links: [
       ['Детский день рождения', '/events/birthday/'],
+      ['Взрослый день рождения', '/events/adult-birthday/'],
       ['Корпоратив', '/events/corporate/'],
       ['Школьный выпускной', '/events/graduation/'],
       ['Анонс мероприятий', '/events/'],

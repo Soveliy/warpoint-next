@@ -12,7 +12,7 @@ export default async function ArticlesPage() {
   const site = await getSite();
   if (!site) notFound();
   return <ListingPageShell site={site}>
-    <ListingHero title="Наши" accent="статьи" crumb="Статьи" description={<>Полезные материалы, обзоры, советы и истории<br />из мира виртуальных развлечений WARPOINT</>} />
+    <ListingHero className="listing-hero--editorial" title="Наши" accent="статьи" crumb="Статьи" description={<>Полезные материалы, обзоры, советы и истории<br />из мира виртуальных развлечений WARPOINT</>} />
     <ArticlesListing />
   </ListingPageShell>;
 }

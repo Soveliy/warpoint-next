@@ -298,15 +298,12 @@ export default function HomeEvents({ site }) {
                       }
                     </p>
                     {'\n              '}
-                    <button
+                    <a
                       className="events__more button-reset"
-                      type="button"
-                      aria-haspopup="dialog"
-                      aria-controls="event-modal"
-                      data-event-modal-open=""
+                      href="/events/adult-birthday/"
                     >
                       {'\n                Подробнее\n              '}
-                    </button>
+                    </a>
                     {'\n            '}
                   </div>
                   {'\n          '}

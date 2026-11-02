@@ -26,12 +26,15 @@ const corporateSlides = [
 
 const iconByEvent = {
   birthday: '/img/svg/cake.svg',
+  'adult-birthday': '/img/svg/cake.svg',
   corporate: '/img/svg/martini.svg',
   graduation: '/img/svg/graduationcap.svg',
 };
 
 export default function EventAddons({ eventType = 'birthday' }) {
-  const slides = eventType === 'corporate' ? corporateSlides : commonSlides;
+  const slides = eventType === 'adult-birthday'
+    ? [{ ...corporateSlides[0], image: '/img/event-addons/catering.webp', alt: 'Компания отмечает праздник за столом в WARPOINT' }, ...corporateSlides.slice(1)]
+    : eventType === 'corporate' ? corporateSlides : commonSlides;
   const [activeIndex, setActiveIndex] = useState(0);
   const show = (index) => setActiveIndex(Math.max(0, Math.min(index, slides.length - 1)));
   const onKeyDown = (event) => {

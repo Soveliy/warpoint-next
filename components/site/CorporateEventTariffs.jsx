@@ -1,6 +1,6 @@
 import { siteFields } from '../../lib/site-fields';
 
-export default function CorporateEventTariffs({ site }) {
+export default function CorporateEventTariffs({ site, title = 'корпоратив', context = 'corporate' }) {
   const fields = siteFields(site);
   return (
     <>
@@ -10,7 +10,7 @@ export default function CorporateEventTariffs({ site }) {
         aria-labelledby="event-tariffs-title"
         data-header-theme="brand"
         data-slider-root=""
-        data-tariff-context="corporate"
+        data-tariff-context={context}
       >
         {'\n  '}
         <div className="container">
@@ -20,7 +20,7 @@ export default function CorporateEventTariffs({ site }) {
             <h2 className="section-head__title" id="event-tariffs-title">
               {'\n        Тарифы на '}
               <br />
-              <span>{'корпоратив'}</span>
+              <span>{title}</span>
               {'\n      '}
             </h2>
             {'\n    '}

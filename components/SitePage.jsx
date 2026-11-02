@@ -4,6 +4,7 @@ import HomeSections from './site/HomeSections';
 import BirthdaySections from './site/BirthdaySections';
 import CorporateSections from './site/CorporateSections';
 import GraduationSections from './site/GraduationSections';
+import AdultBirthdaySections from './site/AdultBirthdaySections';
 import BookingPanel from './site/BookingPanel';
 import LocationModal from './site/LocationModal';
 
@@ -12,6 +13,7 @@ const pages = {
   birthday: BirthdaySections,
   corporate: CorporateSections,
   graduation: GraduationSections,
+  'adult-birthday': AdultBirthdaySections,
 };
 
 export default function SitePage({ page, site, event = false }) {

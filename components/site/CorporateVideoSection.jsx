@@ -3,7 +3,7 @@
 import { siteFields } from '../../lib/site-fields';
 import { usePromoVideo } from './usePromoVideo';
 
-export default function CorporateVideoSection({ site }) {
+export default function CorporateVideoSection({ site, adult = false }) {
   const fields = siteFields(site);
   const promo = usePromoVideo();
   return (
@@ -19,7 +19,7 @@ export default function CorporateVideoSection({ site }) {
         {'\n      '}
         <img
           className="video-section__background"
-          src="/img/posters/2.jpg"
+          src={adult ? '/img/events/adult-birthday.jpg' : '/img/posters/2.jpg'}
           width="1512"
           height="982"
           alt=""
@@ -45,7 +45,7 @@ export default function CorporateVideoSection({ site }) {
             src="/video/video_preview.mp4"
             controls={promo.state === 'open' || promo.playFailed}
             ref={promo.videoRef}
-            poster="/img/posters/2.jpg"
+            poster={adult ? '/img/events/adult-birthday.jpg' : '/img/posters/2.jpg'}
             data-promo-video-media=""
           ></video>
           {'\n        '}
@@ -75,9 +75,9 @@ export default function CorporateVideoSection({ site }) {
           {'\n        '}
           <p className="video-section__description">
             {'\n          '}
-            <span>{'Эпичные командные игры, живые эмоции,'}</span>
+            <span>{adult ? 'Командные игры, живые эмоции и общий праздник' : 'Эпичные командные игры, живые эмоции,'}</span>
             {'\n          '}
-            <span>{'соревновательный азарт и общая победа вместо привычного банкета.'}</span>
+            <span>{adult ? 'с друзьями — такой день рождения хочется вспоминать' : 'соревновательный азарт и общая победа вместо привычного банкета.'}</span>
             {'\n        '}
           </p>
           {'\n        '}

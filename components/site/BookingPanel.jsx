@@ -3,10 +3,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { toggleScrollLock } from '../../interactions/_functions';
 import { isPhoneComplete } from '../../interactions/components/phone-mask';
+import BookingWizard from './BookingWizard';
 
 export default function BookingPanel({ site }) {
   const [open, setOpen] = useState(false);
   const [ready, setReady] = useState(false);
+  const [wizard, setWizard] = useState(false);
   const dialog = useRef(null);
   const form = useRef(null);
   const trigger = useRef(null);
@@ -20,6 +22,7 @@ export default function BookingPanel({ site }) {
       trigger.current = button;
       form.current?.reset();
       setReady(false);
+      setWizard(false);
       setOpen(true);
     };
     document.addEventListener('click', onClick);
@@ -59,13 +62,7 @@ export default function BookingPanel({ site }) {
     close();
   };
   const bookOnline = () => {
-    const index = Number.parseInt((document.documentElement.dataset.location || 'erp-0').replace('erp-', ''), 10);
-    const selectedUrl = site.arenas[index]?.bookingUrl || site.arenas[0]?.bookingUrl;
-    try {
-      const url = new URL(selectedUrl);
-      if (['https:', 'http:'].includes(url.protocol)) { window.location.assign(url.href); return; }
-    } catch { /* No booking URL from ERP. */ }
-    form.current?.elements.namedItem('name')?.focus();
+    setWizard(true);
   };
   const onKeyDown = (event) => {
     if (event.key === 'Escape') { event.preventDefault(); close(); return; }
@@ -75,7 +72,8 @@ export default function BookingPanel({ site }) {
     else if (!event.shiftKey && document.activeElement === items.at(-1)) { event.preventDefault(); items[0]?.focus(); }
   };
   return (
-    <div className={`booking-panel${open ? ' is-open' : ''}`} id="booking-panel" aria-hidden={!open} inert={!open}>
+    <>
+    <div className={`booking-panel${open && !wizard ? ' is-open' : ''}`} id="booking-panel" aria-hidden={!open || wizard} inert={!open || wizard}>
       <button
         className="booking-panel__backdrop button-reset"
         type="button"
@@ -186,5 +184,7 @@ export default function BookingPanel({ site }) {
         </section>
       </aside>
     </div>
+    {open && wizard && <BookingWizard site={site} onClose={close} />}
+    </>
   );
 }

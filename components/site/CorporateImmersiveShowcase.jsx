@@ -1,6 +1,6 @@
 import { siteFields } from '../../lib/site-fields';
 
-export default function CorporateImmersiveShowcase({ site }) {
+export default function CorporateImmersiveShowcase({ site, posterOnly = false }) {
   const fields = siteFields(site);
   return (
     <>
@@ -42,7 +42,7 @@ export default function CorporateImmersiveShowcase({ site }) {
             {'\n      '}
             <div className="immersive-showcase__media">
               {'\n        '}
-              <video
+              {posterOnly ? <img className="immersive-showcase__image" src="/img/showcase/1.jpg" alt="Игроки свободно перемещаются по VR-арене" loading="lazy" width="660" height="520" /> : <video
                 className="immersive-showcase__image"
                 autoPlay={true}
                 muted={true}
@@ -55,7 +55,7 @@ export default function CorporateImmersiveShowcase({ site }) {
                 {'\n          '}
                 <source src="/video/corporate-immersion.mp4" type="video/mp4" />
                 {'\n        '}
-              </video>
+              </video>}
               {'\n      '}
             </div>
             {'\n    '}

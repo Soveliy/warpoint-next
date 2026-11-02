@@ -21,6 +21,7 @@
 @use 'components/event-request-modal';
 @use 'components/auth-modal';
 @use 'components/booking-panel';
+@use 'components/booking-wizard';
 @use 'components/ui-kit';
 @use 'ui/link';
 @use 'ui/field';
@@ -49,6 +50,7 @@
 @use 'components/allerts';
 @use 'components/footer';
 @use 'components/hero-event';
+@use 'components/adult-birthday';
 @use 'components/event-sections';
 @use 'components/tariff-modal';
 @use 'components/event-addons';

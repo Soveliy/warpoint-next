@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { articles } from '../../lib/articles';
+import { ArticleCard, ArticlePreview } from './ArticleCards';
 
 const categories = [
   { id: 'all', label: 'Все статьи' },
@@ -10,32 +11,10 @@ const categories = [
   { id: 'tips', label: 'Советы' },
 ];
 
-function ArticleMeta({ article }) {
-  return <div className="articles-card__meta">
-    <span className="articles-card__category">{article.categoryLabel}</span>
-    <span aria-label={`Дата публикации: ${article.date}`}>▦ {article.date}</span>
-    <span aria-label={`Время чтения: ${article.minutes} мин.`}>⌛ {article.minutes} мин</span>
-  </div>;
-}
-
-function ArticleCard({ article, featured = false }) {
-  return <article className={`articles-card${featured ? ' articles-card--featured' : ''}`}>
-    <div className="articles-card__image">
-      <img src={article.image} alt={article.imageAlt} loading={featured ? 'eager' : 'lazy'} />
-    </div>
-    <div className="articles-card__body">
-      <ArticleMeta article={article} />
-      <h2>{article.title}</h2>
-      <p>{article.excerpt}</p>
-      {article.id === 'birthday-ekaterinburg'
-        ? <a className="articles-card__pending" href={`/articles/${article.id}/`}>Читать статью</a>
-        : <span className="articles-card__pending" title="Полный текст статьи ещё не добавлен">Материал готовится</span>}
-    </div>
-  </article>;
-}
-
 export default function ArticlesListing() {
   const [category, setCategory] = useState('all');
+  const [selected, setSelected] = useState(null);
+  const [showAll, setShowAll] = useState(false);
   const filtered = category === 'all' ? articles : articles.filter((article) => article.category === category);
   const [featured, ...rest] = filtered;
 
@@ -46,14 +25,16 @@ export default function ArticlesListing() {
         key={item.id}
         className={category === item.id ? 'is-active' : ''}
         aria-pressed={category === item.id}
-        onClick={() => setCategory(item.id)}
+        onClick={() => { setCategory(item.id); setShowAll(false); }}
       >{item.label}</button>)}
     </div>
     {featured ? <>
-      {category === 'all' && <ArticleCard article={featured} featured />}
+      {category === 'all' && <ArticleCard article={featured} featured onOpen={setSelected} />}
       <div className="articles-list__grid">
-        {(category === 'all' ? rest : filtered).map((article) => <ArticleCard article={article} key={article.id} />)}
+        {(category === 'all' ? rest : filtered).map((article) => <ArticleCard article={article} key={article.id} onOpen={setSelected} />)}
       </div>
+      {category === 'all' && <div className="articles-list__more"><button className="listing-button" type="button" onClick={() => setShowAll(true)} disabled={showAll}>{showAll ? 'Все статьи показаны' : 'Показать ещё'}</button>{showAll && <p role="status">Других опубликованных материалов пока нет.</p>}</div>}
     </> : <p className="articles-list__empty">В этой категории статьи пока не опубликованы.</p>}
+    {selected && <ArticlePreview article={selected} onClose={() => setSelected(null)} />}
   </section>;
 }

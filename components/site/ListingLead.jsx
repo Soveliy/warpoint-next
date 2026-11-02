@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-export default function ListingLead({ site, title, accent }) {
+export default function ListingLead({ site, title, accent, description = 'Оставьте заявку — менеджер подберёт игры под возраст и количество гостей' }) {
   const [prepared, setPrepared] = useState(false);
   const submit = (event) => {
     event.preventDefault();
@@ -15,7 +15,7 @@ export default function ListingLead({ site, title, accent }) {
   return <section className="listing-lead container" id="contacts" aria-labelledby="listing-lead-title">
     <div className="listing-lead__copy">
       <h2 id="listing-lead-title">{title}<br /><span>{accent}</span></h2>
-      <p>Оставьте заявку — менеджер подберёт игры под возраст и количество гостей</p>
+      <p>{description}</p>
     </div>
     <form className="listing-lead__form" onSubmit={submit}>
       <div className="listing-lead__fields">

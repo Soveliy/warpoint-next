@@ -7,11 +7,11 @@ import SiteBehaviors from '../SiteBehaviors';
 import BookingPanel from './BookingPanel';
 import LocationModal from './LocationModal';
 
-export function ListingHero({ title, accent, description, crumb }) {
-  return <section className="listing-hero" data-header-theme="brand">
+export function ListingHero({ title, accent, description, crumb, className = '', parents = [] }) {
+  return <section className={`listing-hero ${className}`} data-header-theme="brand">
     <div className='listing-hero__wrap'>
       <div className="container">
-        <nav className="listing-hero__breadcrumbs" aria-label="Навигационная цепочка"><a href="/indexpage/">Главная</a><span aria-hidden="true">/</span><span aria-current="page">{crumb}</span></nav>
+        <nav className="listing-hero__breadcrumbs" aria-label="Навигационная цепочка"><a href="/indexpage/">Главная</a>{parents.map((item) => <span className="listing-hero__parent" key={item.title}><span aria-hidden="true">/</span><a href={item.href}>{item.title}</a></span>)}<span aria-hidden="true">/</span><span aria-current="page">{crumb}</span></nav>
         <h1>{title} <span>{accent}</span></h1>
         <p>{description}</p>
       </div>

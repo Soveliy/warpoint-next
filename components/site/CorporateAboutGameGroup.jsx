@@ -1,6 +1,6 @@
 import { siteFields } from '../../lib/site-fields';
 
-export default function CorporateAboutGameGroup({ site }) {
+export default function CorporateAboutGameGroup({ site, adult = false }) {
   const fields = siteFields(site);
   return (
     <>
@@ -19,10 +19,10 @@ export default function CorporateAboutGameGroup({ site }) {
               {'\n            '}
               <h2 className="about-game__title" id="about-game-title">
                 {'\n              '}
-                <span>{'Почему компании'}</span>
+                <span>{adult ? 'Почему выбирают' : 'Почему компании'}</span>
                 {'\n              '}
                 <span>
-                  {'выбирают '}
+                  {adult ? '' : 'выбирают '}
                   <em className="about-game__title-accent">{'WARPOINT'}</em>
                 </span>
                 {'\n            '}
@@ -30,7 +30,7 @@ export default function CorporateAboutGameGroup({ site }) {
               {'\n            '}
               <p className="about-game__lead">
                 {
-                  '\n              Командные VR-игры, которые объединяют коллег и дают повод для общих побед.\n            '
+                  adult ? 'Командные VR-игры и праздник для вашей компании.' : '\n              Командные VR-игры, которые объединяют коллег и дают повод для общих побед.\n            '
                 }
               </p>
               {'\n          '}
@@ -197,7 +197,7 @@ export default function CorporateAboutGameGroup({ site }) {
                   {'\n                '}
                   <div className="about-game__benefit-content">
                     {'\n                  '}
-                    <h3 className="about-game__benefit-title">{'Подходит любой команде'}</h3>
+                    <h3 className="about-game__benefit-title">{adult ? 'Подходит любой компании' : 'Подходит любой команде'}</h3>
                     {'\n                  '}
                     <p className="about-game__benefit-description">
                       {
@@ -244,7 +244,7 @@ export default function CorporateAboutGameGroup({ site }) {
                     {'\n                  '}
                     <p className="about-game__benefit-description about-game__benefit-description--lit">
                       {
-                        '\n                    Подберём сценарий, проведём инструктаж и турнир — вам останется играть и\n                    болеть за коллег.\n                  '
+                        adult ? 'Развлечение для всей семьи: подходит для детей от 6 лет и взрослых любого возраста' : '\n                    Подберём сценарий, проведём инструктаж и турнир — вам останется играть и\n                    болеть за коллег.\n                  '
                       }
                     </p>
                     {'\n                '}
