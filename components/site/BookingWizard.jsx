@@ -287,7 +287,16 @@ export default function BookingWizard({ site, onClose }) {
         </>}
         {complete && <div className="booking-wizard__success"><span className="booking-wizard__success-mark"><Icon name="check" /></span><h3>Ждём вас, {contacts.name.trim()}!</h3><p>Вы прошли все шаги демонстрационной формы.<br />Бронь не отправлена, предоплата не списана.<br />Настоящее подтверждение и SMS появятся после подключения API.</p>{summary()}<button className="booking-wizard__primary" type="button" onClick={onClose}>Готово</button></div>}
       </div>
-      {!complete && <footer className="booking-wizard__footer"><button className="booking-wizard__back booking-wizard__outline" type="button" disabled={step === 0} aria-label="Предыдущий этап" onClick={() => setStep(step - 1)}>←</button><button className="booking-wizard__primary" type={step === 5 ? 'submit' : 'button'} form={step === 5 ? 'booking-contact-form' : undefined} disabled={!ready} onClick={step === 5 ? undefined : step === 6 ? finish : next}>{step === 6 ? `Внести предоплату ${money(deposit)}` : 'Далее'}</button></footer>}
+      {!complete && <footer className="booking-wizard__footer">
+        <button className="booking-wizard__back booking-wizard__outline" type="button" disabled={step === 0} aria-label="Предыдущий этап" onClick={() => setStep(step - 1)}>←</button>
+        <button className="booking-wizard__primary" type={step === 5 ? 'submit' : 'button'} form={step === 5 ? 'booking-contact-form' : undefined} disabled={!ready}
+          onClick={step === 5 ? undefined : (event) => {
+            // The next render can turn this same DOM button into a form submit.
+            event.preventDefault();
+            if (step === 6) finish();
+            else next();
+          }}>{step === 6 ? `Внести предоплату ${money(deposit)}` : 'Далее'}</button>
+      </footer>}
     </article>
     {details && <TariffDetails tariff={details} onClose={() => setDetails(null)} onSelect={() => { chooseTariff(details.id); setDetails(null); }} />}
     {cityPicker && <BookingCities site={site} onClose={() => setCityPicker(false)} />}

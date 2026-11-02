@@ -1,10 +1,6 @@
 @use '../fluid' as *;
 @use '../vars' as *;
 
-.page:has(.hero-event--adult) .header:not([data-theme='dark']) {
-  --header-logo-filter: brightness(0) invert(1);
-}
-
 .hero-event--adult {
   min-height: max(100svh, min(64.95vw, 982px));
 

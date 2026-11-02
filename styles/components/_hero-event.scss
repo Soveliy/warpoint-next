@@ -19,8 +19,7 @@
   }
 }
 
-.page--corporate .header:not([data-theme='dark']),
-.page--graduation .header:not([data-theme='dark']) {
+.page:has(.hero-event) .header:not([data-theme='dark'], .header--scrolled) {
   --header-logo-filter: brightness(0) invert(1);
 }
 
@@ -623,6 +622,21 @@
 
     &__allerts {
       bottom: calc(#{rem(94px)} + env(safe-area-inset-bottom));
+    }
+  }
+}
+
+@media (max-width: rem(360px)) {
+  // Extra copy lines and wrapped badges need space above the illustrations.
+  .hero-event:not(.hero-event--adult) {
+    min-height: max(100svh, #{rem(960px)});
+
+    .hero-event__wrap {
+      min-height: max(100svh, #{rem(960px)});
+    }
+
+    .hero-event__scene {
+      top: rem(140px);
     }
   }
 }
