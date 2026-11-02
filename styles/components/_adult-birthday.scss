@@ -14,7 +14,7 @@
     padding-top: 100px;
   }
 
-  .hero-event__title { max-width: 640px; margin-left: 16px; }
+  .hero-event__title { max-width: 640px; margin-left: 16px; font-size: clamp(50px, 5.82vw, 88px); }
   .hero-event__title span { transform: scaleX(1.06); transform-origin: left center; }
   .hero-event__desc { max-width: 350px; margin-left: 16px; }
   .hero-event__params { margin-left: 16px; }
