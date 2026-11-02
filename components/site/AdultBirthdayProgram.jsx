@@ -6,9 +6,9 @@ const steps = [
   { time: '5 минут', title: <>Общее<br />фото</>, text: 'Кадр всей компанией — на память о празднике' },
 ];
 const companies = [
-  { title: 'С друзьями', icon: 'users', text: 'Командные сражения и турнир на звание лучшего игрока вечера' },
-  { title: 'С коллегами', icon: 'strategy', text: 'Отметить день рождения сотрудника всем отделом' },
-  { title: 'С семьёй', icon: 'handheart', text: 'Играют все поколения: VR понятен и детям, и родителям' },
+  { title: 'С друзьями', icon: 'celebration-friends', text: 'Командные сражения и турнир на звание лучшего игрока вечера' },
+  { title: 'С коллегами', icon: 'celebration-colleagues', text: 'Отметить день рождения сотрудника всем отделом' },
+  { title: 'С семьёй', icon: 'celebration-family', text: 'Играют все поколения: VR понятен и детям, и родителям' },
 ];
 
 export default function AdultBirthdayProgram() {
@@ -24,7 +24,7 @@ export default function AdultBirthdayProgram() {
       <div className="event-program__details">
         <div className="event-program__details-intro" data-reveal=""><h3 className="event-program__details-title">С кем<br />празднуете?</h3><p className="event-program__details-text">Подберём игры и сценарий<br />под ваших гостей</p></div>
         <ul className="event-program__details-list">{companies.map((company) => <li className="event-program__details-card" data-reveal="" key={company.title}>
-          <div className="event-program__icon-container" aria-hidden="true"><svg><use href={`/img/sprite.svg#icon-${company.icon}`} /></svg></div>
+          <div className="event-program__icon-container" aria-hidden="true"><img src={`/img/svg/${company.icon}.svg`} width="24" height="24" alt="" /></div>
           <h4 className="event-program__details-card-title">{company.title}</h4><p className="event-program__details-card-text">{company.text}</p>
         </li>)}</ul>
       </div>

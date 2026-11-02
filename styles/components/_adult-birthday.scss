@@ -31,7 +31,7 @@
 }
 
 .main--adult-birthday .about-game__lead { display: none; }
-.main--adult-birthday .event-program__icon-container svg { fill: none; }
+.main--adult-birthday .event-program__icon-container img { display: block; width: 24px; height: 24px; }
 
 @media (max-width: $breakpoint-mobile) {
   .hero-event--adult {
