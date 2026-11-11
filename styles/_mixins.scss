@@ -41,16 +41,19 @@
 @mixin section-title {
   @include heading-text;
   font-family: $font-family-second;
+  font-weight: var(--font-secondary-weight, 800);
   margin: 0;
   font-size: $section-title-size;
   line-height: $section-title-line-height;
-  font-variation-settings:
+  font-variation-settings: var(
+    --font-secondary-variation,
     'GRAD' 150,
     'XOPQ' 110,
     'YTDE' -198,
     'YTUC' 760,
     'wdth' 75,
-    'opsz' 144;
+    'opsz' 144
+  );
 
   @media (max-width: $breakpoint-tablet) {
     font-size: $section-title-size-tablet;

@@ -1,212 +1,114 @@
-import { siteFields } from '../../lib/site-fields';
-import Announcement from './Announcement';
+import EventHeroFooter from './EventHeroFooter';
 
-export default function BirthdayHeroEvent({ site }) {
-  const fields = siteFields(site);
+export default function BirthdayHeroEvent() {
   return (
-    <>
-      <section className="hero-event hero-event--orange" data-event-hero="">
+    <section className="hero-event hero-event--orange" data-event-hero="">
+      <div className="hero-event__scene" aria-hidden="true">
+        {'\n        '}
+        <img
+          className="hero-event__character hero-event__character--boy"
+          src="/img/events-hero/birthday/4.png"
+          width="301"
+          height="412"
+          alt=""
+          fetchPriority="high"
+          decoding="async"
+        />
+        {'\n        '}
+        <svg className="hero-event__line" viewBox="0 0 990 703" xmlns="http://www.w3.org/2000/svg">
+          {'\n          '}
+          <defs>
+            {'\n            '}
+            <mask id="birthday-line-reveal" maskUnits="userSpaceOnUse">
+              {'\n              '}
+              <path
+                className="hero-event__line-path"
+                d="M 590 320 C 540 400 320 555 170 610 C 100 645 65 625 65 585 C -12 482 114 316 291 195 C 452 78 604 35 746 66 C 929 101 970 254 885 420 C 817 554 703 631 593 631"
+                pathLength="1"
+                fill="none"
+                stroke="white"
+                strokeWidth="220"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              ></path>
+              {'\n              '}
+              <rect
+                className="hero-event__line-finish"
+                x="0"
+                y="0"
+                width="990"
+                height="703"
+                fill="white"
+              ></rect>
+              {'\n            '}
+            </mask>
+            {'\n          '}
+          </defs>
+          {'\n          '}
+          <image
+            href="/img/events-hero/birthday/line.png"
+            width="990"
+            height="703"
+            mask="url(#birthday-line-reveal)"
+          ></image>
+          {'\n        '}
+        </svg>
+        {'\n        '}
+        <img
+          className="hero-event__character hero-event__character--girl"
+          src="/img/events-hero/birthday/3.png"
+          width="450"
+          height="675"
+          alt=""
+          fetchPriority="high"
+          decoding="async"
+        />
+        {'\n        '}
+        <img
+          className="hero-event__character hero-event__character--cake"
+          src="/img/events-hero/birthday/2.png"
+          width="334"
+          height="361"
+          alt=""
+          decoding="async"
+        />
+        {'\n        '}
+        <img
+          className="hero-event__character hero-event__character--balloon"
+          src="/img/events-hero/birthday/1.png"
+          width="456"
+          height="459"
+          alt=""
+          decoding="async"
+        />
         {'\n      '}
-        <div className="hero-event__scene" aria-hidden="true">
-          {'\n        '}
-          <img
-            className="hero-event__character hero-event__character--boy"
-            src="/img/events-hero/birthday/4.png"
-            width="301"
-            height="412"
-            alt=""
-            fetchPriority="high"
-            decoding="async"
-          />
-          {'\n        '}
-          <svg
-            className="hero-event__line"
-            viewBox="0 0 990 703"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+      </div>
+      <div className="hero-event__content container">
+        <div className="hero-event__wrap">
+          <h1 className="hero-event__title">
+            {'\n            '}
+            <span>{'День рождения'}</span>
+            {'\n            '}
+            <span>{'в парке виртуальной'}</span>
+            {'\n            '}
+            <span>{'реальности'}</span>
             {'\n          '}
-            <defs>
-              {'\n            '}
-              <mask id="birthday-line-reveal" maskUnits="userSpaceOnUse">
-                {'\n              '}
-                <path
-                  className="hero-event__line-path"
-                  d="M 590 320 C 540 400 320 555 170 610 C 100 645 65 625 65 585 C -12 482 114 316 291 195 C 452 78 604 35 746 66 C 929 101 970 254 885 420 C 817 554 703 631 593 631"
-                  pathLength="1"
-                  fill="none"
-                  stroke="white"
-                  strokeWidth="220"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                ></path>
-                {'\n              '}
-                <rect
-                  className="hero-event__line-finish"
-                  x="0"
-                  y="0"
-                  width="990"
-                  height="703"
-                  fill="white"
-                ></rect>
-                {'\n            '}
-              </mask>
-              {'\n          '}
-            </defs>
+          </h1>
+          <p className="hero-event__desc">
+            {
+              '\n            Организуем запоминающееся мероприятие, в котором смогут принять участие и взрослые, и\n            дети!\n          '
+            }
+          </p>
+          <ul className="hero-event__params">
+            {'\n            '}
+
+            {'\n            '}
+            <li className="hero-event__param">{'12 +'}</li>
             {'\n          '}
-            <image
-              href="/img/events-hero/birthday/line.png"
-              width="990"
-              height="703"
-              mask="url(#birthday-line-reveal)"
-            ></image>
-            {'\n        '}
-          </svg>
-          {'\n        '}
-          <img
-            className="hero-event__character hero-event__character--girl"
-            src="/img/events-hero/birthday/3.png"
-            width="450"
-            height="675"
-            alt=""
-            fetchPriority="high"
-            decoding="async"
-          />
-          {'\n        '}
-          <img
-            className="hero-event__character hero-event__character--cake"
-            src="/img/events-hero/birthday/2.png"
-            width="334"
-            height="361"
-            alt=""
-            decoding="async"
-          />
-          {'\n        '}
-          <img
-            className="hero-event__character hero-event__character--balloon"
-            src="/img/events-hero/birthday/1.png"
-            width="456"
-            height="459"
-            alt=""
-            decoding="async"
-          />
-          {'\n      '}
+          </ul>
         </div>
-        {'\n      '}
-        <div className="container hero-event__content">
-          {'\n        '}
-          <div className="hero-event__wrap">
-            {'\n          '}
-            <h1 className="hero-event__title">
-              {'\n            '}
-              <span>{'День рождения'}</span>
-              {'\n            '}
-              <span>{'в парке виртуальной'}</span>
-              {'\n            '}
-              <span>{'реальности'}</span>
-              {'\n          '}
-            </h1>
-            {'\n          '}
-            <p className="hero-event__desc">
-              {
-                '\n            Организуем запоминающееся мероприятие, в котором смогут принять участие и взрослые, и\n            дети!\n          '
-              }
-            </p>
-            {'\n          '}
-            <ul className="hero-event__params">
-              {'\n            '}
-              {fields.local && (
-                <li className="hero-event__param">
-                  <small>{'от'}</small>
-                  {' 15 900 ₽'}
-                </li>
-              )}
-              {'\n            '}
-              <li className="hero-event__param">{'12 +'}</li>
-              {'\n          '}
-            </ul>
-            {'\n          '}
-            <div className="hero-event__buttons">
-              {'\n            '}
-              <button
-                className="hero-event__request btn button-reset"
-                type="button"
-                aria-haspopup="dialog"
-                aria-controls="event-request-modal"
-                data-event-request-open=""
-              >
-                {'\n              '}
-                <svg className="btn__icon" aria-hidden="true">
-                  {'\n                '}
-                  <use href="/img/sprite.svg#icon-cake"></use>
-                  {'\n              '}
-                </svg>
-                {'\n              ОСТАВИТЬ ЗАЯВКУ\n            '}
-              </button>
-              {'\n            '}
-              <button
-                className="hero-event__calculate btn btn--outline button-reset"
-                type="button"
-                aria-haspopup="dialog"
-                aria-controls="event-modal"
-                data-event-modal-open=""
-              >
-                {'\n              '}
-                <svg
-                  className="btn__icon"
-                  width="30"
-                  height="30"
-                  viewBox="0 0 30 30"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  {'\n                '}
-                  <path
-                    d="M23.4375 2.8125H6.5625C6.06522 2.8125 5.58831 3.01004 5.23667 3.36167C4.88504 3.71331 4.6875 4.19022 4.6875 4.6875V25.3125C4.6875 25.8098 4.88504 26.2867 5.23667 26.6383C5.58831 26.99 6.06522 27.1875 6.5625 27.1875H23.4375C23.9348 27.1875 24.4117 26.99 24.7633 26.6383C25.115 26.2867 25.3125 25.8098 25.3125 25.3125V4.6875C25.3125 4.19022 25.115 3.71331 24.7633 3.36167C24.4117 3.01004 23.9348 2.8125 23.4375 2.8125ZM10.3125 23.4375C10.0344 23.4375 9.76249 23.355 9.53123 23.2005C9.29997 23.046 9.11973 22.8264 9.01329 22.5694C8.90686 22.3124 8.87901 22.0297 8.93327 21.7569C8.98753 21.4841 9.12146 21.2335 9.31813 21.0369C9.5148 20.8402 9.76537 20.7063 10.0382 20.652C10.3109 20.5978 10.5937 20.6256 10.8506 20.732C11.1076 20.8385 11.3272 21.0187 11.4818 21.25C11.6363 21.4812 11.7188 21.7531 11.7188 22.0312C11.7188 22.4042 11.5706 22.7619 11.3069 23.0256C11.0431 23.2893 10.6855 23.4375 10.3125 23.4375ZM10.3125 18.75C10.0344 18.75 9.76249 18.6675 9.53123 18.513C9.29997 18.3585 9.11973 18.1389 9.01329 17.8819C8.90686 17.6249 8.87901 17.3422 8.93327 17.0694C8.98753 16.7966 9.12146 16.546 9.31813 16.3494C9.5148 16.1527 9.76537 16.0188 10.0382 15.9645C10.3109 15.9103 10.5937 15.9381 10.8506 16.0445C11.1076 16.151 11.3272 16.3312 11.4818 16.5625C11.6363 16.7937 11.7188 17.0656 11.7188 17.3438C11.7188 17.7167 11.5706 18.0744 11.3069 18.3381C11.0431 18.6018 10.6855 18.75 10.3125 18.75ZM15 23.4375C14.7219 23.4375 14.45 23.355 14.2187 23.2005C13.9875 23.046 13.8072 22.8264 13.7008 22.5694C13.5944 22.3124 13.5665 22.0297 13.6208 21.7569C13.675 21.4841 13.809 21.2335 14.0056 21.0369C14.2023 20.8402 14.4529 20.7063 14.7257 20.652C14.9984 20.5978 15.2812 20.6256 15.5381 20.732C15.7951 20.8385 16.0147 21.0187 16.1693 21.25C16.3238 21.4812 16.4062 21.7531 16.4062 22.0312C16.4062 22.4042 16.2581 22.7619 15.9944 23.0256C15.7306 23.2893 15.373 23.4375 15 23.4375ZM15 18.75C14.7219 18.75 14.45 18.6675 14.2187 18.513C13.9875 18.3585 13.8072 18.1389 13.7008 17.8819C13.5944 17.6249 13.5665 17.3422 13.6208 17.0694C13.675 16.7966 13.809 16.546 14.0056 16.3494C14.2023 16.1527 14.4529 16.0188 14.7257 15.9645C14.9984 15.9103 15.2812 15.9381 15.5381 16.0445C15.7951 16.151 16.0147 16.3312 16.1693 16.5625C16.3238 16.7937 16.4062 17.0656 16.4062 17.3438C16.4062 17.7167 16.2581 18.0744 15.9944 18.3381C15.7306 18.6018 15.373 18.75 15 18.75ZM19.6875 23.4375C19.4094 23.4375 19.1375 23.355 18.9062 23.2005C18.675 23.046 18.4947 22.8264 18.3883 22.5694C18.2819 22.3124 18.254 22.0297 18.3083 21.7569C18.3625 21.4841 18.4965 21.2335 18.6931 21.0369C18.8898 20.8402 19.1404 20.7063 19.4132 20.652C19.6859 20.5978 19.9687 20.6256 20.2256 20.732C20.4826 20.8385 20.7022 21.0187 20.8568 21.25C21.0113 21.4812 21.0938 21.7531 21.0938 22.0312C21.0938 22.4042 20.9456 22.7619 20.6819 23.0256C20.4181 23.2893 20.0605 23.4375 19.6875 23.4375ZM19.6875 18.75C19.4094 18.75 19.1375 18.6675 18.9062 18.513C18.675 18.3585 18.4947 18.1389 18.3883 17.8819C18.2819 17.6249 18.254 17.3422 18.3083 17.0694C18.3625 16.7966 18.4965 16.546 18.6931 16.3494C18.8898 16.1527 19.1404 16.0188 19.4132 15.9645C19.6859 15.9103 19.9687 15.9381 20.2256 16.0445C20.4826 16.151 20.7022 16.3312 20.8568 16.5625C21.0113 16.7937 21.0938 17.0656 21.0938 17.3438C21.0938 17.7167 20.9456 18.0744 20.6819 18.3381C20.4181 18.6018 20.0605 18.75 19.6875 18.75ZM21.5625 12.1875C21.5625 12.4361 21.4637 12.6746 21.2879 12.8504C21.1121 13.0262 20.8736 13.125 20.625 13.125H9.375C9.12636 13.125 8.8879 13.0262 8.71209 12.8504C8.53627 12.6746 8.4375 12.4361 8.4375 12.1875V7.5C8.4375 7.25136 8.53627 7.0129 8.71209 6.83709C8.8879 6.66127 9.12636 6.5625 9.375 6.5625H20.625C20.8736 6.5625 21.1121 6.66127 21.2879 6.83709C21.4637 7.0129 21.5625 7.25136 21.5625 7.5V12.1875Z"
-                    fill="white"
-                  ></path>
-                  {'\n              '}
-                </svg>
-                {'\n              РАССЧИТАТЬ СТОИМОСТЬ\n            '}
-              </button>
-              {'\n          '}
-            </div>
-            {'\n        '}
-          </div>
-          {'\n        '}
-          <div className="hero-event__allerts allerts">
-            {'\n          '}
-            <Announcement />
-            <div className="allert">
-              {'\n            '}
-              <div className="allert__row">
-                {'\n              '}
-                <div className="allert__pic">
-                  {'\n                '}
-                  <img src="/img/ypoint.png" alt="" />
-                  {'\n              '}
-                </div>
-                {'\n              '}
-                <div className="allert__content">
-                  {'\n                '}
-                  <div className="allert__title">{'5.0'}</div>
-                  {'\n                '}
-                  <div className="allert__desc">
-                    {
-                      '\n                  Средняя оценка наших гостей на основании 2048 отзывов\n                '
-                    }
-                  </div>
-                  {'\n              '}
-                </div>
-                {'\n            '}
-              </div>
-              {'\n          '}
-            </div>
-            {'\n        '}
-          </div>
-          {'\n      '}
-        </div>
-        {'\n    '}
-      </section>
-    </>
+      </div>
+      <EventHeroFooter icon="cake" />
+    </section>
   );
 }

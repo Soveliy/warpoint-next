@@ -4,9 +4,14 @@ import { useEffect, useRef, useState } from 'react';
 import { siteFields } from '../../lib/site-fields';
 import { toggleScrollLock } from '../../interactions/_functions';
 import { Calendar } from './ProgramPicker';
+import useFormValidation from './useFormValidation';
+import FormError from './FormError';
+import { useSiteLocation } from './SiteLocationProvider';
+import { contactRules, consentRule } from '../../lib/form-validation';
 
 export default function EventModal({ site, defaultEventType = '' }) {
   const fields = siteFields(site);
+  const { locationId, selectLocation } = useSiteLocation();
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState(1);
   const [eventType, setEventType] = useState('');
@@ -14,14 +19,34 @@ export default function EventModal({ site, defaultEventType = '' }) {
   const [date, setDate] = useState(null);
   const dialog = useRef(null);
   const form = useRef(null);
+  const validation = useFormValidation(
+    form,
+    {
+      ...contactRules,
+      email: { type: 'email' },
+      locationId: { type: 'location', required: true },
+      messenger: { type: 'messenger', required: true },
+      consent: consentRule,
+    },
+    { countryId: site.countryId },
+  );
   const opener = useRef(null);
   const content = useRef(null);
   const locations = site.arenas?.length
-    ? site.arenas.map((arena, index) => ({ id: `erp-${index}`, name: arena.title, address: arena.address }))
+    ? site.arenas.map((arena, index) => ({
+        id: `erp-${index}`,
+        name: arena.title,
+        address: arena.address,
+      }))
     : [];
-  const stepComplete = step === 1 ? Boolean(eventType)
-    : step === 2 ? Boolean(guestCount)
-    : step === 3 ? Boolean(date) : true;
+  const stepComplete =
+    step === 1
+      ? Boolean(eventType)
+      : step === 2
+        ? Boolean(guestCount)
+        : step === 3
+          ? Boolean(date)
+          : true;
 
   useEffect(() => {
     const onOpen = (event) => {
@@ -29,6 +54,7 @@ export default function EventModal({ site, defaultEventType = '' }) {
       if (!trigger) return;
       opener.current = trigger;
       form.current?.reset();
+      validation.reset();
       const typeFields = form.current?.elements.namedItem('eventType');
       if (typeFields) typeFields.value = defaultEventType;
       setStep(1);
@@ -47,14 +73,21 @@ export default function EventModal({ site, defaultEventType = '' }) {
     const frame = requestAnimationFrame(() => dialog.current?.focus({ preventScroll: true }));
     return () => {
       cancelAnimationFrame(frame);
-      if (!document.querySelector('.tariff-modal.is-open, .auth-modal.is-open, .game-modal.is-open') && !document.documentElement.classList.contains('is-mobile-menu-open')) toggleScrollLock(false);
+      if (
+        !document.querySelector(
+          '.tariff-modal.is-open, .auth-modal.is-open, .game-modal.is-open',
+        ) &&
+        !document.documentElement.classList.contains('is-mobile-menu-open')
+      )
+        toggleScrollLock(false);
     };
   }, [open]);
 
   const close = () => {
     setOpen(false);
     const trigger = opener.current?.closest('[data-mobile-menu]')
-      ? document.querySelector('.header__burger') : opener.current;
+      ? document.querySelector('.header__burger')
+      : opener.current;
     requestAnimationFrame(() => trigger?.focus({ preventScroll: true }));
   };
   const next = () => {
@@ -62,37 +95,64 @@ export default function EventModal({ site, defaultEventType = '' }) {
     if (step < 5) {
       setStep(step + 1);
       if (content.current) content.current.scrollTop = 0;
-      requestAnimationFrame(() => dialog.current?.querySelector(`[data-event-step="${step + 1}"] .event-modal__heading`)?.focus({ preventScroll: true }));
+      requestAnimationFrame(() =>
+        dialog.current
+          ?.querySelector(`[data-event-step="${step + 1}"] .event-modal__heading`)
+          ?.focus({ preventScroll: true }),
+      );
       return;
     }
-    const fields = form.current.elements;
-    fields.namedItem('name').setCustomValidity(fields.namedItem('name').value.trim() ? '' : 'Укажите ваше имя');
-    fields.namedItem('phone').setCustomValidity(fields.namedItem('phone').value.replace(/\D/g, '').length >= 10 ? '' : 'Введите телефон полностью');
-    if (!form.current.reportValidity()) return;
+    if (!validation.validate()) return;
     const data = new FormData(form.current);
     const locationId = data.get('locationId');
-    document.dispatchEvent(new CustomEvent('warpoint:event-quiz-complete', { detail: {
-      city: site.city, countryId: site.countryId,
-      date: [date.getFullYear(), String(date.getMonth() + 1).padStart(2, '0'), String(date.getDate()).padStart(2, '0')].join('-'),
-      eventType: data.get('eventType'), guestCount: data.get('guestCount'),
-      services: data.getAll('services'), name: String(data.get('name')).trim(),
-      phone: data.get('phone'), email: String(data.get('email') || '').trim(),
-      messenger: data.get('messenger'), consent: data.has('consent'),
-      locationId, location: locations.find((item) => item.id === locationId),
-    } }));
+    document.dispatchEvent(
+      new CustomEvent('warpoint:event-quiz-complete', {
+        detail: {
+          city: site.city,
+          countryId: site.countryId,
+          date: [
+            date.getFullYear(),
+            String(date.getMonth() + 1).padStart(2, '0'),
+            String(date.getDate()).padStart(2, '0'),
+          ].join('-'),
+          eventType: data.get('eventType'),
+          guestCount: data.get('guestCount'),
+          services: data.getAll('services'),
+          name: String(data.get('name')).trim(),
+          phone: data.get('phone'),
+          email: String(data.get('email') || '').trim(),
+          messenger: data.get('messenger'),
+          consent: data.has('consent'),
+          locationId,
+          location: locations.find((item) => item.id === locationId),
+        },
+      }),
+    );
     close();
   };
   const onKeyDown = (event) => {
-    if (event.key === 'Escape') { event.preventDefault(); close(); return; }
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      close();
+      return;
+    }
     if (event.key !== 'Tab') return;
-    const items = [...dialog.current.querySelectorAll('a[href], button:not(:disabled), input:not(:disabled), select:not(:disabled)')]
-      .filter((item) => !item.closest('[hidden]') && item.getClientRects().length);
+    const items = [
+      ...dialog.current.querySelectorAll(
+        'a[href], button:not(:disabled), input:not(:disabled), select:not(:disabled)',
+      ),
+    ].filter((item) => !item.closest('[hidden]') && item.getClientRects().length);
     const first = items[0];
     const last = items.at(-1);
-    if (event.shiftKey && (document.activeElement === first || document.activeElement === dialog.current)) {
-      event.preventDefault(); last?.focus();
+    if (
+      event.shiftKey &&
+      (document.activeElement === first || document.activeElement === dialog.current)
+    ) {
+      event.preventDefault();
+      last?.focus();
     } else if (!event.shiftKey && document.activeElement === last) {
-      event.preventDefault(); first?.focus();
+      event.preventDefault();
+      first?.focus();
     }
   };
   return (
@@ -130,12 +190,20 @@ export default function EventModal({ site, defaultEventType = '' }) {
             {'\n    '}
           </header>
           {'\n\n    '}
-          <form className="event-modal__form" ref={form} noValidate onSubmit={(event) => { event.preventDefault(); next(); }}
+          <form
+            className="event-modal__form form-validation"
+            ref={form}
+            {...validation.formProps}
+            onSubmit={(event) => {
+              event.preventDefault();
+              next();
+            }}
             onChange={(event) => {
+              validation.formProps.onChange(event);
               if (event.target.name === 'eventType') setEventType(event.target.value);
               if (event.target.name === 'guestCount') setGuestCount(event.target.value);
             }}
-            onInput={(event) => { if (event.target.name === 'name' || event.target.name === 'phone') event.target.setCustomValidity(''); }}>
+          >
             {'\n      '}
             <main className="event-modal__content" ref={content}>
               {'\n        '}
@@ -353,12 +421,14 @@ export default function EventModal({ site, defaultEventType = '' }) {
                   {'\n            мероприятие?\n          '}
                 </h3>
                 {'\n          '}
-                {open && step === 3 && <Calendar date={date} onChange={setDate} className="event-modal__calendar" />}
+                {open && step === 3 && (
+                  <Calendar date={date} onChange={setDate} className="event-modal__calendar" />
+                )}
                 {'\n          '}
-                <p
-                  className="event-modal__selected-date"
-                  aria-live="polite"
-                >{date && `Выбрано: ${new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }).format(date)}`}</p>
+                <p className="event-modal__selected-date" aria-live="polite">
+                  {date &&
+                    `Выбрано: ${new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }).format(date)}`}
+                </p>
                 {'\n        '}
               </section>
               {'\n\n        '}
@@ -543,6 +613,7 @@ export default function EventModal({ site, defaultEventType = '' }) {
                     </span>
                     {'\n              '}
                     <input
+                      {...validation.fieldProps('name')}
                       name="name"
                       type="text"
                       autoComplete="name"
@@ -551,6 +622,7 @@ export default function EventModal({ site, defaultEventType = '' }) {
                       maxLength="100"
                     />
                     {'\n            '}
+                    <FormError validation={validation} name="name" />
                   </label>
                   {'\n            '}
                   <label className="event-modal__field">
@@ -561,6 +633,7 @@ export default function EventModal({ site, defaultEventType = '' }) {
                     </span>
                     {'\n              '}
                     <input
+                      {...validation.fieldProps('phone')}
                       name="phone"
                       type="tel"
                       autoComplete="tel"
@@ -569,6 +642,7 @@ export default function EventModal({ site, defaultEventType = '' }) {
                       required={true}
                     />
                     {'\n            '}
+                    <FormError validation={validation} name="phone" />
                   </label>
                   {'\n            '}
                   <label className="event-modal__field">
@@ -576,12 +650,14 @@ export default function EventModal({ site, defaultEventType = '' }) {
                     <span className="visually-hidden">{'Email'}</span>
                     {'\n              '}
                     <input
+                      {...validation.fieldProps('email')}
                       name="email"
                       type="email"
                       autoComplete="email"
                       placeholder="mail@example.ru"
                     />
                     {'\n            '}
+                    <FormError validation={validation} name="email" />
                   </label>
                   {'\n            '}
                   <label className="event-modal__field" data-event-location-field="">
@@ -593,15 +669,31 @@ export default function EventModal({ site, defaultEventType = '' }) {
                       <span aria-hidden="true">{'*'}</span>
                     </span>
                     {'\n              '}
-                    <select name="locationId" data-event-location="" required={true}>
+                    <select
+                      {...validation.fieldProps('locationId')}
+                      defaultValue=""
+                      name="locationId"
+                      value={locationId}
+                      onChange={(event) => {
+                        if (event.target.value)
+                          selectLocation(Number(event.target.value.replace('erp-', '')));
+                      }}
+                      data-event-location=""
+                      required={true}
+                    >
                       {'\n                '}
                       <option value="" disabled={true}>
                         {'Выберите локацию'}
                       </option>
-                      {locations.map((location) => <option key={location.id} value={location.id}>{location.name} — {location.address}</option>)}
+                      {locations.map((location) => (
+                        <option key={location.id} value={location.id}>
+                          {location.name} — {location.address}
+                        </option>
+                      ))}
                       {'\n              '}
                     </select>
                     {'\n            '}
+                    <FormError validation={validation} name="locationId" />
                   </label>
                   {'\n            '}
                   <label className="event-modal__field">
@@ -611,7 +703,12 @@ export default function EventModal({ site, defaultEventType = '' }) {
                       <span aria-hidden="true">{'*'}</span>
                     </span>
                     {'\n              '}
-                    <select name="messenger" required={true}>
+                    <select
+                      {...validation.fieldProps('messenger')}
+                      defaultValue=""
+                      name="messenger"
+                      required={true}
+                    >
                       {'\n                '}
                       <option value="" disabled={true}>
                         {'Куда отправить расчёт'}
@@ -625,11 +722,17 @@ export default function EventModal({ site, defaultEventType = '' }) {
                       {'\n              '}
                     </select>
                     {'\n            '}
+                    <FormError validation={validation} name="messenger" />
                   </label>
                   {'\n            '}
                   <label className="event-modal__consent">
                     {'\n              '}
-                    <input name="consent" type="checkbox" required={true} />
+                    <input
+                      {...validation.fieldProps('consent', 'form-checkbox')}
+                      name="consent"
+                      type="checkbox"
+                      required={true}
+                    />
                     {'\n              '}
                     <span>
                       {'Согласен с\n                '}
@@ -639,6 +742,7 @@ export default function EventModal({ site, defaultEventType = '' }) {
                     </span>
                     {'\n            '}
                   </label>
+                  <FormError validation={validation} name="consent" />
                   {'\n          '}
                 </div>
                 {'\n        '}
@@ -667,7 +771,12 @@ export default function EventModal({ site, defaultEventType = '' }) {
                   data-event-progress-dots=""
                 >
                   {'\n            '}
-                  {[1, 2, 3, 4, 5].map((number) => <i key={number} className={number === step ? 'is-active' : number < step ? 'is-complete' : ''} />)}
+                  {[1, 2, 3, 4, 5].map((number) => (
+                    <i
+                      key={number}
+                      className={number === step ? 'is-active' : number < step ? 'is-complete' : ''}
+                    />
+                  ))}
                   {'\n          '}
                 </span>
                 {'\n        '}

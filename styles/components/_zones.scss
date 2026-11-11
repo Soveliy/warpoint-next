@@ -327,7 +327,9 @@
     margin: 0 0 rem(14px);
     color: var(--white);
     font-family: $font-family-second;
-    font-variation-settings:
+    font-weight: var(--font-secondary-weight, 800);
+    font-variation-settings: var(
+      --font-secondary-variation,
       'GRAD' 150,
       'XOPQ' 110,
       'XTRA' 468,
@@ -338,7 +340,8 @@
       'YTLC' 514,
       'YTUC' 760,
       'slnt' 0,
-      'wdth' 74;
+      'wdth' 74
+    );
     font-size: fluid(42px, 50px);
     line-height: 88%;
     text-transform: uppercase;

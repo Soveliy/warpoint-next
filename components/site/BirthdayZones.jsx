@@ -254,7 +254,11 @@ export default function BirthdayZones({ site }) {
                       {'\n                    '}
                       <li className="zone__params-item">{'2–10 человек'}</li>
                       {'\n                    '}
-                      {fields.local && <li className="zone__params-item">{'1000 ₽'}</li>}
+                      {fields.local && (
+                        <li className="zone__params-item" data-location-price="">
+                          {'1000 ₽'}
+                        </li>
+                      )}
                       {'\n                    '}
                       <li className="zone__params-item">{'12+'}</li>
                       {'\n                  '}
@@ -262,7 +266,7 @@ export default function BirthdayZones({ site }) {
                     {'\n                  '}
                     <div className="zone__bottom">
                       {'\n                    '}
-                      
+
                       {'\n\n                    '}
                       <div className="zone__price">
                         {fields.local ? '1000 ₽' : 'Цена по запросу'}
@@ -343,7 +347,11 @@ export default function BirthdayZones({ site }) {
                       {'\n                    '}
                       <li className="zone__params-item">{'Valve Index'}</li>
                       {'\n                    '}
-                      {fields.local && <li className="zone__params-item">{'700 ₽'}</li>}
+                      {fields.local && (
+                        <li className="zone__params-item" data-location-price="">
+                          {'700 ₽'}
+                        </li>
+                      )}
                       {'\n                    '}
                       <li className="zone__params-item">{'6+'}</li>
                       {'\n                  '}
@@ -351,7 +359,7 @@ export default function BirthdayZones({ site }) {
                     {'\n                  '}
                     <div className="zone__bottom">
                       {'\n                    '}
-                      
+
                       {'\n\n                    '}
                       <div className="zone__price">
                         {fields.local ? '700 ₽' : 'Цена по запросу'}
@@ -429,7 +437,11 @@ export default function BirthdayZones({ site }) {
                       {'\n                    '}
                       <li className="zone__params-item">{'1–4 человека'}</li>
                       {'\n                    '}
-                      {fields.local && <li className="zone__params-item">{'700 ₽'}</li>}
+                      {fields.local && (
+                        <li className="zone__params-item" data-location-price="">
+                          {'700 ₽'}
+                        </li>
+                      )}
                       {'\n                    '}
                       <li className="zone__params-item">{'6+'}</li>
                       {'\n                  '}
@@ -437,7 +449,7 @@ export default function BirthdayZones({ site }) {
                     {'\n                  '}
                     <div className="zone__bottom">
                       {'\n                    '}
-                      
+
                       {'\n\n                    '}
                       <div className="zone__price">
                         {fields.local ? '700 ₽' : 'Цена по запросу'}
@@ -514,7 +526,11 @@ export default function BirthdayZones({ site }) {
                       {'\n                    '}
                       <li className="zone__params-item">{'1–4 человека'}</li>
                       {'\n                    '}
-                      {fields.local && <li className="zone__params-item">{'700 ₽'}</li>}
+                      {fields.local && (
+                        <li className="zone__params-item" data-location-price="">
+                          {'700 ₽'}
+                        </li>
+                      )}
                       {'\n                    '}
                       <li className="zone__params-item">{'6+'}</li>
                       {'\n                  '}
@@ -522,7 +538,7 @@ export default function BirthdayZones({ site }) {
                     {'\n                  '}
                     <div className="zone__bottom">
                       {'\n                    '}
-                      
+
                       {'\n\n                    '}
                       <div className="zone__price">
                         {fields.local ? '700 ₽' : 'Цена по запросу'}

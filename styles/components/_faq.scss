@@ -37,6 +37,8 @@
   }
 
   &__form {
+    --form-error-color: #c70d43;
+
     position: relative;
     z-index: 1;
     width: 100%;
@@ -85,7 +87,7 @@
 
   &__agreement {
     display: grid;
-    grid-template-columns: rem(16px) 1fr;
+    grid-template-columns: rem(18px) minmax(0, 1fr);
     gap: rem(7px);
     margin-top: rem(32px);
     font-weight: 600;
@@ -96,47 +98,6 @@
     cursor: pointer;
     a {
       border-bottom: 1px dotted var(--gray-800);
-    }
-  }
-
-  &__agreement-input {
-    position: absolute;
-    width: rem(1px);
-    height: rem(1px);
-    opacity: 0;
-
-    &:focus-visible + .faq__agreement-box {
-      outline: rem(2px) solid var(--focus-color);
-      outline-offset: rem(2px);
-    }
-
-    &:checked + .faq__agreement-box::after {
-      opacity: 1;
-    }
-
-    &.is-invalid + .faq__agreement-box {
-      border-color: var(--red-500);
-    }
-  }
-
-  &__agreement-box {
-    position: relative;
-    width: rem(16px);
-    aspect-ratio: 1;
-    border: rem(1px) solid var(--black);
-    border-radius: rem(4px);
-
-    &::after {
-      content: '';
-      position: absolute;
-      top: rem(2px);
-      left: rem(5px);
-      width: rem(4px);
-      height: rem(8px);
-      border: solid var(--black);
-      border-width: 0 rem(2px) rem(2px) 0;
-      opacity: 0;
-      transform: rotate(45deg);
     }
   }
 

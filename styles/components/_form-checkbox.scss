@@ -1,0 +1,5 @@
+@use '../mixins/checkbox' as *;
+
+.form-checkbox {
+  @include checkbox;
+}

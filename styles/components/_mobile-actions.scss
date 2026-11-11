@@ -9,7 +9,7 @@
   .mobile-actions {
     position: fixed;
     left: 50%;
-    bottom: max(rem(16px), env(safe-area-inset-bottom));
+    bottom: calc(max(#{rem(16px)}, env(safe-area-inset-bottom)) + var(--cookie-notice-height, 0px));
     z-index: $z-overlay - 1;
     display: flex;
     align-items: center;

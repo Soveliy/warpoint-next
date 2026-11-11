@@ -81,19 +81,21 @@
     margin: 0;
     font-family: $font-family-second;
     font-size: fluid(46px, 88px);
-    font-weight: 700;
+    font-weight: var(--font-secondary-weight, 800);
     line-height: 78%;
     letter-spacing: -0.01em;
     text-align: center;
     text-transform: uppercase;
     transform: translateX(-50%);
-    font-variation-settings:
+    font-variation-settings: var(
+      --font-secondary-variation,
       'GRAD' 150,
       'XOPQ' 110,
       'YTDE' -198,
       'YTUC' 760,
       'wdth' 75,
-      'opsz' 144;
+      'opsz' 144
+    );
 
     span {
       display: block;
@@ -314,6 +316,7 @@
   &__benefit-title {
     margin: 0 0 fluid(8px, 10px, 1025px, 1512px);
     font-family: $font-family-second;
+    font-weight: var(--font-secondary-weight, 800);
     font-size: fluid(28px, 36px, 1025px, 1512px);
 
     letter-spacing: 0.03px;
@@ -321,13 +324,15 @@
     font-optical-sizing: none;
     text-transform: uppercase;
     line-height: 0.88;
-    font-variation-settings:
+    font-variation-settings: var(
+      --font-secondary-variation,
       'GRAD' 150,
       'XOPQ' 110,
       'YTDE' -198,
       'YTUC' 760,
       'wdth' 71,
-      'opsz' 144;
+      'opsz' 144
+    );
   }
 
   &__benefit-description {

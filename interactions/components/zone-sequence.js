@@ -103,7 +103,8 @@ function playZoneAssembly(panel) {
       }
     }
 
-    image.style.opacity = '0';
+    // Keep the original visible underneath the decorative tiles.
+    image.style.opacity = '1';
     imageContainer.append(cubeLayer);
 
     Promise.allSettled(cubeAnimations.map((animation) => animation.finished)).then(() => {
@@ -251,7 +252,6 @@ function setupTabs(root) {
   );
   let activeIndex = initialPairIndex >= 0 ? initialPairIndex : 0;
   let activeAssemblyCleanup = null;
-  let hasPlayedInitialAssembly = false;
 
   const animateActivePanel = () => {
     activeAssemblyCleanup?.();
@@ -329,7 +329,6 @@ function setupTabs(root) {
     }
 
     if (previousIndex !== activeIndex) {
-      hasPlayedInitialAssembly = true;
       animateActivePanel();
     }
   };
@@ -478,25 +477,7 @@ function setupTabs(root) {
   root.setAttribute(initializedAttribute, '');
   activate(activeIndex);
 
-  const panelsContainer = root.querySelector('.zones__panels');
-
-  if (!reducedMotion.matches && panelsContainer && 'IntersectionObserver' in window) {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (!entries.some((entry) => entry.isIntersecting)) return;
-
-        observer.disconnect();
-
-        if (!hasPlayedInitialAssembly) {
-          hasPlayedInitialAssembly = true;
-          animateActivePanel();
-        }
-      },
-      { threshold: 0.22 },
-    );
-
-    observer.observe(panelsContainer);
-  }
+  // The initial panel is visible immediately. Animate only a deliberate tab change.
 }
 
 export function initZoneSequence() {

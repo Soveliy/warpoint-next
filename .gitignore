@@ -4,3 +4,5 @@ out/
 generated/
 .env*.local
 npm-debug.log*
+
+.vercel

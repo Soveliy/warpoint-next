@@ -66,8 +66,6 @@
   &__tabs {
     display: flex;
     overflow-x: auto;
-    scrollbar-width: thin;
-    scrollbar-color: var(--red-500) transparent;
     gap: rem(5px);
     width: min(100%, rem(680px));
     margin: rem(32px) auto rem(22px);
@@ -211,12 +209,13 @@
   &__subtitle {
     margin: 0;
     font-family: $font-family-second;
-    font-weight: 700;
+    font-weight: var(--font-secondary-weight, 800);
     font-size: 36px;
     line-height: 88%;
     letter-spacing: -0.02em;
     text-transform: uppercase;
-    font-variation-settings:
+    font-variation-settings: var(
+      --font-secondary-variation,
       'GRAD' 150,
       'XOPQ' 110,
       'XTRA' 468,
@@ -227,7 +226,8 @@
       'YTLC' 514,
       'YTUC' 760,
       'slnt' 0,
-      'wdth' 74;
+      'wdth' 74
+    );
   }
 
   &__price {
@@ -245,6 +245,24 @@
       font-size: rem(25px);
       font-weight: 700;
     }
+  }
+
+  &__params {
+    display: flex;
+    flex-wrap: wrap;
+    gap: rem(6px);
+
+    &:empty {
+      display: none;
+    }
+  }
+
+  &__param {
+    padding: rem(5px) rem(9px);
+    border: 1px solid rgb(var(--white-rgb) / 0.22);
+    border-radius: $radius-pill;
+    font-size: rem(12px);
+    line-height: 1.2;
   }
 
   &__description {

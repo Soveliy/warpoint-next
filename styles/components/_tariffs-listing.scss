@@ -1,0 +1,277 @@
+@use '../vars' as *;
+
+.tariffs-listing {
+  padding-top: 20px;
+
+  &__tabs {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 5px;
+  }
+
+  &__tab {
+    flex: 1 0 auto;
+    min-height: 50px;
+    padding: 12px 18px;
+    border: 0;
+    border-radius: 14px;
+    background: #29292e;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 800;
+    text-transform: uppercase;
+    white-space: nowrap;
+    transition: background 0.2s;
+  }
+
+  &__tab:hover,
+  &__tab--active {
+    background: #e41452;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 22px;
+    margin: 36px 0 26px;
+  }
+
+  &__grid--two {
+    max-width: 980px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-inline: auto;
+  }
+
+  &__card {
+    display: flex;
+    flex-direction: column;
+    min-height: 355px;
+    padding: 28px;
+    border-radius: 22px;
+    background: #29292e;
+  }
+
+  &__tags {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 26px;
+    font-family: $font-family-heading;
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  &__tag {
+    display: inline-flex;
+    align-items: center;
+    min-height: 28px;
+    padding: 6px 10px;
+    border: 1px solid #fff;
+    border-radius: 999px;
+  }
+
+  &__tag:first-child {
+    border-color: #f23764;
+    background: #f23764;
+  }
+
+  &__title,
+  &__unavailable-title {
+    margin: 0 0 8px;
+    font-family: $font-family-heading;
+    font-size: clamp(29px, 2.5vw, 39px);
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  &__description {
+    min-height: 72px;
+    margin: 0 0 18px;
+    color: #aeadb0;
+    font-size: 16px;
+    font-weight: 650;
+    line-height: 1.25;
+  }
+
+  &__prices,
+  &__single-price,
+  &__matrix {
+    margin-top: auto;
+    border: 1px solid #414047;
+    border-radius: 10px;
+    background: #1d1d21;
+  }
+
+  &__prices {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0;
+    padding: 16px;
+  }
+
+  &__price {
+    display: grid;
+    gap: 3px;
+  }
+
+  &__price + &__price {
+    padding-left: 16px;
+    border-left: 1px solid #38383e;
+  }
+
+  &__price-label,
+  &__single-label,
+  &__matrix-head,
+  &__matrix-note {
+    color: #aeadb0;
+    font-size: 13px;
+  }
+
+  &__price-value,
+  &__single-value {
+    font-size: clamp(20px, 2vw, 28px);
+    white-space: nowrap;
+  }
+
+  &__price-unit,
+  &__single-unit {
+    color: #99989e;
+    font-size: 12px;
+  }
+
+  &__single-price {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 15px;
+  }
+
+  &__single-label {
+    text-transform: uppercase;
+  }
+
+  &__single-unit {
+    display: block;
+    text-transform: none;
+  }
+
+  &__matrix {
+    padding: 12px;
+  }
+
+  &__matrix-head,
+  &__matrix-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+    gap: 5px;
+  }
+
+  &__matrix-head {
+    text-align: right;
+  }
+
+  &__matrix-row {
+    min-height: 38px;
+    border-bottom: 1px solid #44434a;
+  }
+
+  &__matrix-duration {
+    font-size: 13px;
+  }
+
+  &__matrix-price {
+    font-size: clamp(16px, 1.7vw, 22px);
+    text-align: right;
+    white-space: nowrap;
+  }
+
+  &__matrix-note {
+    display: block;
+    padding-top: 8px;
+  }
+
+  &__actions {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.65fr);
+    gap: 8px;
+    margin-top: 24px;
+  }
+
+  &__action {
+    padding-inline: 10px;
+  }
+
+  &__note {
+    margin: 20px auto 0;
+    color: #9d9ca1;
+    font-size: 13px;
+    line-height: 1.4;
+    text-align: center;
+  }
+
+  &__asterisk {
+    color: #f23764;
+  }
+
+  &__unavailable {
+    display: grid;
+    justify-items: center;
+    gap: 12px;
+    min-height: 260px;
+    place-content: center;
+    text-align: center;
+  }
+
+  &__unavailable-description {
+    color: #aaa;
+  }
+}
+
+@media (max-width: 1100px) {
+  .tariffs-listing {
+    &__card {
+      padding: 20px;
+    }
+
+    &__actions {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .tariffs-listing {
+    &__tabs {
+      margin-right: -24px;
+      padding-right: 24px;
+    }
+
+    &__tab {
+      min-height: 46px;
+      font-size: 11px;
+    }
+
+    &__grid,
+    &__grid--two {
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 24px;
+    }
+
+    &__card {
+      min-height: 0;
+    }
+
+    &__description {
+      min-height: 0;
+    }
+
+    &__actions {
+      grid-template-columns: 0.8fr 1.2fr;
+    }
+  }
+}

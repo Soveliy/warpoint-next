@@ -1,0 +1,95 @@
+@use '../vars' as *;
+
+.contact-business {
+  padding-top: 76px;
+
+  &__title {
+    margin: 0 0 30px;
+    font: 800 52px/0.95 $font-family-heading;
+    text-transform: uppercase;
+  }
+
+  &__accent {
+    color: var(--red-600);
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 24px;
+  }
+
+  &__card {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 255px;
+    padding: 28px;
+    border: 1px solid #39383e;
+    border-radius: 24px;
+    background: var(--gray-800);
+  }
+
+  &__icon {
+    width: 28px;
+    height: 28px;
+    margin-bottom: 20px;
+    color: var(--red-500);
+  }
+
+  &__card-title {
+    margin: 0 0 12px;
+    font-size: 20px;
+    font-weight: 650;
+    line-height: 1.15;
+  }
+
+  &__description {
+    margin: 0 0 24px;
+    color: #a2a2a2;
+    font-size: 16px;
+    line-height: 1.35;
+  }
+
+  &__link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    width: 100%;
+    margin-top: auto;
+    color: var(--red-500);
+    font-size: 20px;
+    font-weight: 650;
+    overflow-wrap: anywhere;
+
+    &:hover,
+    &:focus-visible {
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .contact-business {
+    padding-top: 48px;
+
+    &__title {
+      font-size: 38px;
+    }
+
+    &__grid {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 16px;
+    }
+
+    &__card {
+      min-height: 230px;
+      padding: 24px;
+      border-radius: 20px;
+    }
+  }
+}

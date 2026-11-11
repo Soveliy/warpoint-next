@@ -76,18 +76,20 @@
     margin: 0;
     font-family: $font-family-second;
     font-size: fluid(24px, 36px);
-    font-weight: 700;
+    font-weight: var(--font-secondary-weight, 800);
     line-height: 88%;
     text-transform: uppercase;
     color: var(--gray-50);
     letter-spacing: 1px;
-    font-variation-settings:
+    font-variation-settings: var(
+      --font-secondary-variation,
       'GRAD' 150,
       'XOPQ' 110,
       'YTDE' -198,
       'YTUC' 760,
       'wdth' 75,
-      'opsz' 144;
+      'opsz' 144
+    );
   }
 
   &__description {

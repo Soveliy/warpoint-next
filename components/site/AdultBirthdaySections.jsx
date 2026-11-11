@@ -23,21 +23,33 @@ import GameModal from './GameModal';
 import CookieNotice from './CookieNotice';
 
 export default function AdultBirthdaySections({ site }) {
-  return <>
-    <Preloader site={site} /><Header site={site} />
-    <main className="main main--adult-birthday">
-      <AdultBirthdayHero site={site} />
-      <CorporateVideoSection site={site} adult />
-      <CorporateAboutGameGroup site={site} adult />
-      <CorporateImmersiveShowcase site={site} posterOnly />
-      <AdultBirthdayGallery />
-      <EventAddons eventType="adult-birthday" />
-      <AdultBirthdayProgram />
-      <Zones site={site} />
-      <CorporateEventTariffs site={site} title="день рождения" context="adult-birthday" />
-      <TariffModal site={site} />
-      <GamesGroup site={site} /><Reviews site={site} /><Faq site={site} /><Contacts site={site} />
-    </main>
-    <Footer site={site} /><EventModal site={site} defaultEventType="adult-birthday" /><EventRequestModal eventType="adult-birthday" /><AuthModal site={site} /><MobileActions site={site} /><GameModal site={site} /><CookieNotice site={site} />
-  </>;
+  return (
+    <>
+      <Preloader site={site} />
+      <Header site={site} />
+      <main className="main main--adult-birthday">
+        <AdultBirthdayHero site={site} />
+        <CorporateVideoSection site={site} adult />
+        <CorporateAboutGameGroup site={site} adult />
+        <CorporateImmersiveShowcase site={site} />
+        <AdultBirthdayGallery />
+        <EventAddons eventType="adult-birthday" />
+        <AdultBirthdayProgram />
+        <Zones site={site} />
+        <CorporateEventTariffs site={site} title="день рождения" context="adult-birthday" />
+        <TariffModal site={site} />
+        <GamesGroup site={site} />
+        <Reviews site={site} />
+        <Faq site={site} />
+        <Contacts site={site} />
+      </main>
+      <Footer site={site} />
+      <EventModal site={site} defaultEventType="adult-birthday" />
+      <EventRequestModal eventType="adult-birthday" />
+      <AuthModal site={site} />
+      <MobileActions site={site} />
+      <GameModal site={site} />
+      <CookieNotice site={site} />
+    </>
+  );
 }

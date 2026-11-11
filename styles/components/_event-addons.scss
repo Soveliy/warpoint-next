@@ -290,3 +290,39 @@
     }
   }
 }
+
+.event-addons__controls--media {
+  display: none;
+}
+@media (max-width: $breakpoint-mobile) {
+  .event-addons {
+    &__request,
+    &__controls--desktop {
+      display: none;
+    }
+    &__controls--media {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 0;
+      padding: 0 4px;
+      pointer-events: none;
+    }
+    &__arrow {
+      width: 44px;
+      height: 48px;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      pointer-events: auto;
+      filter: drop-shadow(0 1px 3px #0009);
+      span {
+        width: 16px;
+        height: 16px;
+        border-width: 3px;
+      }
+    }
+  }
+}

@@ -1,0 +1,52 @@
+:root {
+  --scrollbar-size: 8px;
+  --scrollbar-track: #3d3d43;
+  --scrollbar-thumb: #727179;
+  --scrollbar-thumb-hover: #8d8c94;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+// Standard scrollbar properties override the rounded WebKit styling unless
+// both are reset to auto. Firefox keeps the thin, color-matched fallback.
+@supports selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-width: auto;
+    scrollbar-color: auto;
+  }
+
+  *::-webkit-scrollbar {
+    width: var(--scrollbar-size);
+    height: var(--scrollbar-size);
+  }
+
+  *::-webkit-scrollbar-track {
+    margin: 4px;
+    border-radius: 999px;
+    background: var(--scrollbar-track);
+  }
+
+  *::-webkit-scrollbar-thumb {
+    min-width: 32px;
+    min-height: 32px;
+    border-radius: 999px;
+    background: var(--scrollbar-thumb);
+  }
+
+  *::-webkit-scrollbar-thumb:hover {
+    background: var(--scrollbar-thumb-hover);
+  }
+
+  *::-webkit-scrollbar-button {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+
+  *::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+}

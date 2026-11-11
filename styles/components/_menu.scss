@@ -204,11 +204,6 @@
     flex-direction: column;
     overflow: hidden auto;
     overscroll-behavior: contain;
-    scrollbar-width: none;
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
   }
 
   &__list,

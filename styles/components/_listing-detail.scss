@@ -1,0 +1,49 @@
+@use '../vars' as *;
+
+.listing-detail {
+  &__title {
+    margin: 0 0 8px;
+    font-family: $font-family-heading;
+    font-size: clamp(29px, 2.5vw, 39px);
+    line-height: 1;
+    text-transform: uppercase;
+  }
+  width: min(680px, calc(100vw - 32px));
+  max-height: calc(100dvh - 32px);
+  padding: 36px;
+  border: 0;
+  border-radius: 26px;
+  background: #29292e;
+  color: #fff;
+
+  &::backdrop {
+    background: rgba(0, 0, 0, 0.8);
+  }
+
+  &__close {
+    position: absolute;
+    top: 18px;
+    right: 20px;
+    border: 0;
+    background: none;
+    color: #fff;
+    font-size: 38px;
+    line-height: 1;
+  }
+
+  &__description {
+    color: #bbb;
+    font-size: 17px;
+  }
+
+  &__request {
+    margin-top: 24px;
+    width: 100%;
+  }
+}
+
+@media (max-width: 767px) {
+  .listing-detail {
+    padding: 28px 20px;
+  }
+}

@@ -539,44 +539,6 @@
     font-size: rem(12px);
     line-height: 1.35;
 
-    input {
-      flex: 0 0 auto;
-      margin: 0;
-      appearance: none;
-      display: grid;
-      place-items: center;
-      width: rem(21px);
-      height: rem(21px);
-      border: rem(1px) solid var(--gray-600);
-      border-radius: rem(4px);
-      background: var(--gray-700);
-      cursor: pointer;
-
-      &::after {
-        content: '';
-        width: rem(11px);
-        height: rem(6px);
-        border-bottom: rem(2px) solid var(--white);
-        border-left: rem(2px) solid var(--white);
-        opacity: 0;
-        transform: translateY(rem(-1px)) rotate(-45deg);
-      }
-
-      &:checked {
-        border-color: var(--red-500);
-        background: var(--gray-950);
-
-        &::after {
-          opacity: 1;
-        }
-      }
-
-      &:focus-visible {
-        outline: $focus-outline-width solid var(--focus-color);
-        outline-offset: $focus-outline-offset;
-      }
-    }
-
     a {
       text-decoration: underline;
       text-underline-offset: rem(2px);
@@ -894,5 +856,25 @@
   .program-picker__choice-body,
   .program-picker__progress-track > span {
     transition: none;
+  }
+}
+
+.program-picker {
+  &__choice--image &__choice-body::before {
+    content: '';
+    position: absolute;
+    z-index: 2;
+    inset: 0;
+    border: 2px solid #62626c;
+    border-radius: inherit;
+    pointer-events: none;
+  }
+  &__choice input:checked + &__choice-body::before {
+    border-color: #f63d68;
+  }
+}
+@media (max-width: $breakpoint-mobile) {
+  .program-picker__manager {
+    display: none;
   }
 }

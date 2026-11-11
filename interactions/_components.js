@@ -2,7 +2,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { initAboutGameSequence } from './components/about-game-sequence.js';
 import { initAnimations } from './components/animations.js';
 import { initCardAnimations } from './components/card-animations.js';
-import { initCallbackForms } from './components/faq.js';
 import { initEventHero } from './components/event-hero.js';
 import { initEventsSequence } from './components/events-sequence.js';
 import { initFancybox } from './components/fancybox.js';
@@ -17,42 +16,41 @@ import { initYandexMaps } from './components/yandex-map.js';
 import { initZoneSequence } from './components/zone-sequence.js';
 
 export function initPageInteractions() {
-ScrollTrigger.config({ ignoreMobileResize: true });
-initEventHero();
-initPreloader();
-initPhoneMasks();
-initFancybox();
-initAnimations();
-initVideoParallax();
-initAboutGameSequence();
-initZoneSequence();
-initEventsSequence();
-initReviews();
-initPixelTransitions();
-initSliders();
-initGamesSequence();
-initCardAnimations();
-initYandexMaps();
-initCallbackForms();
+  ScrollTrigger.config({ ignoreMobileResize: true });
+  initEventHero();
+  initPreloader();
+  initPhoneMasks();
+  initFancybox();
+  initAnimations();
+  initVideoParallax();
+  initAboutGameSequence();
+  initZoneSequence();
+  initEventsSequence();
+  initReviews();
+  initPixelTransitions();
+  initSliders();
+  initGamesSequence();
+  initCardAnimations();
+  initYandexMaps();
 
-let refreshFrame = null;
+  let refreshFrame = null;
 
-const refreshScrollAnimations = () => {
-  if (refreshFrame !== null) {
-    window.cancelAnimationFrame(refreshFrame);
+  const refreshScrollAnimations = () => {
+    if (refreshFrame !== null) {
+      window.cancelAnimationFrame(refreshFrame);
+    }
+
+    refreshFrame = window.requestAnimationFrame(() => {
+      ScrollTrigger.sort();
+      ScrollTrigger.refresh();
+      refreshFrame = null;
+    });
+  };
+
+  refreshScrollAnimations();
+  document.fonts?.ready.then(refreshScrollAnimations);
+
+  if (document.readyState !== 'complete') {
+    window.addEventListener('load', refreshScrollAnimations, { once: true });
   }
-
-  refreshFrame = window.requestAnimationFrame(() => {
-    ScrollTrigger.sort();
-    ScrollTrigger.refresh();
-    refreshFrame = null;
-  });
-};
-
-refreshScrollAnimations();
-document.fonts?.ready.then(refreshScrollAnimations);
-
-if (document.readyState !== 'complete') {
-  window.addEventListener('load', refreshScrollAnimations, { once: true });
-}
 }

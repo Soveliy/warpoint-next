@@ -254,7 +254,11 @@ export default function HomeZones({ site }) {
                       {'\n                    '}
                       <li className="zone__params-item">{'2–10 человек'}</li>
                       {'\n                    '}
-                      {fields.local && <li className="zone__params-item">{'от 1000 ₽'}</li>}
+                      {fields.local && (
+                        <li className="zone__params-item" data-location-price="">
+                          {'от 1000 ₽'}
+                        </li>
+                      )}
                       {'\n                    '}
                       <li className="zone__params-item">{'12+'}</li>
                       {'\n                  '}
@@ -265,7 +269,8 @@ export default function HomeZones({ site }) {
                       <a
                         className="zone__button btn btn--red"
 
-                        href={fields.booking} data-booking-open=""
+                        href={fields.booking}
+                        data-booking-open=""
                       >
                         {'\n                      '}
                         <svg
@@ -364,7 +369,11 @@ export default function HomeZones({ site }) {
                       {'\n                    '}
                       <li className="zone__params-item">{'Valve Index'}</li>
                       {'\n                    '}
-                      {fields.local && <li className="zone__params-item">{'от 700 ₽'}</li>}
+                      {fields.local && (
+                        <li className="zone__params-item" data-location-price="">
+                          {'от 700 ₽'}
+                        </li>
+                      )}
                       {'\n                    '}
                       <li className="zone__params-item">{'6+'}</li>
                       {'\n                  '}
@@ -375,7 +384,8 @@ export default function HomeZones({ site }) {
                       <a
                         className="zone__button btn btn--red"
 
-                        href={fields.booking} data-booking-open=""
+                        href={fields.booking}
+                        data-booking-open=""
                       >
                         {'\n                      '}
                         <svg
@@ -471,7 +481,11 @@ export default function HomeZones({ site }) {
                       {'\n                    '}
                       <li className="zone__params-item">{'1–4 человека'}</li>
                       {'\n                    '}
-                      {fields.local && <li className="zone__params-item">{'от 700 ₽'}</li>}
+                      {fields.local && (
+                        <li className="zone__params-item" data-location-price="">
+                          {'от 700 ₽'}
+                        </li>
+                      )}
                       {'\n                    '}
                       <li className="zone__params-item">{'6+'}</li>
                       {'\n                  '}
@@ -482,7 +496,8 @@ export default function HomeZones({ site }) {
                       <a
                         className="zone__button btn btn--red"
 
-                        href={fields.booking} data-booking-open=""
+                        href={fields.booking}
+                        data-booking-open=""
                       >
                         {'\n                      '}
                         <svg
@@ -577,7 +592,11 @@ export default function HomeZones({ site }) {
                       {'\n                    '}
                       <li className="zone__params-item">{'1–4 человека'}</li>
                       {'\n                    '}
-                      {fields.local && <li className="zone__params-item">{'от 700 ₽'}</li>}
+                      {fields.local && (
+                        <li className="zone__params-item" data-location-price="">
+                          {'от 700 ₽'}
+                        </li>
+                      )}
                       {'\n                    '}
                       <li className="zone__params-item">{'6+'}</li>
                       {'\n                  '}
@@ -588,7 +607,8 @@ export default function HomeZones({ site }) {
                       <a
                         className="zone__button btn btn--red"
 
-                        href={fields.booking} data-booking-open=""
+                        href={fields.booking}
+                        data-booking-open=""
                       >
                         {'\n                      '}
                         <svg

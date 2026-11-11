@@ -13,8 +13,6 @@
   border-radius: rem(40px);
   background: var(--gray-950);
   color: var(--white);
-  scrollbar-width: thin;
-  scrollbar-color: var(--gray-600) transparent;
 
   &::backdrop {
     background: rgb(var(--black-rgb) / 0.78);
@@ -203,14 +201,16 @@
     margin: 0 0 rem(24px);
     font-family: $font-family-second;
     font-size: fluid(34px, 52px);
-    font-weight: 700;
-    font-variation-settings:
+    font-weight: var(--font-secondary-weight, 800);
+    font-variation-settings: var(
+      --font-secondary-variation,
       'GRAD' 150,
       'XOPQ' 110,
       'YTDE' -198,
       'YTUC' 760,
       'wdth' 75,
-      'opsz' 144;
+      'opsz' 144
+    );
     line-height: 1;
     text-transform: uppercase;
   }

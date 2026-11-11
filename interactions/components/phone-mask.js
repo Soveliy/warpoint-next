@@ -1,3 +1,4 @@
+import { phoneDigits, phoneIsComplete, formatPhoneValue } from '../../lib/phone.js';
 import { defaultLocationState, getCountry } from '../data/location-data.js';
 
 let activeCountryId = defaultLocationState.countryId;
@@ -7,56 +8,15 @@ const getPhoneConfig = (countryId = activeCountryId) => getCountry(countryId).ph
 const getMaskPrefix = (mask) => mask.slice(0, mask.indexOf('#'));
 
 export function getPhoneNationalDigits(value, countryId = activeCountryId) {
-  const config = getPhoneConfig(countryId);
-  let digits = value.replace(/\D/g, '');
-
-  if (digits.startsWith(config.prefix)) {
-    digits = digits.slice(config.prefix.length);
-  } else {
-    const trunkPrefix = config.trunkPrefixes?.find((prefix) => digits.startsWith(prefix));
-
-    if (trunkPrefix) {
-      digits = digits.slice(trunkPrefix.length);
-    }
-  }
-
-  return digits.slice(0, config.nationalLength);
+  return phoneDigits(value, countryId).slice(0, getPhoneConfig(countryId).nationalLength);
 }
 
 export function formatPhone(value, countryId = activeCountryId) {
-  const config = getPhoneConfig(countryId);
-  const digits = getPhoneNationalDigits(value, countryId);
-  const prefix = getMaskPrefix(config.mask);
-
-  if (!digits.length) {
-    return prefix;
-  }
-
-  let digitIndex = 0;
-  let result = '';
-
-  for (const character of config.mask) {
-    if (character !== '#') {
-      result += character;
-      continue;
-    }
-
-    if (digitIndex >= digits.length) {
-      break;
-    }
-
-    result += digits[digitIndex];
-    digitIndex += 1;
-  }
-
-  return result.trimEnd();
+  return formatPhoneValue(value, countryId);
 }
 
 export function isPhoneComplete(input) {
-  const countryId = input.dataset.phoneCountry || activeCountryId;
-  const config = getPhoneConfig(countryId);
-
-  return getPhoneNationalDigits(input.value, countryId).length === config.nationalLength;
+  return phoneIsComplete(input.value, input.dataset.phoneCountry || activeCountryId);
 }
 
 function moveCaretToEnd(input) {
@@ -73,9 +33,6 @@ function updateInputCountry(input, countryId, clearValue) {
 
   if (clearValue) {
     input.value = '';
-    input.setCustomValidity('');
-    input.classList.remove('is-invalid', 'is-touched');
-    input.setAttribute('aria-invalid', 'false');
   } else if (input.value) {
     input.value = formatPhone(input.value, countryId);
   }
@@ -145,5 +102,8 @@ export function initPhoneMask(input) {
 }
 
 export function initPhoneMasks() {
+  setPhoneCountry(document.documentElement.dataset.country || activeCountryId, {
+    clearValue: false,
+  });
   document.querySelectorAll('[data-phone-mask]').forEach(initPhoneMask);
 }

@@ -1,5 +1,4 @@
 import { siteFields } from '../../lib/site-fields';
-import Announcement from './Announcement';
 
 export default function HomeHero({ site }) {
   const fields = siteFields(site);
@@ -67,7 +66,6 @@ export default function HomeHero({ site }) {
           {'\n        '}
           <div className="hero__allerts allerts">
             {'\n          '}
-            <Announcement />
             <div className="allert">
               {'\n            '}
               <div className="allert__row">

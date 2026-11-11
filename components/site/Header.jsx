@@ -1,11 +1,11 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { siteFields } from '../../lib/site-fields';
+import { useSiteLocation } from './SiteLocationProvider';
 import { toggleScrollLock } from '../../interactions/_functions';
 
 export default function Header({ site }) {
-  const fields = siteFields(site);
+  const { location } = useSiteLocation();
   const [menuOpen, setMenuOpen] = useState(false);
   const [drawer, setDrawer] = useState(false);
   const [submenu, setSubmenu] = useState(null);
@@ -13,7 +13,6 @@ export default function Header({ site }) {
   const [topHidden, setTopHidden] = useState(false);
   const [theme, setTheme] = useState('brand');
   const [cityConfirmed, setCityConfirmed] = useState(false);
-  const [selectedArenaIndex, setSelectedArenaIndex] = useState(0);
   const [messengerOpen, setMessengerOpen] = useState(false);
   const headerRef = useRef(null);
   const topRef = useRef(null);
@@ -25,7 +24,12 @@ export default function Header({ site }) {
 
   useEffect(() => {
     const close = (event) => {
-      if (!event || !(event.target instanceof Node) || !messengerRef.current?.contains(event.target)) setMessengerOpen(false);
+      if (
+        !event ||
+        !(event.target instanceof Node) ||
+        !messengerRef.current?.contains(event.target)
+      )
+        setMessengerOpen(false);
     };
     document.addEventListener('pointerdown', close);
     window.addEventListener('scroll', close, { passive: true });
@@ -40,19 +44,17 @@ export default function Header({ site }) {
   useEffect(() => {
     try {
       setCityConfirmed(localStorage.getItem('warpoint-city-confirmed') === site.city);
-      const saved = Number.parseInt(sessionStorage.getItem(`warpoint-arena:${site.hostname}`) || '0', 10);
-      if (Number.isInteger(saved) && saved >= 0 && saved < site.arenas.length) setSelectedArenaIndex(saved);
-    } catch { /* Storage is optional. */ }
+    } catch {
+      /* Storage is optional. */
+    }
     const onLocationChange = (event) => {
       if (event.detail?.cityName !== site.city) return;
-      const index = Number.parseInt(String(event.detail.locationId).replace('erp-', ''), 10);
-      if (Number.isInteger(index) && index >= 0 && index < site.arenas.length) {
-        setSelectedArenaIndex(index);
-        document.documentElement.dataset.location = `erp-${index}`;
-        try { sessionStorage.setItem(`warpoint-arena:${site.hostname}`, String(index)); } catch { /* Optional. */ }
-      }
       setCityConfirmed(true);
-      try { localStorage.setItem('warpoint-city-confirmed', site.city); } catch { /* Optional. */ }
+      try {
+        localStorage.setItem('warpoint-city-confirmed', site.city);
+      } catch {
+        /* Optional. */
+      }
     };
     document.addEventListener('warpoint:location-change', onLocationChange);
     return () => document.removeEventListener('warpoint:location-change', onLocationChange);
@@ -76,15 +78,23 @@ export default function Header({ site }) {
       const bounds = header.getBoundingClientRect();
       const x = Math.min(Math.max(window.innerWidth / 2, 1), window.innerWidth - 1);
       const sampleY = Math.min(Math.max(bounds.bottom + 1, 1), window.innerHeight - 1);
-      const section = document.elementsFromPoint(x, sampleY)
+      const section = document
+        .elementsFromPoint(x, sampleY)
         .find((element) => element !== header && !header.contains(element))
         ?.closest('[data-header-theme]');
-      setTheme(section?.dataset.headerTheme === 'dark' ? 'dark' : 'brand');
+      setTheme(
+        !document.querySelector('[data-event-hero]') && section?.dataset.headerTheme === 'dark'
+          ? 'dark'
+          : 'brand',
+      );
     };
     let frame = null;
     const schedule = () => {
       if (frame !== null) return;
-      frame = requestAnimationFrame(() => { frame = null; update(); });
+      frame = requestAnimationFrame(() => {
+        frame = null;
+        update();
+      });
     };
     const resize = new ResizeObserver(updateOffset);
     resize.observe(top);
@@ -107,17 +117,25 @@ export default function Header({ site }) {
     topRef.current.inert = topHidden && !menuOpen;
     toggleScrollLock(menuOpen);
     let focusFrame = null;
-    if (menuOpen) focusFrame = requestAnimationFrame(() => closeRef.current?.focus({ preventScroll: true }));
+    if (menuOpen)
+      focusFrame = requestAnimationFrame(() => closeRef.current?.focus({ preventScroll: true }));
     return () => {
       if (focusFrame !== null) cancelAnimationFrame(focusFrame);
       document.documentElement.classList.remove('is-mobile-menu-open');
       if (mobileActions) mobileActions.inert = false;
-      if (menuOpen && !document.querySelector('.event-modal.is-open, .auth-modal.is-open, .game-modal.is-open')) toggleScrollLock(false);
+      if (
+        menuOpen &&
+        !document.querySelector('.event-modal.is-open, .auth-modal.is-open, .game-modal.is-open')
+      )
+        toggleScrollLock(false);
     };
   }, [menuOpen, topHidden]);
 
   useEffect(() => {
-    if (menuOpen) { setDrawer(true); return; }
+    if (menuOpen) {
+      setDrawer(true);
+      return;
+    }
     const timer = setTimeout(() => setDrawer(false), 380);
     return () => clearTimeout(timer);
   }, [menuOpen]);
@@ -125,34 +143,60 @@ export default function Header({ site }) {
   useEffect(() => {
     const onKeyDown = (event) => {
       if (event.key === 'Escape') {
-        if (submenu) { setSubmenu(null); return; }
-        if (menuOpen) { setMenuOpen(false); burgerRef.current?.focus(); }
+        if (submenu) {
+          setSubmenu(null);
+          return;
+        }
+        if (menuOpen) {
+          setMenuOpen(false);
+          burgerRef.current?.focus();
+        }
       }
       if (event.key !== 'Tab' || !menuOpen) return;
-      const items = [burgerRef.current, ...headerRef.current.querySelectorAll('.menu a[href], .menu button:not(:disabled)')]
-        .filter((item) => item?.getClientRects().length && !item.closest('[inert]'));
+      const items = [
+        burgerRef.current,
+        ...headerRef.current.querySelectorAll('.menu a[href], .menu button:not(:disabled)'),
+      ].filter((item) => item?.getClientRects().length && !item.closest('[inert]'));
       const first = items[0];
       const last = items.at(-1);
-      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
-      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last?.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first?.focus();
+      }
     };
     document.addEventListener('keydown', onKeyDown);
     return () => document.removeEventListener('keydown', onKeyDown);
   }, [menuOpen, submenu]);
 
-  const closeMenu = () => { setMenuOpen(false); setSubmenu(null); };
+  const closeMenu = () => {
+    setMenuOpen(false);
+    setSubmenu(null);
+  };
   const confirmCity = () => {
     setCityConfirmed(true);
-    try { localStorage.setItem('warpoint-city-confirmed', site.city); } catch { /* Optional. */ }
+    try {
+      localStorage.setItem('warpoint-city-confirmed', site.city);
+    } catch {
+      /* Optional. */
+    }
   };
   const openLocation = (step, trigger) => {
     closeMenu();
-    document.dispatchEvent(new CustomEvent('warpoint:location-open', { detail: { step, trigger } }));
+    document.dispatchEvent(
+      new CustomEvent('warpoint:location-open', { detail: { step, trigger } }),
+    );
   };
-  const selectedAddress = site.arenas[selectedArenaIndex]?.address || fields.first.address || site.city;
+  const selectedAddress = location?.address || 'Выберите локацию';
   return (
     <>
-      <header ref={headerRef} className={`header${scrolled ? ' header--scrolled' : ''}${topHidden && !menuOpen ? ' header--top-hidden' : ''}${menuOpen ? ' header--menu-open' : ''}`} data-theme={theme}>
+      <header
+        ref={headerRef}
+        className={`header${scrolled ? ' header--scrolled' : ''}${topHidden && !menuOpen ? ' header--top-hidden' : ''}${menuOpen ? ' header--menu-open' : ''}`}
+        data-theme={theme}
+      >
         {'\n  '}
         <div className="container">
           {'\n    '}
@@ -163,17 +207,34 @@ export default function Header({ site }) {
               <div className="header__item header__item--location">
                 {'\n          '}
                 <div className="city-confirm" hidden={cityConfirmed}>
-                  <span className="city-confirm__question">Ваш город <strong>{site.city}</strong>?</span>
-                  <button className="city-confirm__answer button-reset" type="button" onClick={confirmCity}>Да</button>
-                  <button className="city-confirm__change button-reset" type="button" aria-haspopup="dialog" aria-controls="location-modal"
-                    onClick={(event) => openLocation('city', event.currentTarget)}>Выбрать другой</button>
+                  <span className="city-confirm__question">
+                    Ваш город <strong>{site.city}</strong>?
+                  </span>
+                  <button
+                    className="city-confirm__answer button-reset"
+                    type="button"
+                    onClick={confirmCity}
+                  >
+                    Да
+                  </button>
+                  <button
+                    className="city-confirm__change button-reset"
+                    type="button"
+                    aria-haspopup="dialog"
+                    aria-controls="location-modal"
+                    onClick={(event) => openLocation('city', event.currentTarget)}
+                  >
+                    Выбрать другой
+                  </button>
                 </div>
                 {'\n\n          '}
                 <div className="city-confirm__current" hidden={!cityConfirmed}>
                   {'\n            '}
                   <button
                     className="city-confirm__selection button-reset"
-                    type="button" aria-haspopup="dialog" aria-controls="location-modal"
+                    type="button"
+                    aria-haspopup="dialog"
+                    aria-controls="location-modal"
                     onClick={(event) => openLocation('city', event.currentTarget)}
                   >
                     {'\n              '}
@@ -195,7 +256,9 @@ export default function Header({ site }) {
                   {'\n            '}
                   <button
                     className="city-confirm__selection city-confirm__selection--location button-reset"
-                    type="button" aria-haspopup="dialog" aria-controls="location-modal"
+                    type="button"
+                    aria-haspopup="dialog"
+                    aria-controls="location-modal"
                     onClick={(event) => openLocation('location', event.currentTarget)}
                   >
                     {'\n              '}
@@ -215,16 +278,31 @@ export default function Header({ site }) {
                 {'\n        '}
               </div>
               {'\n        '}
-              <div className="header__item header__item--desk">
+              <div className="header__item header__item--desk" hidden={!location}>
                 {'\n          '}
-                <div className="select header__select messenger-menu" ref={messengerRef} onKeyDown={(event) => {
-                  const links = [...messengerRef.current.querySelectorAll('.messenger-menu__link')];
-                  if (event.key === 'Escape' && messengerOpen) { event.preventDefault(); setMessengerOpen(false); messengerToggle.current?.focus(); return; }
-                  if ((event.key === 'ArrowDown' || event.key === 'ArrowUp') && document.activeElement === messengerToggle.current) {
-                    event.preventDefault(); setMessengerOpen(true);
-                    (event.key === 'ArrowDown' ? links[0] : links.at(-1))?.focus();
-                  }
-                }}>
+                <div
+                  className="select header__select messenger-menu"
+                  ref={messengerRef}
+                  onKeyDown={(event) => {
+                    const links = [
+                      ...messengerRef.current.querySelectorAll('.messenger-menu__link'),
+                    ];
+                    if (event.key === 'Escape' && messengerOpen) {
+                      event.preventDefault();
+                      setMessengerOpen(false);
+                      messengerToggle.current?.focus();
+                      return;
+                    }
+                    if (
+                      (event.key === 'ArrowDown' || event.key === 'ArrowUp') &&
+                      document.activeElement === messengerToggle.current
+                    ) {
+                      event.preventDefault();
+                      setMessengerOpen(true);
+                      (event.key === 'ArrowDown' ? links[0] : links.at(-1))?.focus();
+                    }
+                  }}
+                >
                   {'\n            '}
                   <button
                     className="select__button messenger-menu__toggle button-reset"
@@ -255,7 +333,14 @@ export default function Header({ site }) {
                     {'\n              '}
                     <li>
                       {'\n                '}
-                      <a className="messenger-menu__link" href="#" onClick={(event) => { event.preventDefault(); setMessengerOpen(false); }}>
+                      <a
+                        className="messenger-menu__link"
+                        href="#"
+                        onClick={(event) => {
+                          event.preventDefault();
+                          setMessengerOpen(false);
+                        }}
+                      >
                         {'\n                  '}
                         <svg className="messenger-menu__icon" aria-hidden="true">
                           {'\n                    '}
@@ -271,7 +356,14 @@ export default function Header({ site }) {
                     {'\n              '}
                     <li>
                       {'\n                '}
-                      <a className="messenger-menu__link" href="#" onClick={(event) => { event.preventDefault(); setMessengerOpen(false); }}>
+                      <a
+                        className="messenger-menu__link"
+                        href="#"
+                        onClick={(event) => {
+                          event.preventDefault();
+                          setMessengerOpen(false);
+                        }}
+                      >
                         {'\n                  '}
                         <svg className="messenger-menu__icon" aria-hidden="true">
                           {'\n                    '}
@@ -287,7 +379,14 @@ export default function Header({ site }) {
                     {'\n              '}
                     <li>
                       {'\n                '}
-                      <a className="messenger-menu__link" href="#" onClick={(event) => { event.preventDefault(); setMessengerOpen(false); }}>
+                      <a
+                        className="messenger-menu__link"
+                        href="#"
+                        onClick={(event) => {
+                          event.preventDefault();
+                          setMessengerOpen(false);
+                        }}
+                      >
                         {'\n                  '}
                         <svg className="messenger-menu__icon" aria-hidden="true">
                           {'\n                    '}
@@ -303,7 +402,14 @@ export default function Header({ site }) {
                     {'\n              '}
                     <li>
                       {'\n                '}
-                      <a className="messenger-menu__link" href="#" onClick={(event) => { event.preventDefault(); setMessengerOpen(false); }}>
+                      <a
+                        className="messenger-menu__link"
+                        href="#"
+                        onClick={(event) => {
+                          event.preventDefault();
+                          setMessengerOpen(false);
+                        }}
+                      >
                         {'\n                  '}
                         <svg className="messenger-menu__icon" aria-hidden="true">
                           {'\n                    '}
@@ -321,8 +427,8 @@ export default function Header({ site }) {
                   {'\n          '}
                 </div>
                 {'\n          '}
-                {fields.local && (
-                  <a href="tel:+73433000000" className="header__link link">
+                {site.city === 'Екатеринбург' && location && (
+                  <a href="tel:+73433000000" className="header__link link" hidden={!location}>
                     {'+7 (343) 300-00-00'}
                   </a>
                 )}
@@ -350,7 +456,10 @@ export default function Header({ site }) {
                 data-mobile-menu=""
                 aria-hidden={menuOpen ? undefined : drawer}
                 inert={!menuOpen && drawer}
-                onClickCapture={(event) => { if (menuOpen && event.target.closest('a[href], [data-mobile-menu-close]')) closeMenu(); }}
+                onClickCapture={(event) => {
+                  if (menuOpen && event.target.closest('a[href], [data-mobile-menu-close]'))
+                    closeMenu();
+                }}
               >
                 {'\n          '}
                 <div className="menu__top">
@@ -394,7 +503,9 @@ export default function Header({ site }) {
                         type="button"
                         aria-expanded={submenu === 'tariffs'}
                         aria-controls="header-tariffs-submenu"
-                        onClick={() => setSubmenu((current) => current === 'tariffs' ? null : 'tariffs')}
+                        onClick={() =>
+                          setSubmenu((current) => (current === 'tariffs' ? null : 'tariffs'))
+                        }
                       >
                         {'\n                  '}
                         <span>{'Тарифы'}</span>
@@ -413,7 +524,11 @@ export default function Header({ site }) {
                         aria-label="Тарифы и акции"
                         aria-hidden={submenu !== 'tariffs'}
                         inert={submenu !== 'tariffs'}
-                        style={menuOpen ? { maxHeight: submenu === 'tariffs' ? '200px' : '0px' } : undefined}
+                        style={
+                          menuOpen
+                            ? { maxHeight: submenu === 'tariffs' ? '200px' : '0px' }
+                            : undefined
+                        }
                       >
                         {'\n                  '}
                         <li>
@@ -435,7 +550,9 @@ export default function Header({ site }) {
                         type="button"
                         aria-expanded={submenu === 'events'}
                         aria-controls="header-events-submenu"
-                        onClick={() => setSubmenu((current) => current === 'events' ? null : 'events')}
+                        onClick={() =>
+                          setSubmenu((current) => (current === 'events' ? null : 'events'))
+                        }
                       >
                         {'\n                  '}
                         <span>{'Мероприятия'}</span>
@@ -454,7 +571,11 @@ export default function Header({ site }) {
                         aria-label="Разделы мероприятий"
                         aria-hidden={submenu !== 'events'}
                         inert={submenu !== 'events'}
-                        style={menuOpen ? { maxHeight: submenu === 'events' ? '400px' : '0px' } : undefined}
+                        style={
+                          menuOpen
+                            ? { maxHeight: submenu === 'events' ? '400px' : '0px' }
+                            : undefined
+                        }
                       >
                         {'\n                  '}
                         <li>
@@ -499,7 +620,7 @@ export default function Header({ site }) {
                     {'\n              '}
                     <li className="menu__item">
                       {'\n                '}
-                      <a href="#contacts" className="menu__link">
+                      <a href="/contacts/" className="menu__link">
                         {'Контакты'}
                       </a>
                       {'\n              '}
@@ -513,7 +634,9 @@ export default function Header({ site }) {
                     {'\n              '}
                     <button
                       className="menu__place-button button-reset"
-                      type="button" aria-haspopup="dialog" aria-controls="location-modal"
+                      type="button"
+                      aria-haspopup="dialog"
+                      aria-controls="location-modal"
                       onClick={(event) => openLocation('city', event.currentTarget)}
                     >
                       {'\n                '}
@@ -535,7 +658,9 @@ export default function Header({ site }) {
                     {'\n              '}
                     <button
                       className="menu__place-button menu__place-button--address button-reset"
-                      type="button" aria-haspopup="dialog" aria-controls="location-modal"
+                      type="button"
+                      aria-haspopup="dialog"
+                      aria-controls="location-modal"
                       onClick={(event) => openLocation('location', event.currentTarget)}
                     >
                       {'\n                '}
@@ -555,7 +680,7 @@ export default function Header({ site }) {
                   {'\n\n            '}
                   <div className="menu__footer">
                     {'\n              '}
-                    <a className="menu__phone" href="tel:+73433000000">
+                    <a className="menu__phone" href="tel:+73433000000" hidden={!location}>
                       {'+7 (343) 300-00-00'}
                     </a>
                     {'\n              '}
@@ -611,18 +736,17 @@ export default function Header({ site }) {
                   aria-expanded={menuOpen}
                   aria-controls="header-navigation"
                   ref={burgerRef}
-                  onClick={() => { setMenuOpen((open) => !open); setSubmenu(null); }}
+                  onClick={() => {
+                    setMenuOpen((open) => !open);
+                    setSubmenu(null);
+                  }}
                 >
                   {'\n            '}
                   <span className="burger__line" aria-hidden="true"></span>
                   {'\n          '}
                 </button>
                 {'\n          '}
-                <button
-                  className="header__booking button-reset"
-                  type="button"
-                  data-booking-open=""
-                >
+                <button className="header__booking button-reset" type="button" data-booking-open="">
                   {'\n            Забронировать\n          '}
                 </button>
                 {'\n        '}
@@ -634,7 +758,11 @@ export default function Header({ site }) {
           {'\n  '}
         </div>
         {'\n  '}
-        <div className={`menu-backdrop${menuOpen ? ' is-visible' : ''}`} hidden={!menuOpen} onClick={closeMenu}></div>
+        <div
+          className={`menu-backdrop${menuOpen ? ' is-visible' : ''}`}
+          hidden={!menuOpen}
+          onClick={closeMenu}
+        ></div>
         {'\n'}
       </header>
     </>

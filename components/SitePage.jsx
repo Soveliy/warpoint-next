@@ -1,3 +1,4 @@
+import SiteLocationProvider from './site/SiteLocationProvider';
 import BodyPageClass from './BodyPageClass';
 import SiteBehaviors from './SiteBehaviors';
 import HomeSections from './site/HomeSections';
@@ -21,12 +22,12 @@ export default function SitePage({ page, site, event = false }) {
   if (!Sections) throw new Error(`Unknown page: ${page}`);
 
   return (
-    <>
+    <SiteLocationProvider site={site}>
       <BodyPageClass event={event} />
       <Sections site={site} />
       <LocationModal site={site} />
       <BookingPanel site={site} />
       <SiteBehaviors site={site} />
-    </>
+    </SiteLocationProvider>
   );
 }

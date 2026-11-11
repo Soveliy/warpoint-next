@@ -81,8 +81,6 @@
     min-height: 0;
     overflow-y: auto;
     overscroll-behavior: contain;
-    scrollbar-color: var(--gray-700) transparent;
-    scrollbar-width: thin;
   }
 
   &__intro {
@@ -370,14 +368,6 @@
     color: var(--gray-300);
     font-size: rem(14px);
     line-height: 1.4;
-
-    input {
-      flex: 0 0 rem(20px);
-      width: rem(20px);
-      height: rem(20px);
-      margin: 0;
-      accent-color: var(--red-500);
-    }
 
     a {
       text-decoration: underline;
@@ -676,4 +666,17 @@
 
 .air-datepicker-nav--title:hover {
   background-color: rgb(var(--white-rgb) / 0.08);
+}
+
+.event-modal__card--image::before {
+  content: '';
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  border: 2px solid #62626c;
+  border-radius: inherit;
+  pointer-events: none;
+}
+.event-modal__card--image:has(input:checked)::before {
+  border-color: #f63d68;
 }

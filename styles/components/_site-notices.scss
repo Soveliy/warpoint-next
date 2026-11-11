@@ -2,10 +2,6 @@
 @use '../vars' as *;
 @use '../mixins/disable-mob-hover' as *;
 
-.hero__announcement {
-  margin-bottom: rem(12px);
-}
-
 .announcement,
 .cookie-notice {
   border: rem(1px) solid var(--gray-700);
@@ -19,21 +15,35 @@
 }
 
 .announcement {
-  position: relative;
+  position: fixed;
+  z-index: $z-header - 2;
+  right: max($container-offset, calc((100% - #{$container-width}) / 2 + #{$container-offset}));
+  bottom: max(var(--announcement-bottom, 24px), env(safe-area-inset-bottom));
+  visibility: hidden;
+  opacity: 0;
+  transform: translate3d(0, rem(16px), 0);
+  transition:
+    opacity 480ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 480ms cubic-bezier(0.22, 1, 0.36, 1);
   display: flex;
   align-items: center;
   gap: rem(14px);
-  width: 100%;
+  width: $hero-notice-width;
+  max-width: calc(100% - #{rem(48px)});
   padding: rem(18px) rem(40px) rem(18px) rem(18px);
   border-radius: rem(24px);
 
-  &.is-floating {
-    position: fixed;
-    z-index: $z-header - 2;
-    right: rem(24px);
-    bottom: rem(24px);
-    width: rem(390px);
-    max-width: calc(100% - #{rem(32px)});
+  &--visible {
+    visibility: visible;
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  .is-preloading &,
+  .is-mobile-menu-open & {
+    visibility: hidden;
+    opacity: 0;
+    transform: translate3d(0, rem(16px), 0);
   }
 
   &__image {
@@ -49,10 +59,10 @@
     font-size: rem(14px);
     line-height: 1.35;
     font-weight: 650;
+  }
 
-    p {
-      margin: 0 0 rem(12px);
-    }
+  &__text {
+    margin: 0 0 rem(12px);
   }
 
   &__link {
@@ -156,29 +166,13 @@
   }
 }
 
-@media (width <= rem(1024px)) {
-  .announcement.is-floating {
-    bottom: calc(#{rem(24px)} + var(--cookie-notice-height, 0px));
-  }
-}
-
 @media (max-width: $breakpoint-mobile) {
-  .hero__announcement {
-    display: none;
-
-    &:has(.announcement.is-floating) {
-      display: block;
-    }
-  }
-
   .announcement {
+    right: rem(16px);
+    width: calc(100% - #{rem(32px)});
+    max-width: none;
     padding: rem(14px) rem(38px) rem(14px) rem(14px);
     gap: rem(12px);
-
-    &.is-floating {
-      right: rem(16px);
-      bottom: calc(#{rem(92px)} + env(safe-area-inset-bottom) + var(--cookie-notice-height, 0px));
-    }
 
     &__image {
       flex-basis: rem(64px);
@@ -220,5 +214,24 @@
     &__actions {
       margin-top: rem(14px);
     }
+  }
+}
+
+@media (max-width: 767px) {
+  body {
+    padding-bottom: var(--cookie-notice-height, 0px);
+  }
+}
+
+@media (min-width: 768px) {
+  .hero-event__allerts,
+  .hero__allerts {
+    transform: translateY(calc(0px - var(--cookie-notice-height, 0px)));
+  }
+}
+
+@media (width > $breakpoint-mobile) and (width <= $breakpoint-tablet) {
+  .announcement {
+    width: $hero-notice-width-tablet;
   }
 }

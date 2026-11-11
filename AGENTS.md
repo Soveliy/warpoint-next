@@ -7,3 +7,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
+
+## Project code style
+
+Read [CODE_STYLE.md](CODE_STYLE.md) before changing components or styles. Keep new content pages in BEM, use explicit element classes and component SCSS modules, and run `npm run format:pages:check` and `npm run build` after changes.

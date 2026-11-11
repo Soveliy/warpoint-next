@@ -1,6 +1,7 @@
 import Preloader from './Preloader';
 import Header from './Header';
 import HomeHero from './HomeHero';
+import Announcement from './Announcement';
 import HomeVideoSection from './HomeVideoSection';
 import HomeAboutGameGroup from './HomeAboutGameGroup';
 import HomeZones from './HomeZones';
@@ -11,7 +12,7 @@ import Reviews from './Reviews';
 import HomeBloggers from './HomeBloggers';
 import Faq from './Faq';
 import HomeExtras from './HomeExtras';
-import Contacts from './Contacts';
+import HomeContacts from './HomeContacts';
 import Footer from './Footer';
 import EventModal from './EventModal';
 import AuthModal from './AuthModal';
@@ -36,8 +37,9 @@ export default function HomeSections({ site }) {
         <HomeBloggers site={site} />
         <Faq site={site} />
         <HomeExtras site={site} />
-        <Contacts site={site} />
+        <HomeContacts site={site} />
       </main>
+      <Announcement />
       <Footer site={site} />
       <EventModal site={site} />
       <AuthModal site={site} />

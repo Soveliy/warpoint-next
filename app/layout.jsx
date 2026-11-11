@@ -17,7 +17,14 @@ export const metadata = {
 export default async function RootLayout({ children }) {
   const site = await getSite();
   return (
-    <html lang="ru" className={`${interTight.variable} ${oceanic.variable} ${robotoFlex.variable} is-preloading`} data-secondary-font={secondaryFont} data-city={site?.city} data-country={site?.countryId} data-location={site?.arenas?.length ? 'erp-0' : undefined} data-location-confirmed={site?.arenas?.length ? 'true' : undefined}>
+    <html
+      lang="ru"
+      className={`${interTight.variable} ${oceanic.variable} ${robotoFlex.variable} is-preloading`}
+      data-secondary-font={secondaryFont}
+      data-city={site?.city}
+      data-country={site?.countryId}
+      data-location-confirmed="false"
+    >
       <body className="page">
         {children}
         <Script id="preloader-fallback" strategy="beforeInteractive">

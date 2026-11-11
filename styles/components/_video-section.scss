@@ -174,7 +174,7 @@
   &__title {
     font-family: $font-family-second;
     font-size: fluid(42px, 88px);
-    font-weight: 700;
+    font-weight: var(--font-secondary-weight, 800);
     line-height: 78%;
     letter-spacing: -0.01em;
     margin: 0;
@@ -183,13 +183,15 @@
       opacity 360ms ease,
       transform 620ms cubic-bezier(0.16, 1, 0.3, 1);
     will-change: opacity, transform;
-    font-variation-settings:
+    font-variation-settings: var(
+      --font-secondary-variation,
       'GRAD' 150,
       'XOPQ' 110,
       'YTDE' -198,
       'YTUC' 760,
       'wdth' 75,
-      'opsz' 144;
+      'opsz' 144
+    );
 
     span {
       display: block;

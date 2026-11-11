@@ -1,0 +1,9 @@
+.listing-page:has(> .contacts-page) {
+  overflow: clip;
+}
+
+.contacts-page {
+  & .listing-hero__title {
+    max-width: 1100px;
+  }
+}

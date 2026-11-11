@@ -16,5 +16,10 @@ export default async function PageIndex() {
   const site = await getSite();
   if (!site) notFound();
 
-  return <main className="main page-index"><PageIndexReady /><HomePageLinks site={site} /></main>;
+  return (
+    <main className="main page-index">
+      <PageIndexReady />
+      <HomePageLinks site={site} />
+    </main>
+  );
 }

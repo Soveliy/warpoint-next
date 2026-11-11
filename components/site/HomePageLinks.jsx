@@ -1,52 +1,49 @@
-const groups = [
-  {
-    title: 'Основные страницы',
-    links: [
-      ['Главная', '/indexpage/'],
-      ['Каталог игр', '/games/'],
-      ['Тарифы', '/tariffs/'],
-      ['Акции', '/promotions/'],
-      ['Локации', '/locations/'],
-      ['Вопросы и ответы', '/faq/'],
-    ],
-  },
-  {
-    title: 'Мероприятия',
-    links: [
-      ['Детский день рождения', '/events/birthday/'],
-      ['Взрослый день рождения', '/events/adult-birthday/'],
-      ['Корпоратив', '/events/corporate/'],
-      ['Школьный выпускной', '/events/graduation/'],
-      ['Анонс мероприятий', '/events/'],
-    ],
-  },
-  {
-    title: 'Материалы',
-    links: [
-      ['Статьи', '/articles/'],
-      ['Политика конфиденциальности', '/legal/privacy/'],
-    ],
-  },
-];
+import { pageLinkGroups } from '../../lib/page-links';
 
 export default function HomePageLinks({ site }) {
-  const localGroups = groups.map((group) => ({
+  const localGroups = pageLinkGroups.map((group) => ({
     ...group,
-    links: group.title === 'Материалы' && site.city === 'Екатеринбург'
-      ? [group.links[0], ['Статья о детском дне рождения', '/articles/birthday-ekaterinburg/'], group.links[1]]
-      : group.links,
+    links:
+      group.title === 'Материалы' && site.city === 'Екатеринбург'
+        ? [
+            group.links[0],
+            ['Статья о детском дне рождения', '/articles/birthday-ekaterinburg/'],
+            group.links[1],
+          ]
+        : group.links,
   }));
 
-  return <section className="home-page-links" data-header-theme="dark" aria-labelledby="home-page-links-title">
-    <div className="container">
-      <p className="home-page-links__eyebrow">Временная навигация</p>
-      <h1 id="home-page-links-title">Страницы <span>сайта</span></h1>
-      <div className="home-page-links__grid">
-        {localGroups.map((group) => <div className="home-page-links__group" key={group.title}>
-          <h3>{group.title}</h3>
-          <ul>{group.links.map(([label, path]) => <li key={path}><a href={path}><span>{label}</span><span aria-hidden="true">↗</span></a></li>)}</ul>
-        </div>)}
+  return (
+    <section
+      className="home-page-links"
+      data-header-theme="dark"
+      aria-labelledby="home-page-links-title"
+    >
+      <div className="container">
+        <p className="home-page-links__eyebrow">Временная навигация</p>
+        <h1 className="home-page-links__title" id="home-page-links-title">
+          Страницы <span className="home-page-links__accent">сайта</span>
+        </h1>
+        <div className="home-page-links__grid">
+          {localGroups.map((group) => (
+            <div className="home-page-links__group" key={group.title}>
+              <h3 className="home-page-links__group-title">{group.title}</h3>
+              <ul className="home-page-links__list">
+                {group.links.map(([label, path]) => (
+                  <li className="home-page-links__item" key={path}>
+                    <a className="home-page-links__link" href={path}>
+                      <span className="home-page-links__label">{label}</span>
+                      <span className="home-page-links__arrow" aria-hidden="true">
+                        ↗
+                      </span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
-  </section>;
+    </section>
+  );
 }

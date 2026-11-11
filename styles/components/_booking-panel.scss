@@ -49,15 +49,10 @@
     background: var(--gray-950) url('/img/pop-up-bg.jpg') center / cover no-repeat;
     box-shadow: 0 rem(28px) rem(80px) rgb(var(--black-rgb) / 0.55);
     opacity: 0;
-    scrollbar-width: none;
     transform: translate(-50%, calc(-50% + #{rem(24px)})) scale(0.98);
     transition:
       opacity 280ms $ease-base,
       transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
-
-    &::-webkit-scrollbar {
-      display: none;
-    }
   }
 
   &__close {
@@ -253,7 +248,7 @@
 
   &__agreement {
     display: grid;
-    grid-template-columns: rem(16px) minmax(0, 1fr);
+    grid-template-columns: rem(18px) minmax(0, 1fr);
     gap: rem(10px);
     align-items: start;
     margin-top: rem(20px);
@@ -276,39 +271,6 @@
         outline-offset: rem(2px);
       }
     }
-  }
-
-  &__agreement-box {
-    position: relative;
-    width: rem(16px);
-    height: rem(16px);
-    border: rem(1px) solid var(--red-500);
-    border-radius: rem(3px);
-  }
-
-  &__agreement-input:checked + &__agreement-box {
-    background-color: var(--red-500);
-
-    &::after {
-      content: '';
-      position: absolute;
-      top: rem(2px);
-      left: rem(5px);
-      width: rem(4px);
-      height: rem(8px);
-      border-right: rem(2px) solid var(--white);
-      border-bottom: rem(2px) solid var(--white);
-      transform: rotate(45deg);
-    }
-  }
-
-  &__agreement-input:focus-visible + &__agreement-box {
-    outline: $focus-outline-width solid var(--focus-color);
-    outline-offset: rem(2px);
-  }
-
-  &__agreement-input.is-invalid + &__agreement-box {
-    box-shadow: 0 0 0 rem(2px) rgb(var(--red-500-rgb) / 0.28);
   }
 }
 

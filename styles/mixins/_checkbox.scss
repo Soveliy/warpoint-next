@@ -1,0 +1,34 @@
+@mixin checkbox {
+  display: grid;
+  place-content: center;
+  width: 18px;
+  height: 18px;
+  flex: none;
+  margin: 0;
+  appearance: none;
+  border: 1px solid #898990;
+  border-radius: 4px;
+  background: transparent;
+  cursor: inherit;
+
+  &:checked {
+    border-color: #eb1f5b;
+    background: #eb1f5b;
+  }
+
+  &:checked::after {
+    content: '✓';
+    color: #fff;
+    font-size: 13px;
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  &:disabled {
+    border-color: #46464d;
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 3px rgba(245, 58, 108, 0.35);
+  }
+}

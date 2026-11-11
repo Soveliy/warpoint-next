@@ -1,0 +1,123 @@
+.location-map {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  min-height: 260px;
+  overflow: hidden;
+  background: #e4e4e7;
+
+  &__placeholder,
+  &__frame,
+  &__canvas,
+  &__open {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__placeholder {
+    background:
+      linear-gradient(30deg, transparent 46%, #fff 46%, #fff 50%, transparent 50%),
+      linear-gradient(105deg, transparent 48%, #fff 48%, #fff 53%, transparent 53%), #dfe5df;
+    transition: opacity 240ms ease;
+  }
+
+  &__frame,
+  &__canvas {
+    z-index: 1;
+    border: 0;
+    opacity: 0;
+    transition: opacity 240ms ease;
+  }
+
+  &__pin {
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    left: 50%;
+    width: 80px;
+    height: 104px;
+    background: url('/img/map-pin.svg') center / contain no-repeat;
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, -93.2692%);
+  }
+
+  &__open {
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  &--loaded &__frame,
+  &--loaded &__canvas {
+    opacity: 1;
+  }
+
+  &--loaded &__placeholder {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &--loaded:not(.location-map--api) &__pin {
+    opacity: 1;
+  }
+
+  &--loaded:not(.location-map--api) &__frame {
+    pointer-events: none;
+  }
+
+  &--loaded:not(.location-map--api) &__open {
+    pointer-events: auto;
+  }
+
+  &--empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 18px;
+    padding: 28px;
+    background: #202025;
+    text-align: center;
+  }
+
+  &__empty-icon {
+    width: 40px;
+    height: 40px;
+    fill: var(--red-500);
+  }
+
+  &__empty-title {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 650;
+  }
+
+  &__empty-text {
+    max-width: 320px;
+    margin: 0;
+    color: #a2a2a2;
+    font-size: 16px;
+    line-height: 1.4;
+  }
+
+  &__empty-link {
+    font-family: inherit;
+    font-size: 13px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .location-map {
+    &__placeholder,
+    &__frame,
+    &__canvas {
+      transition: none;
+    }
+  }
+}
+
+.location-map[data-map-multiple='true'] > .location-map__pin:not([data-map-fallback-pin]) {
+  display: none;
+}

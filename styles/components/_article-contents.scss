@@ -1,0 +1,149 @@
+.article-contents {
+  position: relative;
+  padding: 30px;
+  border-radius: 24px;
+  background: #252629;
+
+  &__title {
+    margin: 0 0 18px;
+    color: #a2a2a2;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 17px;
+    text-transform: uppercase;
+  }
+
+  &__list {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    margin: 0;
+    padding: 0 0 0 23px;
+    list-style: none;
+  }
+
+  &__list::before {
+    content: '';
+    position: absolute;
+    top: 11px;
+    bottom: 11px;
+    left: 4px;
+    width: 1px;
+    background: #414247;
+  }
+
+  &__link {
+    position: relative;
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    color: #a2a2a2;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 22px;
+    transition: color 160ms ease;
+  }
+
+  &__link::before {
+    content: '';
+    position: absolute;
+    top: 7px;
+    left: -23px;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #414247;
+    transition:
+      background-color 160ms ease,
+      box-shadow 160ms ease;
+  }
+
+  &__link--active,
+  &__link:hover,
+  &__link:focus-visible {
+    color: var(--red-600);
+  }
+
+  &__link--active::before {
+    background: var(--red-600);
+    box-shadow: 0 0 0 4px #ed105533;
+  }
+
+  &__share {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+    padding-top: 19px;
+    border-top: 1px solid #3d3e43;
+  }
+
+  &__social {
+    display: grid;
+    place-items: center;
+    flex: 0 0 44px;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border: 1px solid #66676e;
+    border-radius: 14px;
+    background: transparent;
+    color: #fff;
+    transition:
+      border-color 160ms ease,
+      background-color 160ms ease;
+  }
+
+  &__social-icon {
+    display: block;
+    fill: currentColor;
+  }
+
+  &__social:hover,
+  &__social:focus-visible {
+    border-color: #ed1055;
+    background: #ed10551a;
+  }
+
+  &__feedback {
+    position: absolute;
+    right: 16px;
+    bottom: 7px;
+    left: 16px;
+    margin: 0;
+    color: #a2a2a2;
+    font-size: 12px;
+    line-height: 16px;
+    text-align: center;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html:has(.article-contents) {
+    scroll-behavior: smooth;
+  }
+}
+
+@media (max-width: 1000px) {
+  .article-contents {
+    padding: 24px 20px;
+
+    &__link {
+      font-size: 16px;
+    }
+
+    &__list {
+      gap: 18px;
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .article-contents {
+    padding: 24px;
+
+    &__list {
+      gap: 16px;
+    }
+  }
+}
