@@ -26,9 +26,10 @@ export default function TariffsListing({ site }) {
     ? [
         ...tariffCategories.map(([key, label]) => [
           key,
-          key === 'birthday' ? 'Детские дни рождения' : label,
+          locationTariffs(site, location, key)?.[0]?.categoryTitle ||
+            (key === 'birthday' ? 'Детские дни рождения' : label),
         ]),
-        ...(locationTariffs(site, location, 'adult-birthday').length
+        ...(locationTariffs(site, location, 'adult-birthday')?.length
           ? [['adult-birthday', 'Взрослые дни рождения']]
           : []),
       ]

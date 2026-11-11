@@ -3,7 +3,13 @@ import assert from 'node:assert/strict';
 import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { eventAddons, eventQuizExtras } from '../lib/event-addons.js';
-import { eventSlides, programExtras } from '../lib/event-site-content.js';
+import {
+  additionalEventChoices,
+  eventContent,
+  eventParameters,
+  eventSlides,
+  programExtras,
+} from '../lib/event-site-content.js';
 
 const location = (extras) => ({ content: { extras } });
 const apiSite = (...arenas) => ({ source: 'wp-sites', arenas });
@@ -14,14 +20,13 @@ test('legacy keeps the approved event images and quiz services', () => {
   assert.equal(programExtras(site, null), eventQuizExtras);
 });
 
-test('API empty services remain empty, including parks without extras', () => {
+test('explicit empty services remain empty and missing content keeps project fallbacks', () => {
   const empty = location([]);
+  assert.deepEqual(eventSlides(apiSite(empty), empty, 'birthday'), []);
+  assert.deepEqual(programExtras(apiSite(empty), empty), []);
   const missing = { content: {} };
-  for (const arena of [empty, missing]) {
-    const site = apiSite(arena);
-    assert.deepEqual(eventSlides(site, arena, 'birthday'), []);
-    assert.deepEqual(programExtras(site, arena), []);
-  }
+  assert.equal(eventSlides(apiSite(missing), missing, 'birthday'), eventAddons.birthday);
+  assert.equal(programExtras(apiSite(missing), missing), eventQuizExtras);
 });
 
 test('API services use approved images in source order and unknown images are omitted', () => {
@@ -78,4 +83,87 @@ test('city union is deduplicated and choosing a park removes services unavailabl
     eventSlides(site, second, 'birthday').map((slide) => slide.id),
     ['photographer', 'holiday_cake'],
   );
+});
+
+test('event content follows selected park and otherwise the site domain branch', () => {
+  const first = {
+    slug: 'first',
+    content: {
+      events: [
+        {
+          code: 'kids_bday',
+          title: 'Первый праздник',
+          fields: [
+            { code: 'age_restrictions', value: '8' },
+            { code: 'capacity', value: 20 },
+          ],
+        },
+      ],
+    },
+  };
+  const second = {
+    slug: 'second',
+    content: { events: [{ code: 'kids_bday', title: 'Второй праздник', fields: [] }] },
+  };
+  const site = { ...apiSite(first, second), slug: 'second' };
+  assert.equal(eventContent(site, null, 'birthday').title, 'Второй праздник');
+  const content = eventContent(site, first, 'birthday');
+  assert.equal(content.title, 'Первый праздник');
+  assert.deepEqual(eventParameters(content), [
+    { id: 'age', value: '8+' },
+    { id: 'capacity', value: 'до 20 гостей' },
+  ]);
+  assert.equal(eventContent(site, second, 'corporate'), null);
+  assert.equal(eventContent({ arenas: [] }, null, 'birthday'), null);
+});
+
+test('missing event fields preserve local values while zero remains meaningful', () => {
+  assert.deepEqual(eventParameters(null, { age: '6+', capacity: 'до 30 гостей' }), [
+    { id: 'age', value: '6+' },
+    { id: 'capacity', value: 'до 30 гостей' },
+  ]);
+  assert.deepEqual(eventParameters({ age: '0', capacity: '0' }), [
+    { id: 'age', value: '0+' },
+    { id: 'capacity', value: 'до 0 гостей' },
+  ]);
+});
+
+test('ERP extra images and descriptions override individual project fields safely', () => {
+  const arena = location([
+    {
+      code: 'master_class',
+      title: 'Новый мастер-класс',
+      image: 'https://example.com/photo.jpg',
+      description: 'Описание ERP',
+    },
+  ]);
+  const slide = eventSlides(apiSite(arena), arena, 'birthday')[0];
+  assert.equal(slide.image, 'https://example.com/photo.jpg');
+  assert.equal(slide.description, 'Описание ERP');
+  assert.equal(slide.title, 'Новый мастер-класс');
+  const unsafe = location([
+    {
+      code: 'master_class',
+      title: 'Мастер-класс',
+      image: 'javascript:alert(1)',
+      description: '   ',
+    },
+  ]);
+  const fallback = eventSlides(apiSite(unsafe), unsafe, 'birthday')[0];
+  assert.ok(fallback.image.startsWith('/img/'));
+  assert.ok(fallback.description.length);
+});
+
+test('ERP-only events become calculator choices without fabricated pages or photos', () => {
+  const arena = {
+    content: {
+      events: [
+        { code: 'kids_bday', title: 'Детский ДР' },
+        { code: 'new_year', title: 'Новый год', sort: 50 },
+      ],
+    },
+  };
+  assert.deepEqual(additionalEventChoices(apiSite(arena), arena), [
+    { value: 'new_year', title: 'Новый год' },
+  ]);
 });

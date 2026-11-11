@@ -8,7 +8,7 @@ import useFormValidation from './useFormValidation';
 import FormError from './FormError';
 import { contactRules, consentRule } from '../../lib/form-validation';
 import { eventVideoPosters } from '../../lib/event-media';
-import { programExtras } from '../../lib/event-site-content';
+import { eventContent, programExtras } from '../../lib/event-site-content';
 
 const hints = [
   'Праздники в WARPOINT — это командные VR-игры, лаунж-зона и координатор, который всё организует за вас.',
@@ -131,6 +131,15 @@ export default function ProgramPicker({ site }) {
   const [date, setDate] = useState(null);
   const { location, locationId, selectLocation } = useSiteLocation();
   const extras = useMemo(() => programExtras(site, location), [site, location]);
+  const eventOptions = useMemo(
+    () =>
+      events.map((event) => ({
+        ...event,
+        title: eventContent(site, location, event.value)?.title || event.title,
+        image: eventContent(site, location, event.value)?.image || event.image,
+      })),
+    [site, location],
+  );
   const selectedServices = services.filter((value) =>
     extras.some((extra) => extra.value === value),
   );
@@ -290,7 +299,7 @@ export default function ProgramPicker({ site }) {
               </p>
               <ChoiceGroup
                 name="eventType"
-                options={events}
+                options={eventOptions}
                 value={eventType}
                 onChange={setEventType}
                 image

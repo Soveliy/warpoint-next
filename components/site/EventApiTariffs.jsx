@@ -6,7 +6,7 @@ import { useSiteLocation } from './SiteLocationProvider';
 export default function EventApiTariffs({ category }) {
   const { site, location } = useSiteLocation();
   const tariffs = locationTariffs(site, location, category);
-  if (!tariffs.length) {
+  if (!tariffs?.length) {
     return (
       <p className="event-tariffs__empty">Тарифы для этого мероприятия пока не опубликованы.</p>
     );
@@ -29,9 +29,11 @@ export default function EventApiTariffs({ category }) {
                 </span>
               )}
               <div className="event-tariffs__card-tags">
-                {[tariff.duration, tariff.players, tariff.age].filter(Boolean).map((tag) => (
-                  <span key={tag}>{tag}</span>
-                ))}
+                {[tariff.duration, tariff.players, tariff.age, tariff.discount ? 'Скидка' : '']
+                  .filter(Boolean)
+                  .map((tag) => (
+                    <span key={tag}>{tag}</span>
+                  ))}
               </div>
               <h3 className="event-tariffs__card-title">{tariff.title}</h3>
               <p className="event-tariffs__card-description">{tariff.description}</p>

@@ -8,14 +8,14 @@ export default function EventPriceValue({ category, fallback, prefixClassName })
   if (!location) return null;
   if (usesSiteTariffs(site)) {
     const price = minimumEventPrice(site, location, category);
-    if (!price) return 'Цена по запросу';
-    return (
-      <>
-        {price.amount !== null && <small className={prefixClassName}>от</small>}{' '}
-        <strong>{price.value}</strong>
-        {price.unitLabel && <small> {price.unitLabel}</small>}
-      </>
-    );
+    if (price)
+      return (
+        <>
+          {price.amount !== null && <small className={prefixClassName}>от</small>}{' '}
+          <strong>{price.value}</strong>
+          {price.unitLabel && <small> {price.unitLabel}</small>}
+        </>
+      );
   }
   if (site.city !== 'Екатеринбург') return 'Цена по запросу';
   return (

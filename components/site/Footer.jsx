@@ -1,3 +1,4 @@
+import SitePageLink from './SitePageLink';
 import { siteFields } from '../../lib/site-fields';
 
 export default function Footer({ site }) {
@@ -113,9 +114,13 @@ export default function Footer({ site }) {
                 <ul className="footer__list footer__menu">
                   {'\n            '}
                   <li>
-                    <a className="footer__menu-link" href="/events/birthday/">
-                      {'Детский день рождения'}
-                    </a>
+                    <SitePageLink
+                      className="footer__menu-link"
+                      page="birthday"
+                      href="/events/birthday/"
+                    >
+                      Детский день рождения
+                    </SitePageLink>
                   </li>
                   {'\n            '}
                   <li>
@@ -135,9 +140,13 @@ export default function Footer({ site }) {
                   </li>
                   {'\n            '}
                   <li>
-                    <a className="footer__menu-link" href="/events/graduation/">
-                      {'Школьный выпускной'}
-                    </a>
+                    <SitePageLink
+                      className="footer__menu-link"
+                      page="graduation"
+                      href="/events/graduation/"
+                    >
+                      Школьный выпускной
+                    </SitePageLink>
                   </li>
                   {'\n            '}
                   <li>

@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useSiteLocation } from './SiteLocationProvider';
+import SitePageLink from './SitePageLink';
+import { sitePageLink } from '../../lib/site-pages';
 import { toggleScrollLock } from '../../interactions/_functions';
 
 export default function Header({ site }) {
@@ -443,7 +445,10 @@ export default function Header({ site }) {
             {'\n      '}
             <div className="header__row">
               {'\n        '}
-              <a href="/indexpage/" className="header__logo">
+              <a
+                href={sitePageLink(site, location, 'home', '/indexpage/').href}
+                className="header__logo"
+              >
                 {'\n          '}
                 <img src="/img/logo.svg" alt="" />
                 {'\n        '}
@@ -464,7 +469,11 @@ export default function Header({ site }) {
                 {'\n          '}
                 <div className="menu__top">
                   {'\n            '}
-                  <a className="menu__logo" href="/indexpage/" aria-label="Warpoint — на главную">
+                  <a
+                    className="menu__logo"
+                    href={sitePageLink(site, location, 'home', '/indexpage/').href}
+                    aria-label="Warpoint — на главную"
+                  >
                     {'\n              '}
                     <img src="/img/logo.svg" alt="" />
                     {'\n            '}
@@ -579,7 +588,9 @@ export default function Header({ site }) {
                       >
                         {'\n                  '}
                         <li>
-                          <a href="/events/birthday/">{'Детский день рождения'}</a>
+                          <SitePageLink page="birthday" href="/events/birthday/">
+                            Детский день рождения
+                          </SitePageLink>
                         </li>
                         {'\n                  '}
                         <li>
@@ -591,7 +602,9 @@ export default function Header({ site }) {
                         </li>
                         {'\n                  '}
                         <li>
-                          <a href="/events/graduation/">{'Школьный выпускной'}</a>
+                          <SitePageLink page="graduation" href="/events/graduation/">
+                            Школьный выпускной
+                          </SitePageLink>
                         </li>
                         {'\n                  '}
                         <li>

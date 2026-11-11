@@ -8,6 +8,7 @@ export default function TariffCard({ tariff, local, eventHref, onOpen }) {
         <span className="tariffs-listing__tag">{tariff.players}</span>
         {tariff.age && <span className="tariffs-listing__tag">{tariff.age}</span>}
         {tariff.hit && <span className="tariffs-listing__tag">Хит</span>}
+        {tariff.discount && <span className="tariffs-listing__tag">Скидка</span>}
       </div>
       <h2 className="tariffs-listing__title">{tariff.title}</h2>
       <p className="tariffs-listing__description">{tariff.description}</p>

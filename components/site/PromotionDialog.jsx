@@ -31,14 +31,14 @@ export default function PromotionDialog({ promotion, onClose }) {
             перед посещением.
           </p>
         )}
-        {promotion.buttonUrl && promotion.buttonText ? (
+        {promotion.buttonUrl ? (
           <a
             className="listing-button listing-button--solid promotion-dialog__request"
             href={promotion.buttonUrl}
             target="_blank"
             rel="noopener noreferrer"
           >
-            {promotion.buttonText}
+            {promotion.buttonText || 'Подробнее'}
           </a>
         ) : (
           <button
@@ -47,7 +47,7 @@ export default function PromotionDialog({ promotion, onClose }) {
             data-booking-open=""
             onClick={onClose}
           >
-            Связаться с парком
+            {promotion.buttonText || 'Связаться с парком'}
           </button>
         )}
       </div>

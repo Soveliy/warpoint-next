@@ -3,7 +3,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { siteFields } from '../../lib/site-fields';
 import { eventVideoPosters } from '../../lib/event-media';
-import { eventQuizExtras } from '../../lib/event-addons';
+import { additionalEventChoices, programExtras } from '../../lib/event-site-content';
+import EventContentValue from './EventContentValue';
+import EventParameters from './EventParameters';
 import { toggleScrollLock } from '../../interactions/_functions';
 import { Calendar } from './ProgramPicker';
 import useFormValidation from './useFormValidation';
@@ -14,7 +16,9 @@ import { contactRules, consentRule } from '../../lib/form-validation';
 
 export default function EventModal({ site, defaultEventType = '' }) {
   const fields = siteFields(site);
-  const { locationId, selectLocation } = useSiteLocation();
+  const { location, locationId, selectLocation } = useSiteLocation();
+  const extras = programExtras(site, location);
+  const extraEvents = additionalEventChoices(site, location);
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState(1);
   const [eventType, setEventType] = useState('');
@@ -120,7 +124,9 @@ export default function EventModal({ site, defaultEventType = '' }) {
           ].join('-'),
           eventType: data.get('eventType'),
           guestCount: data.get('guestCount'),
-          services: data.getAll('services'),
+          services: data
+            .getAll('services')
+            .filter((value) => extras.some((extra) => extra.value === value)),
           name: String(data.get('name')).trim(),
           phone: data.get('phone'),
           email: String(data.get('email') || '').trim(),
@@ -250,7 +256,11 @@ export default function EventModal({ site, defaultEventType = '' }) {
                       decoding="async"
                     />
                     {'\n              '}
-                    <span className="event-modal__card-label">{'Детский день рождения'}</span>
+                    <span className="event-modal__card-label">
+                      <EventContentValue category="birthday" field="title">
+                        Детский день рождения
+                      </EventContentValue>
+                    </span>
                     {'\n            '}
                   </label>
                   {'\n            '}
@@ -272,7 +282,11 @@ export default function EventModal({ site, defaultEventType = '' }) {
                       decoding="async"
                     />
                     {'\n              '}
-                    <span className="event-modal__card-label">{'Взрослый день рождения'}</span>
+                    <span className="event-modal__card-label">
+                      <EventContentValue category="adult-birthday" field="title">
+                        Взрослый день рождения
+                      </EventContentValue>
+                    </span>
                     {'\n            '}
                   </label>
                   {'\n            '}
@@ -294,7 +308,11 @@ export default function EventModal({ site, defaultEventType = '' }) {
                       decoding="async"
                     />
                     {'\n              '}
-                    <span className="event-modal__card-label">{'Корпоратив / тимбилдинг'}</span>
+                    <span className="event-modal__card-label">
+                      <EventContentValue category="corporate" field="title">
+                        Корпоратив / тимбилдинг
+                      </EventContentValue>
+                    </span>
                     {'\n            '}
                   </label>
                   {'\n            '}
@@ -316,7 +334,11 @@ export default function EventModal({ site, defaultEventType = '' }) {
                       decoding="async"
                     />
                     {'\n              '}
-                    <span className="event-modal__card-label">{'Школьный выпускной'}</span>
+                    <span className="event-modal__card-label">
+                      <EventContentValue category="graduation" field="title">
+                        Школьный выпускной
+                      </EventContentValue>
+                    </span>
                     {'\n            '}
                   </label>
                   {'\n            '}
@@ -338,9 +360,31 @@ export default function EventModal({ site, defaultEventType = '' }) {
                       decoding="async"
                     />
                     {'\n              '}
-                    <span className="event-modal__card-label">{'Выездное мероприятие'}</span>
+                    <span className="event-modal__card-label">
+                      <EventContentValue category="mobile-event" field="title">
+                        Выездное мероприятие
+                      </EventContentValue>
+                    </span>
                     {'\n            '}
                   </label>
+                  {extraEvents.map((event) => (
+                    <label className="event-modal__card" key={event.value}>
+                      <input
+                        className="visually-hidden"
+                        type="radio"
+                        name="eventType"
+                        value={event.value}
+                      />
+                      <span className="event-modal__card-label">{event.title}</span>
+                      <span className="event-modal__card-label">
+                        <EventParameters
+                          category={event.value}
+                          as="span"
+                          className="event-modal__card-label"
+                        />
+                      </span>
+                    </label>
+                  ))}
                   {'\n          '}
                 </fieldset>
                 {'\n        '}
@@ -449,7 +493,7 @@ export default function EventModal({ site, defaultEventType = '' }) {
                 {'\n          '}
                 <fieldset className="event-modal__options event-modal__options--services">
                   <legend className="visually-hidden">Дополнительные услуги</legend>
-                  {eventQuizExtras.map((extra) => (
+                  {extras.map((extra) => (
                     <label
                       className="event-modal__card event-modal__card--service"
                       key={extra.value}

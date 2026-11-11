@@ -1,4 +1,5 @@
 import GoodPlaceBadge from './GoodPlaceBadge';
+import HomeHeroDescription from './HomeHeroDescription';
 import { siteFields } from '../../lib/site-fields';
 
 export default function HomeHero({ site }) {
@@ -20,10 +21,12 @@ export default function HomeHero({ site }) {
           <div className="hero__wrap">
             {'\n          '}
             <div className="hero__pretitle">
-              {'Сеть клубов виртуальной реальности '}
-              <span className="hero__city">
-                {fields.local ? 'в Екатеринбурге' : `в г. ${site.city}`}
-              </span>
+              <HomeHeroDescription>
+                {'Сеть клубов виртуальной реальности '}
+                <span className="hero__city">
+                  {fields.local ? 'в Екатеринбурге' : `в г. ${site.city}`}
+                </span>
+              </HomeHeroDescription>
               {'\n          '}
             </div>
             {'\n          '}

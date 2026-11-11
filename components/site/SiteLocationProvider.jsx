@@ -1,7 +1,11 @@
 'use client';
 
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
-import { selectionCookie, selectionFromCookie } from '../../lib/location-selection';
+import {
+  selectionCookie,
+  selectionFromCookie,
+  selectionFromSearch,
+} from '../../lib/location-selection';
 
 const SiteLocationContext = createContext(null);
 
@@ -31,9 +35,14 @@ export default function SiteLocationProvider({ site, children }) {
   const [selectedIndex, setSelectedIndex] = useState(null);
 
   useEffect(() => {
-    const saved = selectionFromCookie(site, document.cookie);
+    const requested = selectionFromSearch(site, window.location.search);
+    const saved = requested ?? selectionFromCookie(site, document.cookie);
     setSelectedIndex(saved);
     applyLocation(site, saved);
+    if (requested !== null) {
+      const cookie = selectionCookie(site, requested, window.location.protocol === 'https:');
+      if (cookie) document.cookie = cookie;
+    }
     const onChange = (event) => {
       if (event.detail?.cityName !== site.city) return;
       const index = Number(String(event.detail.locationId).replace('erp-', ''));
@@ -42,6 +51,12 @@ export default function SiteLocationProvider({ site, children }) {
       applyLocation(site, index);
       const cookie = selectionCookie(site, index, window.location.protocol === 'https:');
       if (cookie) document.cookie = cookie;
+      const url = new URL(window.location.href);
+      if (url.searchParams.has('select-branch')) {
+        if (site.arenas[index].slug) url.searchParams.set('select-branch', site.arenas[index].slug);
+        else url.searchParams.delete('select-branch');
+        window.history.replaceState(window.history.state, '', url);
+      }
       if (process.env.NODE_ENV === 'development') {
         logErpSelection(site, index).catch((error) => {
           console.error('[ERP] Ошибка вывода данных выбранной локации', error);

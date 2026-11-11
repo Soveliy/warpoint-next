@@ -54,8 +54,9 @@ export default function TariffModal({ site }) {
       if (!card) return;
       const key = trigger.dataset.tariffOpen;
       const context = card.closest('[data-tariff-context]')?.dataset.tariffContext;
-      if (usesSiteTariffs(site)) {
-        const current = locationTariffs(site, location, context).find((item) => item.id === key);
+      const apiTariffs = locationTariffs(site, location, context);
+      if (apiTariffs) {
+        const current = apiTariffs.find((item) => item.id === key);
         if (!current) return;
         opener.current = trigger;
         setTariff({

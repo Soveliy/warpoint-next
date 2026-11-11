@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { usesSiteTariffs } from '../../lib/site-tariffs';
+import { locationTariffs } from '../../lib/site-tariffs';
 import EventApiTariffs from './EventApiTariffs';
 import LocationSelection from './LocationSelection';
 import { useSiteLocation } from './SiteLocationProvider';
@@ -37,7 +37,11 @@ export default function EventTariffLocation({ children, context }) {
   return (
     <LocationSelection>
       <div className="event-tariffs__content" ref={content} key={locationKey}>
-        {usesSiteTariffs(site) ? <EventApiTariffs category={context} /> : children}
+        {locationTariffs(site, location, context)?.length ? (
+          <EventApiTariffs category={context} />
+        ) : (
+          children
+        )}
       </div>
     </LocationSelection>
   );

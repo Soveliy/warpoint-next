@@ -167,7 +167,7 @@ export default function Zones({ site, variant }) {
         <div className="zones__panels">
           {zones.map((zone, index) => {
             const locked = !siteZoneAvailable(site, location, zone.id);
-            const price = variant === 'home' ? '1000 ₽' : zone.price;
+            const price = zone.price;
             return (
               <section
                 className={'zone zone--red' + (locked ? ' zone--unavailable' : '')}
@@ -259,6 +259,11 @@ export default function Zones({ site, variant }) {
                                       {zone.apiPrice.unitLabel && (
                                         <small> {zone.apiPrice.unitLabel}</small>
                                       )}
+                                    </>
+                                  ) : location && site.city === 'Екатеринбург' && price ? (
+                                    <>
+                                      <small>от </small>
+                                      {price}
                                     </>
                                   ) : (
                                     'Цена по запросу'

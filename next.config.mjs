@@ -11,6 +11,9 @@ const nextConfig = {
   allowedDevOrigins: ['127.0.0.1', 'localhost'],
   async redirects() {
     return [
+      { source: '/home', destination: '/indexpage', permanent: true },
+      { source: '/birthday', destination: '/events/birthday', permanent: true },
+      { source: '/graduation', destination: '/events/graduation', permanent: true },
       { source: '/main.html', destination: '/indexpage', permanent: true },
       { source: '/index.html', destination: '/indexpage', permanent: true },
       { source: '/event_dr.html', destination: '/events/birthday', permanent: true },
