@@ -1,6 +1,6 @@
 .location-selection {
   &__summary {
-    display: block;
+    display: none;
     max-width: 100%;
     margin: 0 0 18px;
     padding: 0;
@@ -42,5 +42,15 @@ html:not([data-location-confirmed='true']) {
   .messenger-menu,
   .game-modal__price {
     display: none !important;
+  }
+}
+
+// The location directory shows public park phones before a park is selected.
+html:not([data-location-confirmed='true']) {
+  .contacts a.contacts__location-phone,
+  .contacts__location-dialog a[href^='tel:'],
+  .contact-locations a.contact-location__phone,
+  .contact-location-detail a[href^='tel:'] {
+    display: inline-flex !important;
   }
 }

@@ -86,6 +86,12 @@
         bottom: calc(100% + #{rem(12px)});
         width: 100%;
         max-width: none;
+        max-height: min(
+          #{rem(320px)},
+          calc(100dvh - #{rem(180px)} - var(--cookie-notice-height, 0px))
+        );
+        overflow-y: auto;
+        overscroll-behavior: contain;
       }
 
       [aria-expanded='true'] {

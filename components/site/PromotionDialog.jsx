@@ -23,18 +23,33 @@ export default function PromotionDialog({ promotion, onClose }) {
         <strong className="promotion-dialog__value">{promotion.value}</strong>
         <p className="promotion-dialog__text">{promotion.summary}</p>
         <p className="promotion-dialog__location promotion-dialog__text">{promotion.location}</p>
-        <p className="promotion-dialog__note promotion-dialog__text">
-          Проверьте срок действия, список участвующих парков и полные условия у администратора перед
-          посещением.
-        </p>
-        <button
-          className="listing-button listing-button--solid promotion-dialog__request"
-          type="button"
-          data-booking-open=""
-          onClick={onClose}
-        >
-          Связаться с парком
-        </button>
+        {promotion.terms ? (
+          <p className="promotion-dialog__text">{promotion.terms}</p>
+        ) : (
+          <p className="promotion-dialog__note promotion-dialog__text">
+            Проверьте срок действия, список участвующих парков и полные условия у администратора
+            перед посещением.
+          </p>
+        )}
+        {promotion.buttonUrl && promotion.buttonText ? (
+          <a
+            className="listing-button listing-button--solid promotion-dialog__request"
+            href={promotion.buttonUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {promotion.buttonText}
+          </a>
+        ) : (
+          <button
+            className="listing-button listing-button--solid promotion-dialog__request"
+            type="button"
+            data-booking-open=""
+            onClick={onClose}
+          >
+            Связаться с парком
+          </button>
+        )}
       </div>
     </SiteContentDialog>
   );

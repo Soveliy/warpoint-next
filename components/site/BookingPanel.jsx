@@ -5,15 +5,24 @@ import { toggleScrollLock } from '../../interactions/_functions';
 import useFormValidation from './useFormValidation';
 import FormError from './FormError';
 import { contactRules, consentRule } from '../../lib/form-validation';
+import BookingFrame from './BookingFrame';
 import SelectedLocationFields from './SelectedLocationFields';
 
-export default function BookingPanel({ site }) {
+export default function BookingPanel({ site, allowOnline = false }) {
   const [open, setOpen] = useState(false);
+  const [online, setOnline] = useState(false);
+  const [requestType, setRequestType] = useState('');
+  const isMobileArena = requestType === 'mobile-arena';
+  const canBookOnline = allowOnline || requestType === 'online';
   const dialog = useRef(null);
   const form = useRef(null);
   const validation = useFormValidation(
     form,
-    { ...contactRules, agreement: consentRule },
+    {
+      ...contactRules,
+      email: { type: 'email', required: isMobileArena },
+      agreement: consentRule,
+    },
     { countryId: site.countryId },
   );
   const trigger = useRef(null);
@@ -26,6 +35,8 @@ export default function BookingPanel({ site }) {
         return;
       event.preventDefault();
       trigger.current = button;
+      setRequestType(button.dataset.bookingForm || '');
+      setOnline(false);
       form.current?.reset();
       validation.reset();
       setOpen(true);
@@ -37,7 +48,10 @@ export default function BookingPanel({ site }) {
   useEffect(() => {
     if (!open) return;
     toggleScrollLock(true);
-    const frame = requestAnimationFrame(() => dialog.current?.focus({ preventScroll: true }));
+    const frame = requestAnimationFrame(() => {
+      if (dialog.current) dialog.current.scrollTop = 0;
+      dialog.current?.focus({ preventScroll: true });
+    });
     return () => {
       cancelAnimationFrame(frame);
       toggleScrollLock(false);
@@ -45,8 +59,26 @@ export default function BookingPanel({ site }) {
   }, [open]);
 
   const close = () => {
+    const opener = trigger.current;
     setOpen(false);
-    requestAnimationFrame(() => trigger.current?.focus?.({ preventScroll: true }));
+    requestAnimationFrame(() => {
+      const returnTargets = [
+        opener,
+        opener?.closest('[data-mobile-menu]') ? document.querySelector('.header__burger') : null,
+        document
+          .getElementById(opener?.dataset.bookingReturnId)
+          ?.querySelector('[aria-haspopup="dialog"]'),
+        ...document.querySelectorAll('[data-booking-open]'),
+      ];
+      const returnTarget = returnTargets.find(
+        (target) =>
+          target?.isConnected &&
+          target.getClientRects().length &&
+          getComputedStyle(target).visibility === 'visible' &&
+          !target.closest('[inert]'),
+      );
+      returnTarget?.focus({ preventScroll: true });
+    });
   };
   const submit = (event) => {
     event.preventDefault();
@@ -57,8 +89,9 @@ export default function BookingPanel({ site }) {
         detail: {
           name: String(values.get('name')).trim(),
           phone: String(values.get('phone')),
-          city: site.city,
-          countryId: site.countryId,
+          ...(isMobileArena && { email: String(values.get('email') || '').trim() }),
+          city: String(values.get('city') || ''),
+          countryId: String(values.get('countryId') || ''),
           arena: document.documentElement.dataset.location || null,
           locationId: String(values.get('locationId') || ''),
           event: trigger.current?.dataset.bookingEvent || '',
@@ -125,11 +158,35 @@ export default function BookingPanel({ site }) {
           </button>
 
           <h2 className="booking-panel__title" id="booking-panel-title">
-            Оставить заявку
+            {isMobileArena
+              ? 'Узнать стоимость выезда'
+              : canBookOnline
+                ? 'Забронировать игру'
+                : 'Оставить заявку'}
           </h2>
           <p className="booking-panel__subtitle" id="booking-panel-description">
-            Менеджер свяжется с вами и поможет с бронированием.
+            {isMobileArena
+              ? 'Менеджер уточнит детали и рассчитает стоимость выездной VR-арены.'
+              : canBookOnline
+                ? 'Запишитесь онлайн на удобное для вас время'
+                : 'Менеджер свяжется с вами и поможет с бронированием.'}
           </p>
+          {canBookOnline && !isMobileArena && (
+            <>
+              <button
+                className="booking-panel__button booking-panel__button--online button-reset"
+                type="button"
+                aria-haspopup="dialog"
+                onClick={() => {
+                  setOpen(false);
+                  setOnline(true);
+                }}
+              >
+                Забронировать онлайн
+              </button>
+              <p className="booking-panel__separator">Или оставьте заявку, и мы свяжемся с вами</p>
+            </>
+          )}
 
           <section className="booking-panel__request" aria-labelledby="booking-request-title">
             <h3 className="visually-hidden" id="booking-request-title">
@@ -141,16 +198,16 @@ export default function BookingPanel({ site }) {
               {...validation.formProps}
               onSubmit={submit}
             >
-              <SelectedLocationFields summary />
+              <SelectedLocationFields />
               <div className="booking-panel__fields">
                 <label className="booking-panel__field" htmlFor="booking-name">
-                  <span className="visually-hidden">Ваше имя</span>
+                  <span className="booking-panel__field-label">Имя</span>
                   <input
                     {...validation.fieldProps('name', 'booking-panel__input')}
                     id="booking-name"
                     name="name"
                     type="text"
-                    placeholder="Имя"
+                    placeholder="Ваше имя"
                     autoComplete="name"
                     minLength={2}
                     maxLength={100}
@@ -159,7 +216,7 @@ export default function BookingPanel({ site }) {
                   <FormError validation={validation} name="name" />
                 </label>
                 <label className="booking-panel__field" htmlFor="booking-phone">
-                  <span className="visually-hidden">Телефон</span>
+                  <span className="booking-panel__field-label">Ваш телефон</span>
                   <input
                     {...validation.fieldProps('phone', 'booking-panel__input')}
                     id="booking-phone"
@@ -173,6 +230,22 @@ export default function BookingPanel({ site }) {
                   />
                   <FormError validation={validation} name="phone" />
                 </label>
+                {isMobileArena && (
+                  <label className="booking-panel__field" htmlFor="booking-email">
+                    <span className="booking-panel__field-label">Email</span>
+                    <input
+                      {...validation.fieldProps('email', 'booking-panel__input')}
+                      id="booking-email"
+                      name="email"
+                      type="email"
+                      placeholder="name@mail.ru"
+                      autoComplete="email"
+                      maxLength={254}
+                      required
+                    />
+                    <FormError validation={validation} name="email" />
+                  </label>
+                )}
               </div>
 
               <label className="booking-panel__agreement">
@@ -201,6 +274,19 @@ export default function BookingPanel({ site }) {
           </section>
         </aside>
       </div>
+      {online && (
+        <BookingFrame
+          site={site}
+          onReturn={() => {
+            setOnline(false);
+            setOpen(true);
+          }}
+          onClose={() => {
+            setOnline(false);
+            close();
+          }}
+        />
+      )}
     </>
   );
 }

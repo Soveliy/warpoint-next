@@ -1,13 +1,16 @@
 'use client';
 import { useSiteLocation } from './SiteLocationProvider';
 
-export default function LocationSelection({ children }) {
+export default function LocationSelection({
+  children,
+  description = 'Покажем тарифы выбранного парка.',
+}) {
   const { location, openLocation } = useSiteLocation();
   if (!location)
     return (
       <div className="location-selection__prompt">
         <h2 className="location-selection__title">Выберите локацию</h2>
-        <p className="location-selection__text">Покажем тарифы выбранного парка.</p>
+        <p className="location-selection__text">{description}</p>
         <button
           className="listing-button listing-button--solid"
           type="button"

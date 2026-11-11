@@ -227,18 +227,17 @@
 
     &--service {
       grid-column: span 2;
+      align-items: center;
       height: clamp(#{rem(120px)}, 23dvh, #{rem(240px)});
       background-color: var(--black);
 
-      > img {
-        position: absolute;
-        top: 48%;
-        left: 50%;
-        width: 58%;
-        height: 58%;
-        object-fit: contain;
-        opacity: 0.9;
-        transform: translate(-50%, -50%);
+      .event-modal__card-label {
+        align-items: center;
+        width: 100%;
+        min-height: 0;
+        padding: rem(16px);
+        overflow-wrap: anywhere;
+        hyphens: auto;
       }
     }
   }
@@ -359,6 +358,68 @@
         border-color: var(--red-500);
       }
     }
+  }
+
+  &__field select {
+    appearance: none;
+    padding-right: rem(48px);
+    background-image: url('/img/svg/select-chevron.svg');
+    background-repeat: no-repeat;
+    background-position: right rem(16px) center;
+    background-size: rem(16px) rem(16px);
+  }
+
+  &__contact-methods {
+    display: flex;
+    flex-wrap: wrap;
+    gap: rem(6px);
+    min-width: 0;
+    margin: rem(8px) 0 0;
+    padding: 0;
+    border: 0;
+  }
+
+  &__contact-methods-title {
+    width: 100%;
+    margin-bottom: rem(10px);
+    padding: 0;
+    color: var(--gray-400);
+    font-size: rem(14px);
+    font-weight: 700;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  &__contact-method {
+    flex: 1;
+    min-width: max-content;
+    cursor: pointer;
+  }
+
+  &__contact-method-label {
+    display: grid;
+    min-height: rem(44px);
+    place-items: center;
+    padding: rem(10px) rem(14px);
+    border: rem(1px) solid var(--gray-700);
+    border-radius: rem(12px);
+    background: var(--gray-700);
+    font-size: rem(14px);
+    font-weight: 600;
+    line-height: 1.2;
+    transition:
+      border-color $duration-fast $ease-base,
+      background-color $duration-fast $ease-base;
+  }
+
+  &__contact-method-input:checked + &__contact-method-label {
+    border-color: var(--red-500);
+    background: rgb(var(--red-600-rgb) / 0.15);
+  }
+
+  &__contact-method-input:focus-visible + &__contact-method-label {
+    outline: $focus-outline-width solid var(--focus-color);
+    outline-offset: $focus-outline-offset;
   }
 
   &__consent {

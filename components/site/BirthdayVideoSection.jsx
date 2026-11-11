@@ -1,11 +1,13 @@
 'use client';
 
+import { eventVideoPosters } from '../../lib/event-media';
 import { siteFields } from '../../lib/site-fields';
 import { usePromoVideo } from './usePromoVideo';
 
 export default function BirthdayVideoSection({ site }) {
   const fields = siteFields(site);
   const promo = usePromoVideo();
+  const poster = eventVideoPosters.birthday;
   return (
     <>
       <section
@@ -19,9 +21,9 @@ export default function BirthdayVideoSection({ site }) {
         {'\n      '}
         <img
           className="video-section__background"
-          src="/img/posters/1.jpg"
-          width="1512"
-          height="982"
+          src={poster.src}
+          width={poster.width}
+          height={poster.height}
           alt=""
         />
         {'\n      '}
@@ -45,7 +47,7 @@ export default function BirthdayVideoSection({ site }) {
             src="/video/video_preview.mp4"
             controls={promo.state === 'open' || promo.playFailed}
             ref={promo.videoRef}
-            poster="/img/posters/1.jpg"
+            poster={poster.src}
             data-promo-video-media=""
           ></video>
           {'\n        '}

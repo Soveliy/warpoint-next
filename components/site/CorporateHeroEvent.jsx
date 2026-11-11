@@ -1,4 +1,7 @@
 import EventHeroFooter from './EventHeroFooter';
+import EventHeroPrice from './EventHeroPrice';
+import EventContentValue from './EventContentValue';
+import EventParameters from './EventParameters';
 
 export default function CorporateHeroEvent() {
   return (
@@ -60,9 +63,9 @@ export default function CorporateHeroEvent() {
         {'\n        '}
         <img
           className="hero-event__character hero-event__character--corp-woman"
-          src="/img/events-hero/corp/3.png"
+          src="/img/events-hero/corp/full-woman.webp"
           width="436"
-          height="756"
+          height="910"
           alt=""
           fetchPriority="high"
           decoding="async"
@@ -71,9 +74,9 @@ export default function CorporateHeroEvent() {
         {'\n        '}
         <img
           className="hero-event__character hero-event__character--corp-man"
-          src="/img/events-hero/corp/2.png"
+          src="/img/events-hero/corp/full-man.webp"
           width="476"
-          height="820"
+          height="1127"
           alt=""
           fetchPriority="high"
           decoding="async"
@@ -94,26 +97,31 @@ export default function CorporateHeroEvent() {
       <div className="hero-event__content container">
         <div className="hero-event__wrap">
           <h1 className="hero-event__title">
-            {'\n            '}
-            <span>{'Захватывающий'}</span>
-            {'\n            '}
-            <span>{'корпоратив'}</span>
-            {'\n            '}
-            <span>{'в парке виртуальной'}</span>
-            {'\n            '}
-            <span>{'реальности'}</span>
-            {'\n          '}
+            <EventContentValue category="corporate" field="title">
+              {'\n            '}
+              <span>{'Захватывающий'}</span>
+              {'\n            '}
+              <span>{'корпоратив'}</span>
+              {'\n            '}
+              <span>{'в парке виртуальной'}</span>
+              {'\n            '}
+              <span>{'реальности'}</span>
+              {'\n          '}
+            </EventContentValue>
           </h1>
           <p className="hero-event__desc">
-            {
-              '\n            Тимбилдинг, праздник или турнир между отделами — проведём мероприятие, которое команда\n            будет вспоминать весь год\n          '
-            }
+            <EventContentValue category="corporate" field="description">
+              {
+                '\n            Тимбилдинг, праздник или турнир между отделами — проведём мероприятие, которое команда\n            будет вспоминать весь год\n          '
+              }
+            </EventContentValue>
           </p>
           <ul className="hero-event__params">
+            <EventHeroPrice category="corporate" />
             {'\n            '}
 
             {'\n            '}
-            <li className="hero-event__param">{'До 30 гостей'}</li>
+            <EventParameters category="corporate" fallback={{ capacity: 'До 30 гостей' }} />
             {'\n          '}
           </ul>
         </div>

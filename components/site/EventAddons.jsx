@@ -1,96 +1,8 @@
 'use client';
 
-import { useState } from 'react';
-
-const commonSlides = [
-  {
-    title: 'Шоу-программы',
-    description: 'Зрелищные шоу, которые удивляют и создают вау-эффект',
-    image: '/img/events/1.jpg',
-    alt: 'Девочка на празднике в Warpoint',
-  },
-  {
-    title: 'Праздничный торт',
-    description: 'Яркое угощение для главного момента праздника',
-    image: '/img/events_modal/1.jpg',
-    alt: 'Ребёнок с праздничным тортом',
-  },
-  {
-    title: 'DJ и ведущий',
-    description: 'Музыка и программа, которые задают настроение вечеру',
-    image: '/img/events_modal/2.jpg',
-    alt: 'Гости празднуют вместе',
-  },
-  {
-    title: 'Фотограф',
-    description: 'Сохраните счастливые моменты и эмоции гостей',
-    image: '/img/events_modal/3.jpg',
-    alt: 'Гости позируют для общей фотографии',
-  },
-  {
-    title: 'VR-игры',
-    description: 'Добавьте к празднику ещё больше виртуальных приключений',
-    image: '/img/events_modal/4.jpg',
-    alt: 'Дети играют в виртуальной реальности',
-  },
-  {
-    title: 'Сторисмейкер',
-    description: 'Живые кадры с друзьями останутся с вами после праздника',
-    image: '/img/events/2.jpg',
-    alt: 'Компания друзей на празднике',
-  },
-  {
-    title: 'Украшение шарами',
-    description: 'Праздничная атмосфера с первых минут встречи гостей',
-    image: '/img/events/3.jpg',
-    alt: 'Гости на празднике с воздушными шарами',
-  },
-  {
-    title: 'VR-станция',
-    description: 'Новые впечатления для каждого участника праздника',
-    image: '/img/gallery/6.jpg',
-    alt: 'Гости играют в шлемах виртуальной реальности',
-  },
-];
-
-const corporateSlides = [
-  { ...commonSlides[0], image: '/img/show.jpg', alt: 'Шоу-программа на празднике в Warpoint' },
-  {
-    title: 'Кейтеринг',
-    description: 'Угощения и напитки для гостей вашего мероприятия',
-    image: '/img/event-addons/catering.webp',
-    alt: 'Гости корпоратива празднуют за столом',
-  },
-  {
-    title: 'Ведущий',
-    description: 'Проведёт программу и создаст настроение для всей команды',
-    image: '/img/event-addons/host.webp',
-    alt: 'Ведущий с микрофоном на мероприятии',
-  },
-  {
-    title: 'Видеосъёмка',
-    description: 'Сохраните лучшие моменты мероприятия на видео',
-    image: '/img/event-addons/camera-operator.webp',
-    alt: 'Видеооператор снимает мероприятие',
-  },
-  {
-    title: 'Киберспортивный турнир',
-    description: 'Командное соревнование с награждением победителей',
-    image: '/img/event-addons/tournament.webp',
-    alt: 'Победители турнира в Warpoint',
-  },
-  commonSlides[5],
-  {
-    ...commonSlides[6],
-    image: '/img/event-addons/catering.webp',
-    alt: 'Гости празднуют среди воздушных шаров',
-  },
-  {
-    ...commonSlides[7],
-    image: '/img/events/adult-birthday.jpg',
-    alt: 'Взрослые гости играют в виртуальной реальности',
-  },
-];
+import { useEffect, useMemo, useState } from 'react';
+import { eventSlides } from '../../lib/event-site-content';
+import { useSiteLocation } from './SiteLocationProvider';
 
 const iconByEvent = {
   birthday: '/img/svg/cake.svg',
@@ -100,20 +12,11 @@ const iconByEvent = {
 };
 
 export default function EventAddons({ eventType = 'birthday' }) {
-  const slides =
-    eventType === 'adult-birthday'
-      ? [
-          {
-            ...corporateSlides[0],
-            image: '/img/event-addons/catering.webp',
-            alt: 'Компания отмечает праздник за столом в WARPOINT',
-          },
-          ...corporateSlides.slice(1),
-        ]
-      : eventType === 'corporate'
-        ? corporateSlides
-        : commonSlides;
-  const [activeIndex, setActiveIndex] = useState(0);
+  const { site, location, locationId } = useSiteLocation();
+  const slides = useMemo(() => eventSlides(site, location, eventType), [site, location, eventType]);
+  const [requestedIndex, setActiveIndex] = useState(0);
+  useEffect(() => setActiveIndex(0), [locationId, eventType]);
+  const activeIndex = Math.min(requestedIndex, slides.length - 1);
   const show = (index) => setActiveIndex(Math.max(0, Math.min(index, slides.length - 1)));
   const onKeyDown = (event) => {
     if (
@@ -128,12 +31,15 @@ export default function EventAddons({ eventType = 'birthday' }) {
     }
   };
 
+  if (!slides.length) return null;
+
   return (
     <section
       className="event-addons"
       aria-labelledby="event-addons-title"
       data-header-theme="brand"
       data-event-addons=""
+      style={{ '--event-addons-count': slides.length }}
       onKeyDown={onKeyDown}
     >
       <div className="event-addons__layout container">
@@ -179,7 +85,7 @@ export default function EventAddons({ eventType = 'birthday' }) {
                 data-event-addons-slide=""
                 aria-hidden={index === activeIndex ? undefined : 'true'}
                 inert={index === activeIndex ? undefined : true}
-                key={`${slide.title}-${index}`}
+                key={slide.id}
               >
                 <div className="event-addons__visual">
                   <img
@@ -239,7 +145,7 @@ export default function EventAddons({ eventType = 'birthday' }) {
                 aria-current={index === activeIndex ? 'true' : undefined}
                 data-event-addons-step={index}
                 onClick={() => show(index)}
-                key={`${slide.title}-${index}`}
+                key={slide.id}
               />
             ))}
           </div>

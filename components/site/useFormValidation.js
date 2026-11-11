@@ -6,16 +6,18 @@ import { validateValue, validationLabels } from '../../lib/form-validation';
 
 export default function useFormValidation(form, rules, { countryId = 'ru' } = {}) {
   const prefix = useId();
-  const { locationId } = useSiteLocation();
+  const { site, locationId } = useSiteLocation();
   useEffect(() => {
     const element = form.current;
     if (!element) return;
-    const appendLocation = (event) => {
+    const appendSiteContext = (event) => {
+      event.formData.set('city', site.city);
+      event.formData.set('countryId', site.countryId);
       if (!event.formData.has('locationId')) event.formData.set('locationId', locationId);
     };
-    element.addEventListener('formdata', appendLocation);
-    return () => element.removeEventListener('formdata', appendLocation);
-  }, [form, locationId]);
+    element.addEventListener('formdata', appendSiteContext);
+    return () => element.removeEventListener('formdata', appendSiteContext);
+  }, [form, locationId, site.city, site.countryId]);
   const [errors, setErrors] = useState({});
   const touched = useRef(new Set());
   const reset = useCallback(() => {

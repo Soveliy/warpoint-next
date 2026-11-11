@@ -1,7 +1,4 @@
-import { siteFields } from '../../lib/site-fields';
-
-export default function CorporateMobileArena({ site }) {
-  const fields = siteFields(site);
+export default function CorporateMobileArena() {
   return (
     <>
       <section
@@ -78,9 +75,10 @@ export default function CorporateMobileArena({ site }) {
               className="mobile-arena__button btn button-reset"
               type="button"
               aria-haspopup="dialog"
-              aria-controls="event-modal"
-              data-event-modal-open=""
-              data-reveal=""
+              aria-controls="booking-panel"
+              data-booking-open=""
+              data-booking-form="mobile-arena"
+              data-booking-event="Выездная VR-арена"
             >
               {'\n        '}
               <svg className="mobile-arena__button-icon" viewBox="0 0 29 29" aria-hidden="true">

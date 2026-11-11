@@ -1,0 +1,51 @@
+.contact-parking {
+  position: absolute;
+  z-index: 4;
+  bottom: 32px;
+  left: 32px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  max-width: calc(100% - 64px);
+  min-height: 102px;
+  padding: 24px;
+  border-radius: 24px;
+  background: rgb(62 62 62 / 0.95);
+  color: var(--white);
+  pointer-events: none;
+
+  &__icon {
+    flex: none;
+    width: 46px;
+    height: 46px;
+    fill: var(--red-500);
+  }
+
+  &__text {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1.25;
+  }
+}
+
+@media (max-width: 767px) {
+  .contact-parking {
+    bottom: 16px;
+    left: 16px;
+    gap: 12px;
+    max-width: calc(100% - 32px);
+    min-height: 80px;
+    padding: 14px;
+    border-radius: 20px;
+
+    &__icon {
+      width: 36px;
+      height: 36px;
+    }
+
+    &__text {
+      font-size: 14px;
+    }
+  }
+}

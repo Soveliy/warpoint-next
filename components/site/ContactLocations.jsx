@@ -1,83 +1,103 @@
 'use client';
 
-import { useRef } from 'react';
+import { useState } from 'react';
 import ContactLocationCard from './ContactLocationCard';
-import ContactIcon from './ContactIcon';
+import ContactLocationDetail from './ContactLocationDetail';
+import ContactParking from './ContactParking';
+import ContactsLocationDialog from './ContactsLocationDialog';
 import LocationMap from './LocationMap';
-import useContactLocation from './useContactLocation';
+import { useSiteLocation } from './SiteLocationProvider';
 
 export default function ContactLocations({ site, locations }) {
-  const { selectedIndex, selectLocation } = useContactLocation(site, locations);
-  const mapPanel = useRef(null);
-  const selected = locations[selectedIndex] || locations[0];
+  const { selectedIndex, selectLocation } = useSiteLocation();
+  const [detailsIndex, setDetailsIndex] = useState(null);
+  const selected = locations.find((location) => location.index === selectedIndex);
+  const mapLocation = selected || locations.find((location) => location.map) || locations[0];
+  const details = locations.find((location) => location.index === detailsIndex);
+  const points = selected
+    ? []
+    : locations.flatMap((location) =>
+        location.map
+          ? [
+              {
+                coordinates: location.map.coordinates.split(',').map(Number),
+                title: location.title,
+              },
+            ]
+          : [],
+      );
 
-  const chooseLocation = (index, showMap = false) => {
+  const chooseLocation = (index) => {
     selectLocation(index);
-    if (showMap && window.matchMedia('(max-width: 1023px)').matches) {
-      mapPanel.current?.scrollIntoView({
-        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
-        block: 'start',
-      });
-    }
+    setDetailsIndex(null);
   };
 
   return (
-    <section
-      className="contact-locations container"
-      id="contacts"
-      aria-labelledby="contact-locations-title"
-    >
-      <div className="contact-locations__head">
-        <div className="contact-locations__heading">
-          <h2 className="contact-locations__title" id="contact-locations-title">
-            Наши парки
-          </h2>
-          <span className="contact-locations__city">
-            <ContactIcon name="mappin" className="contact-locations__city-icon" />
-            {site.city}
-          </span>
-        </div>
-        <a className="contact-locations__change-city" href="/locations/">
-          Выбрать другой город <span aria-hidden="true">↗</span>
-        </a>
-      </div>
-      {selected ? (
-        <div className="contact-locations__layout">
-          <div className="contact-locations__list" aria-label={`Парки WARPOINT: ${site.city}`}>
-            {locations.map((location) => (
-              <ContactLocationCard
-                key={location.id}
-                location={location}
-                selected={location.index === selectedIndex}
-                onSelect={chooseLocation}
-              />
-            ))}
-          </div>
-          <div className="contact-locations__map-panel" id="contact-location-map" ref={mapPanel}>
-            <div className="contact-locations__map-head" aria-live="polite" aria-atomic="true">
-              <span className="contact-locations__map-label">На карте</span>
-              <h3 className="contact-locations__map-title">{selected.title}</h3>
-              <p className="contact-locations__map-address">
-                {site.city}, {selected.address}
-              </p>
-            </div>
-            <LocationMap key={selected.map ? 'map' : 'address'} location={selected} />
-            <a
-              className="contact-locations__map-route"
-              href={selected.route}
-              target="_blank"
-              rel="noopener noreferrer"
+    <>
+      <section
+        className="contact-locations container"
+        id="contacts"
+        aria-label={`Парки WARPOINT в городе ${site.city}`}
+      >
+        {selected ? (
+          <ContactLocationDetail
+            site={site}
+            location={selected}
+            onSelect={chooseLocation}
+            embedded
+          />
+        ) : mapLocation ? (
+          <div className="contact-locations__layout">
+            <div
+              className="contact-locations__list"
+              role="region"
+              aria-label={`Список локаций WARPOINT в городе ${site.city}`}
+              tabIndex={0}
             >
-              <ContactIcon name="route" className="contact-locations__route-icon" />
-              Проложить маршрут
-            </a>
+              {locations.map((location) => (
+                <ContactLocationCard
+                  key={location.id}
+                  location={location}
+                  selected={location.index === selectedIndex}
+                  onSelect={chooseLocation}
+                  onDetails={setDetailsIndex}
+                />
+              ))}
+            </div>
+            <div
+              className="contact-locations__map-panel"
+              role="region"
+              aria-label={
+                selected
+                  ? `Расположение локации ${selected.title}`
+                  : `Все локации WARPOINT на карте города ${site.city}`
+              }
+            >
+              <LocationMap
+                key={mapLocation.map ? 'map' : 'address'}
+                location={mapLocation}
+                points={points}
+              />
+              {site.city === 'Екатеринбург' && (
+                <ContactParking className="contact-locations__parking" />
+              )}
+            </div>
           </div>
-        </div>
-      ) : (
-        <p className="contact-locations__empty">
-          Адреса парков в этом городе появятся здесь после публикации.
-        </p>
+        ) : (
+          <p className="contact-locations__empty">
+            Адреса парков в этом городе появятся здесь после публикации.
+          </p>
+        )}
+      </section>
+      {details && (
+        <ContactsLocationDialog
+          site={site}
+          city={site.city}
+          location={details}
+          onSelect={(index = details.index) => chooseLocation(index)}
+          onClose={() => setDetailsIndex(null)}
+        />
       )}
-    </section>
+    </>
   );
 }

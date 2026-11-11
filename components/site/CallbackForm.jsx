@@ -4,6 +4,7 @@ import { useRef } from 'react';
 import { contactRules, consentRule } from '../../lib/form-validation';
 import useFormValidation from './useFormValidation';
 import FormError from './FormError';
+import SelectedLocationFields from './SelectedLocationFields';
 
 export default function CallbackForm({ countryId, mobile = false }) {
   const form = useRef(null);
@@ -37,6 +38,7 @@ export default function CallbackForm({ countryId, mobile = false }) {
       onSubmit={submit}
     >
       <p className="faq__form-title">Остались вопросы? {mobile && <br />}Задайте их менеджеру</p>
+      <SelectedLocationFields />
       <div className="faq__fields">
         <label className="faq__field" htmlFor={`${prefix}-name`}>
           <span className="visually-hidden">Ваше имя</span>
@@ -95,7 +97,7 @@ export default function CallbackForm({ countryId, mobile = false }) {
         </span>
       </label>
       <FormError validation={validation} name="agreement" />
-      <button className={`faq__submit button-reset${mobile ? '' : ' btn btn--red'}`} type="submit">
+      <button className="faq__submit btn btn--red button-reset" type="submit">
         {!mobile && (
           <svg width="24" height="24" aria-hidden="true">
             <use href="/img/sprite.svg#icon-phone" />

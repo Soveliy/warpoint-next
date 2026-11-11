@@ -251,3 +251,21 @@
     }
   }
 }
+
+.tariff-modal {
+  &__old-price {
+    display: block;
+    color: #99989e;
+    font-size: 14px;
+  }
+  &__price-unit {
+    display: block;
+    margin-top: 4px;
+    color: #99989e;
+    font-size: 12px;
+  }
+}
+
+.tariff-modal__prices--single {
+  grid-template-columns: minmax(0, 1fr);
+}

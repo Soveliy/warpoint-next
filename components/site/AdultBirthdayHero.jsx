@@ -1,4 +1,7 @@
 import EventHeroFooter from './EventHeroFooter';
+import EventHeroPrice from './EventHeroPrice';
+import EventContentValue from './EventContentValue';
+import EventParameters from './EventParameters';
 
 export default function AdultBirthdayHero() {
   return (
@@ -99,16 +102,25 @@ export default function AdultBirthdayHero() {
       <div className="hero-event__content container">
         <div className="hero-event__wrap">
           <h1 className="hero-event__title" id="adult-birthday-title">
-            <span>Взрослый день</span>
-            <span>рождения</span>
-            <span>в VR-парке</span>
+            <EventContentValue category="adult-birthday" field="title">
+              <span className="hero-event__title-word">Взрослый</span>{' '}
+              <br className="hero-event__title-break hero-event__title-break--mobile" />
+              <span className="hero-event__title-word">день</span>
+              <br className="hero-event__title-break hero-event__title-break--desktop" />{' '}
+              <span className="hero-event__title-word">рождения</span>
+              <br />
+              <span className="hero-event__title-word">в VR-парке</span>
+            </EventContentValue>
           </h1>
           <p className="hero-event__desc">
-            Отметьте праздник с друзьями по-новому: командные VR-сражения, азарт и лаунж-зона для
-            всей компании
+            <EventContentValue category="adult-birthday" field="description">
+              Отметьте праздник с друзьями по-новому: командные VR-сражения, азарт и лаунж-зона для
+              всей компании
+            </EventContentValue>
           </p>
           <ul className="hero-event__params">
-            <li className="hero-event__param">до 20 гостей</li>
+            <EventHeroPrice category="adult-birthday" />
+            <EventParameters category="adult-birthday" fallback={{ capacity: 'до 20 гостей' }} />
           </ul>
         </div>
       </div>

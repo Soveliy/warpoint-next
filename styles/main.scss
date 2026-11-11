@@ -22,7 +22,8 @@
 @use 'components/event-request-modal';
 @use 'components/auth-modal';
 @use 'components/booking-panel';
-@use 'components/booking-wizard';
+@use 'components/booking-frame';
+
 @use 'components/ui-kit';
 @use 'ui/link';
 @use 'ui/field';
@@ -77,6 +78,8 @@
 @use 'components/contact-channels';
 @use 'components/contact-locations';
 @use 'components/contact-location';
+@use './components/contact-location-detail';
+@use 'components/contact-parking';
 @use 'components/location-map';
 @use 'components/location-selection';
 @use 'components/contact-business';

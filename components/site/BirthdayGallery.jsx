@@ -1,43 +1,7 @@
 import Image from 'next/image';
+import { eventGalleries } from '../../lib/event-media';
 
-const photos = [
-  {
-    src: '/img/birthday-gallery/1.jpg',
-    width: 2500,
-    height: 1875,
-    alt: 'Дети празднуют день рождения с конфетти в Warpoint',
-  },
-  {
-    src: '/img/birthday-gallery/2.jpg',
-    width: 2500,
-    height: 1875,
-    alt: 'Дети с VR-шлемами и контроллерами на арене Warpoint',
-  },
-  {
-    src: '/img/birthday-gallery/3.jpg',
-    width: 2500,
-    height: 1406,
-    alt: 'Компания детей с VR-шлемами на празднике в Warpoint',
-  },
-  {
-    src: '/img/birthday-gallery/4.jpg',
-    width: 2500,
-    height: 1875,
-    alt: 'Дети играют на VR-арене Warpoint',
-  },
-  {
-    src: '/img/birthday-gallery/5.jpg',
-    width: 2500,
-    height: 1875,
-    alt: 'Гостья детского праздника в Warpoint',
-  },
-  {
-    src: '/img/birthday-gallery/6.jpg',
-    width: 2500,
-    height: 1663,
-    alt: 'Дети радуются игре на VR-арене Warpoint',
-  },
-];
+const photos = eventGalleries.birthday;
 
 export default function BirthdayGallery() {
   return (
@@ -48,8 +12,9 @@ export default function BirthdayGallery() {
             Как проходят <br />
             <span>дни рождения</span>
           </h2>
-          <p className="section-head__lead section-head__lead--lit-width">
-            Провели более 1 000 детских праздников и точно знаем, как сделать день рождения ребенка особенным!
+          <p className="gallery__lead section-head__lead">
+            Провели более 1 000 детских праздников и точно знаем, как сделать день рождения ребенка
+            особенным!
           </p>
         </div>
 

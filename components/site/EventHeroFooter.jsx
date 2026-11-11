@@ -1,3 +1,4 @@
+import GoodPlaceBadge from './GoodPlaceBadge';
 export default function EventHeroFooter({ icon = 'cake' }) {
   return (
     <div className="hero-event__footer container">
@@ -40,19 +41,7 @@ export default function EventHeroFooter({ icon = 'cake' }) {
         </button>
       </div>
       <div className="hero-event__allerts allerts">
-        <div className="allert">
-          <div className="allert__row">
-            <div className="allert__pic">
-              <img src="/img/ypoint.png" alt="Оценка гостей на Яндекс Картах" />
-            </div>
-            <div className="allert__content">
-              <div className="allert__title">5.0</div>
-              <div className="allert__desc">
-                Средняя оценка наших гостей на основании 2048 отзывов
-              </div>
-            </div>
-          </div>
-        </div>
+        <GoodPlaceBadge />
       </div>
     </div>
   );

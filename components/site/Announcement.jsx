@@ -1,7 +1,17 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
-const key = 'warpoint:announcement:new-games';
+import { useSiteLocation } from './SiteLocationProvider';
+import { infoAnnouncement } from '../../lib/site-content';
 export default function Announcement() {
+  const { site, location } = useSiteLocation();
+  const item = infoAnnouncement(site, location);
+  const key =
+    'warpoint:announcement:' +
+    site.hostname +
+    ':' +
+    (location?.id || 'city') +
+    ':' +
+    (item?.description || '');
   const notice = useRef(null);
   const [dismissed, setDismissed] = useState(false);
   const [bottom, setBottom] = useState(null);
@@ -9,7 +19,7 @@ export default function Announcement() {
     try {
       setDismissed(sessionStorage.getItem(key) === 'true');
     } catch {}
-  }, []);
+  }, [key]);
   useEffect(() => {
     if (dismissed || !notice.current) return;
 
@@ -69,7 +79,7 @@ export default function Announcement() {
       window.removeEventListener('resize', schedule);
       if (frame !== null) cancelAnimationFrame(frame);
     };
-  }, [dismissed]);
+  }, [dismissed, key]);
 
   const close = () => {
     try {
@@ -77,7 +87,7 @@ export default function Announcement() {
     } catch {}
     setDismissed(true);
   };
-  if (dismissed) return null;
+  if (dismissed || !item) return null;
   return (
     <aside
       ref={notice}
@@ -85,21 +95,23 @@ export default function Announcement() {
       aria-label="Анонс Warpoint"
       style={bottom === null ? undefined : { '--announcement-bottom': `${bottom}px` }}
     >
-      <img
-        className="announcement__image"
-        src="/img/zones/арена.jpg"
-        width="96"
-        height="96"
-        alt="Игроки на VR-арене"
-        loading="lazy"
-      />
+      {item.image && (
+        <img
+          className="announcement__image"
+          src={item.image}
+          width="96"
+          height="96"
+          alt="Игроки на VR-арене"
+          loading="lazy"
+        />
+      )}
       <div className="announcement__content">
-        <p className="announcement__text">
-          На VR-аренах WARPOINT появились новые игры и детские режимы
-        </p>
-        <a className="announcement__link" href="/games/">
-          Подробнее <span aria-hidden="true">→</span>
-        </a>
+        <p className="announcement__text">{item.description}</p>
+        {item.url && (
+          <a className="announcement__link" href={item.url}>
+            Подробнее <span aria-hidden="true">→</span>
+          </a>
+        )}
       </div>
       <button
         className="announcement__close button-reset"

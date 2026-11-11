@@ -1,11 +1,13 @@
 'use client';
 
+import { eventVideoPosters } from '../../lib/event-media';
 import { siteFields } from '../../lib/site-fields';
 import { usePromoVideo } from './usePromoVideo';
 
 export default function GraduationVideoSection({ site }) {
   const fields = siteFields(site);
   const promo = usePromoVideo();
+  const poster = eventVideoPosters.graduation;
   return (
     <>
       <section
@@ -19,9 +21,9 @@ export default function GraduationVideoSection({ site }) {
         {'\n      '}
         <img
           className="video-section__background"
-          src="/img/posters/3.jpg"
-          width="1512"
-          height="982"
+          src={poster.src}
+          width={poster.width}
+          height={poster.height}
           alt=""
         />
         {'\n      '}
@@ -45,7 +47,7 @@ export default function GraduationVideoSection({ site }) {
             src="/video/video_preview.mp4"
             controls={promo.state === 'open' || promo.playFailed}
             ref={promo.videoRef}
-            poster="/img/posters/3.jpg"
+            poster={poster.src}
             data-promo-video-media=""
           ></video>
           {'\n        '}

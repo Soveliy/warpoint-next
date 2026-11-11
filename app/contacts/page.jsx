@@ -3,9 +3,8 @@ import { getSite, metadataFor } from '../../lib/site';
 import { contactPageSchema, contactsForSite } from '../../lib/contacts-data';
 import ListingPageShell from '../../components/site/ListingPageShell';
 import ListingHero from '../../components/site/ListingHero';
-import ContactChannels from '../../components/site/ContactChannels';
-import Contacts from '../../components/site/Contacts';
-import ContactBusiness from '../../components/site/ContactBusiness';
+import ContactLocations from '../../components/site/ContactLocations';
+import ListingLead from '../../components/site/ListingLead';
 
 export async function generateMetadata() {
   const site = await getSite();
@@ -28,19 +27,25 @@ export default async function ContactsPage() {
     <ListingPageShell site={site}>
       <div className="contacts-page">
         <ListingHero
-          title="Наши"
-          accent="контакты"
+          title="Контакты"
           crumb="Контакты"
           description={
             <>
-              Адреса парков WARPOINT — {site.city}.<br />
-              Выберите удобную локацию и приезжайте за яркими эмоциями!
+              Здесь вы найдёте адреса, контакты и режим работы локаций
+              <br className="contacts-page__description-break" /> WARPOINT. Выберите удобную и
+              постройте маршрут
             </>
           }
         />
-        <ContactChannels contacts={contacts.city} />
-        <Contacts site={site} showAllLocations />
-        <ContactBusiness />
+        <ContactLocations site={site} locations={contacts.locations} />
+        <ListingLead
+          className="contacts-page__request"
+          id="contact-request"
+          site={site}
+          title="Остались"
+          accent="вопросы?"
+          description="Оставьте номер — менеджер перезвонит и ответит на все вопросы"
+        />
       </div>
       <script
         type="application/ld+json"

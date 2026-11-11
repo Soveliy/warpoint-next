@@ -6,4 +6,43 @@
   & .listing-hero__title {
     max-width: 1100px;
   }
+
+  &__request {
+    grid-template-columns: minmax(0, 0.7fr) minmax(0, 1fr);
+    gap: 38px;
+    width: calc(100% - 48px);
+    max-width: 1464px;
+    margin-top: 80px;
+  }
+
+  &__request .listing-lead__fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) minmax(180px, 0.8fr);
+  }
+
+  &__request .listing-lead__description {
+    max-width: 360px;
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .contacts-page__request {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+  }
+}
+
+@media (max-width: 767px) {
+  .contacts-page__description-break {
+    display: none;
+  }
+
+  .contacts-page__request {
+    width: calc(100% - 32px);
+    margin-top: 48px;
+
+    & .listing-lead__fields {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
 }

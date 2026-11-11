@@ -1,10 +1,10 @@
 import FormError from './FormError';
 import SelectedLocationFields from './SelectedLocationFields';
 
-export default function EventRequestFields({ validation }) {
+export default function EventRequestFields({ validation, minDate }) {
   return (
     <>
-      <SelectedLocationFields summary />
+      <SelectedLocationFields />
       <label className="event-request-modal__field">
         <span>Ваше имя</span>
         <input
@@ -30,6 +30,28 @@ export default function EventRequestFields({ validation }) {
           required
         />
         <FormError validation={validation} name="phone" />
+      </label>
+      <label className="event-request-modal__field">
+        <span>Email (необязательно)</span>
+        <input
+          {...validation.fieldProps('email')}
+          name="email"
+          type="email"
+          autoComplete="email"
+          maxLength={254}
+        />
+        <FormError validation={validation} name="email" />
+      </label>
+      <label className="event-request-modal__field">
+        <span>Дата мероприятия</span>
+        <input
+          {...validation.fieldProps('date')}
+          name="date"
+          type="date"
+          min={minDate || undefined}
+          required
+        />
+        <FormError validation={validation} name="date" />
       </label>
       <label className="event-request-modal__consent">
         <input

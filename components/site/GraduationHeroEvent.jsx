@@ -1,4 +1,7 @@
 import EventHeroFooter from './EventHeroFooter';
+import EventHeroPrice from './EventHeroPrice';
+import EventContentValue from './EventContentValue';
+import EventParameters from './EventParameters';
 
 export default function GraduationHeroEvent() {
   return (
@@ -94,22 +97,27 @@ export default function GraduationHeroEvent() {
       <div className="hero-event__content container">
         <div className="hero-event__wrap">
           <h1 className="hero-event__title">
-            {'\n            '}
-            <span>{'Школьный выпускной'}</span>
-            {'\n            '}
-            <span>{'в парке виртуальной'}</span>
-            {'\n            '}
-            <span>{'реальности'}</span>
-            {'\n          '}
+            <EventContentValue category="graduation" field="title">
+              {'\n            '}
+              <span>{'Школьный выпускной'}</span>
+              {'\n            '}
+              <span>{'в парке виртуальной'}</span>
+              {'\n            '}
+              <span>{'реальности'}</span>
+              {'\n          '}
+            </EventContentValue>
           </h1>
           <p className="hero-event__desc">
-            {'Незабываемый праздник в честь окончания учебного года!'}
+            <EventContentValue category="graduation" field="description">
+              {'Незабываемый праздник в честь окончания учебного года!'}
+            </EventContentValue>
           </p>
           <ul className="hero-event__params">
+            <EventHeroPrice category="graduation" />
             {'\n            '}
 
             {'\n            '}
-            <li className="hero-event__param">{'4, 9 и 11 классы'}</li>
+            <EventParameters category="graduation" fallback={{ classes: '4, 9 и 11 классы' }} />
             {'\n          '}
           </ul>
         </div>

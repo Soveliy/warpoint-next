@@ -33,3 +33,36 @@ test('invalid indices are not persisted', () => {
   assert.equal(selectionCookie(site, -1), null);
   assert.equal(selectionCookie(site, 99), null);
 });
+
+test('stable arena UUID survives renaming and reordering, without matching a replacement park', () => {
+  const identified = {
+    ...site,
+    arenas: site.arenas.map((arena, index) => ({ ...arena, id: 'stable-' + index })),
+  };
+  const cookie = selectionCookie(identified, 0);
+  const renamed = {
+    ...identified,
+    arenas: [
+      { ...identified.arenas[1] },
+      { ...identified.arenas[0], title: 'Новое имя', address: 'Новый адрес' },
+    ],
+  };
+  assert.equal(selectionFromCookie(renamed, cookie), 1);
+  assert.equal(
+    selectionFromCookie(
+      { ...identified, arenas: [{ ...identified.arenas[0], id: 'replacement' }] },
+      cookie,
+    ),
+    null,
+  );
+  assert.equal(selectionFromCookie(site, cookie), 0);
+});
+
+test('old title and address cookies remain valid when UUIDs are introduced', () => {
+  const cookie = selectionCookie(site, 1);
+  const identified = {
+    ...site,
+    arenas: site.arenas.map((arena, index) => ({ ...arena, id: 'stable-' + index })),
+  };
+  assert.equal(selectionFromCookie(identified, cookie), 1);
+});

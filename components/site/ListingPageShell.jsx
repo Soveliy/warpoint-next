@@ -6,6 +6,7 @@ import GameModal from './GameModal';
 import CookieNotice from './CookieNotice';
 import SiteBehaviors from '../SiteBehaviors';
 import BookingPanel from './BookingPanel';
+import EventModal from './EventModal';
 import LocationModal from './LocationModal';
 
 export default function ListingPageShell({ site, children, gameModal = false }) {
@@ -20,6 +21,7 @@ export default function ListingPageShell({ site, children, gameModal = false }) 
       {gameModal && <GameModal />}
       <CookieNotice site={site} />
       <LocationModal site={site} />
+      <EventModal site={site} />
       <BookingPanel site={site} />
       <SiteBehaviors site={site} />
     </SiteLocationProvider>

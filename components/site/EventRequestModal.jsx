@@ -4,17 +4,26 @@ import { useEffect, useRef, useState } from 'react';
 import { toggleScrollLock } from '../../interactions/_functions';
 import useFormValidation from './useFormValidation';
 import EventRequestFields from './EventRequestFields';
-import { contactRules, consentRule } from '../../lib/form-validation';
+import { useSiteLocation } from './SiteLocationProvider';
+import { contactRules, consentRule, localDateKey } from '../../lib/form-validation';
 
 export default function EventRequestModal({ eventType }) {
+  const { site } = useSiteLocation();
   const [open, setOpen] = useState(false);
   const [tariff, setTariff] = useState('');
+  const [minDate, setMinDate] = useState('');
   const dialog = useRef(null);
   const form = useRef(null);
-  const validation = useFormValidation(form, {
-    ...contactRules,
-    consent: consentRule,
-  });
+  const validation = useFormValidation(
+    form,
+    {
+      ...contactRules,
+      email: { type: 'email' },
+      date: { type: 'date', required: true, future: true },
+      consent: consentRule,
+    },
+    { countryId: site.countryId },
+  );
   const trigger = useRef(null);
 
   useEffect(() => {
@@ -34,6 +43,7 @@ export default function EventRequestModal({ eventType }) {
         '';
       trigger.current = button;
       setTariff(tariffName);
+      setMinDate(localDateKey());
       form.current?.reset();
       validation.reset();
       setOpen(true);
@@ -87,10 +97,12 @@ export default function EventRequestModal({ eventType }) {
           tariff,
           name: String(values.get('name')).trim(),
           phone: String(values.get('phone')),
+          email: String(values.get('email') || '').trim(),
+          date: String(values.get('date') || ''),
           locationId: String(values.get('locationId') || ''),
           consent: values.get('consent') === 'on',
-          city: document.documentElement.dataset.city || '',
-          countryId: document.documentElement.dataset.country || 'ru',
+          city: String(values.get('city') || ''),
+          countryId: String(values.get('countryId') || ''),
         },
       }),
     );
@@ -140,7 +152,7 @@ export default function EventRequestModal({ eventType }) {
           {'\n    '}
           <p className="event-request-modal__lead">
             {
-              '\n      Оставьте имя и телефон. Менеджер свяжется с вами и поможет с организацией.\n    '
+              'Оставьте контакты и дату праздника. Менеджер свяжется с вами и поможет с организацией.'
             }
           </p>
           {'\n    '}
@@ -150,7 +162,7 @@ export default function EventRequestModal({ eventType }) {
             {...validation.formProps}
             onSubmit={onSubmit}
           >
-            <EventRequestFields validation={validation} />
+            <EventRequestFields validation={validation} minDate={minDate} />
             <button className="event-request-modal__submit btn btn--red" type="submit">
               {'\n        Оставить заявку\n      '}
             </button>

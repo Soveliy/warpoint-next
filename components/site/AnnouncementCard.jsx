@@ -2,12 +2,14 @@ export default function AnnouncementCard({ event, priority, onOpen }) {
   return (
     <article className="announcement-card">
       <div className="announcement-card__image">
-        <img
-          className="announcement-card__cover"
-          src={event.image}
-          alt=""
-          loading={priority ? 'eager' : 'lazy'}
-        />
+        {event.image && (
+          <img
+            className="announcement-card__cover"
+            src={event.image}
+            alt=""
+            loading={priority ? 'eager' : 'lazy'}
+          />
+        )}
         <div className="announcement-card__date">
           <strong className="announcement-card__day">{event.day}</strong>
           <span className="announcement-card__date-copy">
@@ -31,7 +33,7 @@ export default function AnnouncementCard({ event, priority, onOpen }) {
             <svg className="announcement-card__detail-icon" aria-hidden="true">
               <use href="/img/sprite.svg#icon-calendar" />
             </svg>
-            <time dateTime={`${event.date}T${event.time}`}>
+            <time dateTime={event.startsAt || `${event.date}T${event.time}`}>
               {event.day} {event.month}, {event.time}
             </time>
           </span>
@@ -51,14 +53,16 @@ export default function AnnouncementCard({ event, priority, onOpen }) {
           >
             Подробнее
           </button>
-          <button
-            className="listing-button listing-button--solid announcement-card__action--primary announcement-card__action"
-            type="button"
-            data-booking-open=""
-            data-booking-event={event.title}
-          >
-            Оставить заявку
-          </button>
+          {event.showRequestButton !== false && (
+            <button
+              className="listing-button listing-button--solid announcement-card__action--primary announcement-card__action"
+              type="button"
+              data-booking-open=""
+              data-booking-event={event.title}
+            >
+              Оставить заявку
+            </button>
+          )}
         </div>
       </div>
     </article>

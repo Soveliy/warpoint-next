@@ -1,7 +1,15 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { gameFilters, gameZoneOrder, matchesGameFilters } from '../../lib/catalog-filters';
+import {
+  gameFilters,
+  gameZoneOrder,
+  gameFilterValues,
+  matchesGameFilters,
+} from '../../lib/catalog-filters';
+
+const gameWords = { one: 'игра', few: 'игры', many: 'игр', other: 'игры' };
+const gamePlural = new Intl.PluralRules('ru');
 
 export default function GamesFilters({
   games,
@@ -20,7 +28,7 @@ export default function GamesFilters({
           key,
           key === 'zone'
             ? [...new Set([...gameZoneOrder, ...games.map((game) => game.zone)])]
-            : [...new Set(games.map((game) => game[key]))],
+            : [...new Set(games.flatMap((game) => gameFilterValues(game, key)))],
         ]),
       ),
     [games],
@@ -68,7 +76,9 @@ export default function GamesFilters({
               >
                 {options[key].map((value) => {
                   const count = games.filter(
-                    (game) => game[key] === value && matchesGameFilters(game, selection, key),
+                    (game) =>
+                      gameFilterValues(game, key).includes(value) &&
+                      matchesGameFilters(game, selection, key),
                   ).length;
                   const checked = selection[key].includes(value);
                   return (
@@ -127,7 +137,7 @@ export default function GamesFilters({
           Сбросить
         </button>
         <span>
-          Найдено {visibleCount} {visibleCount === 1 ? 'игра' : visibleCount < 5 ? 'игры' : 'игр'}
+          Найдено {visibleCount} {gameWords[gamePlural.select(visibleCount)]}
         </span>
       </div>
     </div>

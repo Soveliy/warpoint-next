@@ -1,7 +1,8 @@
-import { siteFields } from '../../lib/site-fields';
+import EventPriceValue from './EventPriceValue';
+import EventContentValue from './EventContentValue';
+import EventParameters from './EventParameters';
 
-export default function HomeEvents({ site }) {
-  const fields = siteFields(site);
+export default function HomeEvents() {
   return (
     <>
       <section
@@ -121,19 +122,26 @@ export default function HomeEvents({ site }) {
                   <div className="events__details">
                     {'\n              '}
                     <h3 className="events__subtitle">
-                      {'День'}
-                      <br />
-                      {'рождения'}
+                      <EventContentValue category="birthday" field="title">
+                        {'День'}
+                        <br />
+                        {'рождения'}
+                      </EventContentValue>
                     </h3>
                     {'\n              '}
                     <div className="events__price">
-                      {fields.local ? 'от 15 900 ₽' : 'Цена по запросу'}
+                      <EventPriceValue category="birthday" fallback="15 900 ₽" />
                     </div>
                     {'\n              '}
+                    <div className="events__params">
+                      <EventParameters category="birthday" as="span" className="events__param" />
+                    </div>
                     <p className="events__description">
-                      {
-                        '\n                Виртуальные приключения, в которых смогут принять участие и взрослые,\n                и дети!\n              '
-                      }
+                      <EventContentValue category="birthday" field="description">
+                        {
+                          '\n                Виртуальные приключения, в которых смогут принять участие и взрослые,\n                и дети!\n              '
+                        }
+                      </EventContentValue>
                     </p>
                     {'\n              '}
                     <button
@@ -175,19 +183,26 @@ export default function HomeEvents({ site }) {
                   <div className="events__details">
                     {'\n              '}
                     <h3 className="events__subtitle">
-                      {'Корпоратив'}
-                      <br />
-                      {'и тимбилдинг'}
+                      <EventContentValue category="corporate" field="title">
+                        {'Корпоратив'}
+                        <br />
+                        {'и тимбилдинг'}
+                      </EventContentValue>
                     </h3>
                     {'\n              '}
                     <div className="events__price">
-                      {fields.local ? 'от 20 900 ₽' : 'Цена по запросу'}
+                      <EventPriceValue category="corporate" fallback="20 900 ₽" />
                     </div>
                     {'\n              '}
+                    <div className="events__params">
+                      <EventParameters category="corporate" as="span" className="events__param" />
+                    </div>
                     <p className="events__description">
-                      {
-                        '\n                Оставьте дедлайны в офисе! Устройте командный турнир и выясните, какой\n                отдел самый крутой.\n              '
-                      }
+                      <EventContentValue category="corporate" field="description">
+                        {
+                          '\n                Оставьте дедлайны в офисе! Устройте командный турнир и выясните, какой\n                отдел самый крутой.\n              '
+                        }
+                      </EventContentValue>
                     </p>
                     {'\n              '}
                     <button
@@ -229,19 +244,26 @@ export default function HomeEvents({ site }) {
                   <div className="events__details">
                     {'\n              '}
                     <h3 className="events__subtitle">
-                      {'Школьный'}
-                      <br />
-                      {'выпускной'}
+                      <EventContentValue category="graduation" field="title">
+                        {'Школьный'}
+                        <br />
+                        {'выпускной'}
+                      </EventContentValue>
                     </h3>
                     {'\n              '}
                     <div className="events__price">
-                      {fields.local ? 'от 15 900 ₽' : 'Цена по запросу'}
+                      <EventPriceValue category="graduation" fallback="15 900 ₽" />
                     </div>
                     {'\n              '}
+                    <div className="events__params">
+                      <EventParameters category="graduation" as="span" className="events__param" />
+                    </div>
                     <p className="events__description">
-                      {
-                        '\n                Незабываемый праздник в честь окончания учебного года. Подходит для 4,\n                9 и 11 классов\n              '
-                      }
+                      <EventContentValue category="graduation" field="description">
+                        {
+                          '\n                Незабываемый праздник в честь окончания учебного года. Подходит для 4,\n                9 и 11 классов\n              '
+                        }
+                      </EventContentValue>
                     </p>
                     {'\n              '}
                     <button
@@ -283,25 +305,33 @@ export default function HomeEvents({ site }) {
                   <div className="events__details">
                     {'\n              '}
                     <h3 className="events__subtitle">
-                      {'Взрослый'}
-                      <br />
-                      {'день рождения'}
+                      <EventContentValue category="adult-birthday" field="title">
+                        {'Взрослый'}
+                        <br />
+                        {'день рождения'}
+                      </EventContentValue>
                     </h3>
                     {'\n              '}
                     <div className="events__price">
-                      {fields.local ? 'от 15 900 ₽' : 'Цена по запросу'}
+                      <EventPriceValue category="adult-birthday" fallback="15 900 ₽" />
                     </div>
                     {'\n              '}
+                    <div className="events__params">
+                      <EventParameters
+                        category="adult-birthday"
+                        as="span"
+                        className="events__param"
+                      />
+                    </div>
                     <p className="events__description">
-                      {
-                        '\n                Организуем необычный праздник, так что у друзей челюсть отвиснет! Поиграли — а\n                дальше можно и по барам.\n              '
-                      }
+                      <EventContentValue category="adult-birthday" field="description">
+                        {
+                          '\n                Организуем необычный праздник, так что у друзей челюсть отвиснет! Поиграли — а\n                дальше можно и по барам.\n              '
+                        }
+                      </EventContentValue>
                     </p>
                     {'\n              '}
-                    <a
-                      className="events__more button-reset"
-                      href="/events/adult-birthday/"
-                    >
+                    <a className="events__more button-reset" href="/events/adult-birthday/">
                       {'\n                Подробнее\n              '}
                     </a>
                     {'\n            '}

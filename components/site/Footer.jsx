@@ -390,7 +390,29 @@ export default function Footer({ site }) {
                 loading="lazy"
               />
               {'\n        '}
-              <figcaption>
+              <div className="footer__app-stores" aria-label="Скачать приложение WARPOINT">
+                <a className="footer__store" href="#" aria-label="Скачать в App Store">
+                  <img
+                    className="footer__store-badge"
+                    src="/img/app-store-badge-ru.svg"
+                    width="135"
+                    height="40"
+                    alt="Загрузите в App Store"
+                    loading="lazy"
+                  />
+                </a>
+                <a className="footer__store" href="#" aria-label="Скачать в Google Play">
+                  <img
+                    className="footer__store-badge footer__store-badge--google"
+                    src="/img/google-play-badge-ru.png"
+                    width="135"
+                    height="52"
+                    alt="Доступно в Google Play"
+                    loading="lazy"
+                  />
+                </a>
+              </div>
+              <figcaption className="footer__app-caption">
                 {'Скачать приложение'}
                 <br />
                 {'Warpoint для iOS и Android'}

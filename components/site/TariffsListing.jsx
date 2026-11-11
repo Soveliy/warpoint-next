@@ -1,25 +1,47 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   eventCategoryLinks,
   tariffCategories,
   tariffs,
   eventTariffs,
 } from '../../lib/catalog-data';
+import { locationTariffs, usesSiteTariffs } from '../../lib/site-tariffs';
 import { siteFields } from '../../lib/site-fields';
 import ListingLead from './ListingLead';
 import LocationSelection from './LocationSelection';
+import { useSiteLocation } from './SiteLocationProvider';
 import TariffCard from './TariffCard';
 import TariffDetail from './TariffDetail';
 
 export default function TariffsListing({ site }) {
+  const { location } = useSiteLocation();
   const [category, setCategory] = useState('arena');
   const [detail, setDetail] = useState(null);
   const dialog = useRef(null);
   const local = siteFields(site).local;
-  const cards = tariffs[category] || (eventCategoryLinks[category] ? eventTariffs : []);
-  const selected = tariffCategories.find(([key]) => key === category)?.[1];
+  const api = usesSiteTariffs(site);
+  const categories = api
+    ? [
+        ...tariffCategories.map(([key, label]) => [
+          key,
+          key === 'birthday' ? 'Детские дни рождения' : label,
+        ]),
+        ...(locationTariffs(site, location, 'adult-birthday').length
+          ? [['adult-birthday', 'Взрослые дни рождения']]
+          : []),
+      ]
+    : tariffCategories;
+  const cards =
+    locationTariffs(site, location, category) ??
+    (tariffs[category] || (eventCategoryLinks[category] ? eventTariffs : []));
+  const selected = categories.find(([key]) => key === category)?.[1];
+  useEffect(() => {
+    dialog.current?.close();
+    setDetail(null);
+    if (!categories.some(([key]) => key === category)) setCategory('arena');
+  }, [location]);
   const openDetail = (tariff) => {
     setDetail(tariff);
     requestAnimationFrame(() => dialog.current?.showModal());
@@ -29,18 +51,18 @@ export default function TariffsListing({ site }) {
     setDetail(null);
   };
   const onTabKeyDown = (event) => {
-    const current = tariffCategories.findIndex(([key]) => key === category);
+    const current = categories.findIndex(([key]) => key === category);
     const positions = {
-      ArrowRight: (current + 1) % tariffCategories.length,
-      ArrowLeft: (current - 1 + tariffCategories.length) % tariffCategories.length,
+      ArrowRight: (current + 1) % categories.length,
+      ArrowLeft: (current - 1 + categories.length) % categories.length,
       Home: 0,
-      End: tariffCategories.length - 1,
+      End: categories.length - 1,
     };
     const next = positions[event.key];
     if (next === undefined) return;
     event.preventDefault();
-    setCategory(tariffCategories[next][0]);
-    document.getElementById(`tariff-tab-${tariffCategories[next][0]}`)?.focus();
+    setCategory(categories[next][0]);
+    document.getElementById(`tariff-tab-${categories[next][0]}`)?.focus();
   };
 
   return (
@@ -53,7 +75,7 @@ export default function TariffsListing({ site }) {
             aria-label="Категории тарифов"
             onKeyDown={onTabKeyDown}
           >
-            {tariffCategories.map(([key, label]) => (
+            {categories.map(([key, label]) => (
               <button
                 key={key}
                 type="button"
@@ -103,14 +125,16 @@ export default function TariffsListing({ site }) {
             )}
           </div>
           <p className="tariffs-listing__note">
-            <span className="tariffs-listing__asterisk">*</span> В игровых зонах цена указана за
-            одного человека, у мероприятий — за всю группу.
+            <span className="tariffs-listing__asterisk">*</span>{' '}
+            {api
+              ? 'Единица расчёта — за человека или за компанию — указана у каждого тарифа.'
+              : 'В игровых зонах цена указана за одного человека, у мероприятий — за всю группу.'}
             <br />
             Пятница, выходные и праздничные дни рассчитываются по тарифу «Пт–Вс и праздники».
           </p>
         </LocationSelection>
       </section>
-      <ListingLead site={site} title="Поможем" accent="выбрать тариф" />
+      {location && <ListingLead site={site} title="Поможем" accent="выбрать тариф" />}
       <TariffDetail
         dialogRef={dialog}
         detail={detail}

@@ -1,7 +1,15 @@
 export default function GameCard({ game }) {
   return (
     <article className="games-listing__card">
-      <img className="games-listing__cover" src={`/${game.cover}`} alt="" loading="lazy" />
+      <img
+        className="games-listing__cover"
+        src={`/${game.cover}`}
+        width={game.catalogWidth}
+        height={game.catalogHeight}
+        alt=""
+        loading="lazy"
+        decoding="async"
+      />
       <div className="games-listing__tags" aria-label="Параметры игры">
         <span className="games-listing__tag">{game.zone}</span>
         <span className="games-listing__tag">{game.genre}</span>

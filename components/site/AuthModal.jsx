@@ -6,6 +6,7 @@ import { toggleScrollLock } from '../../interactions/_functions';
 import { formatPhoneValue, phoneDigits } from '../../lib/phone';
 import useFormValidation from './useFormValidation';
 import FormError from './FormError';
+import SelectedLocationFields from './SelectedLocationFields';
 
 export default function AuthModal({ site }) {
   const [open, setOpen] = useState(false);
@@ -172,6 +173,7 @@ export default function AuthModal({ site }) {
         hidden={tab !== 'phone'}
         onSubmit={onSubmit}
       >
+        <SelectedLocationFields includeLocation={false} />
         <label className="auth-modal__label" htmlFor="auth-phone">
           Номер телефона
         </label>
@@ -279,6 +281,7 @@ export default function AuthModal({ site }) {
         hidden={tab !== 'password'}
         onSubmit={onSubmit}
       >
+        <SelectedLocationFields includeLocation={false} />
         <label className="auth-modal__label" htmlFor="auth-login">
           Логин
         </label>

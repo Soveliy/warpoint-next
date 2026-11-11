@@ -1,8 +1,11 @@
 import EventHeroFooter from './EventHeroFooter';
+import EventHeroPrice from './EventHeroPrice';
+import EventContentValue from './EventContentValue';
+import EventParameters from './EventParameters';
 
 export default function BirthdayHeroEvent() {
   return (
-    <section className="hero-event hero-event--orange" data-event-hero="">
+    <section className="hero-event hero-event--orange hero-event--birthday" data-event-hero="">
       <div className="hero-event__scene" aria-hidden="true">
         {'\n        '}
         <img
@@ -86,24 +89,29 @@ export default function BirthdayHeroEvent() {
       <div className="hero-event__content container">
         <div className="hero-event__wrap">
           <h1 className="hero-event__title">
-            {'\n            '}
-            <span>{'День рождения'}</span>
-            {'\n            '}
-            <span>{'в парке виртуальной'}</span>
-            {'\n            '}
-            <span>{'реальности'}</span>
-            {'\n          '}
+            <EventContentValue category="birthday" field="title">
+              {'\n            '}
+              <span>{'День рождения'}</span>
+              {'\n            '}
+              <span>{'в парке виртуальной'}</span>
+              {'\n            '}
+              <span>{'реальности'}</span>
+              {'\n          '}
+            </EventContentValue>
           </h1>
           <p className="hero-event__desc">
-            {
-              '\n            Организуем запоминающееся мероприятие, в котором смогут принять участие и взрослые, и\n            дети!\n          '
-            }
+            <EventContentValue category="birthday" field="description">
+              {
+                '\n            Организуем запоминающееся мероприятие, в котором смогут принять участие и взрослые, и\n            дети!\n          '
+              }
+            </EventContentValue>
           </p>
           <ul className="hero-event__params">
+            <EventHeroPrice category="birthday" />
             {'\n            '}
 
             {'\n            '}
-            <li className="hero-event__param">{'12 +'}</li>
+            <EventParameters category="birthday" fallback={{ age: '6+' }} />
             {'\n          '}
           </ul>
         </div>

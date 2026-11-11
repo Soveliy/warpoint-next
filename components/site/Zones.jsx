@@ -1,646 +1,308 @@
-import { siteFields } from '../../lib/site-fields';
+'use client';
 
-export default function Zones({ site }) {
-  const fields = siteFields(site);
+import { useRef, useState } from 'react';
+import { useSiteLocation } from './SiteLocationProvider';
+import { siteZones, siteZoneAvailable, usesSiteTariffs } from '../../lib/site-tariffs';
+import ZoneLocations from './ZoneLocations';
+
+function ZoneIcon({ zone }) {
   return (
-    <>
-      <section
-        className="zones"
-        data-header-theme="brand"
-        data-zone-tabs=""
-        aria-labelledby="zones-title"
-      >
-        {'\n      '}
-        <div className="zones__inner container">
-          {'\n        '}
-          <div className="zones__heading section-head">
-            {'\n          '}
-            <h2 className="section-head__title" id="zones-title">
-              {'\n            '}
-              <span>{'Игровые зоны'}</span> <br />
-              {'\n            в нашем парке\n          '}
-            </h2>
-            {'\n          '}
-            <div className="section-head__lead section-head__lead--big-width">
-              {
-                '\n            Выберите свою зону и погрузитесь в мир технологий, адреналина и незабываемых эмоций\n          '
-              }
-            </div>
-            {'\n        '}
-          </div>
-          {'\n\n        '}
-          <span className="visually-hidden" id="zones-navigation-label">
-            {'Доступные игровые зоны'}
-          </span>
-          {'\n        '}
-          <div className="zones__navigation">
-            {'\n          '}
-            <div
-              className="zones__tabs"
-              id="zones-activity-tabs"
-              role="group"
-              aria-labelledby="zones-navigation-label"
-            >
-              {'\n            '}
-              <button
-                className="zones__tab button-reset is-active"
-                id="zone-tab-arena"
-                type="button"
-                aria-pressed="true"
-                aria-controls="zone-panel-arena"
-                data-zone-tab=""
-              >
-                {'\n              '}
-                <svg className="zones__tab-icon" aria-hidden="true">
-                  {'\n                '}
-                  <use href="/img/sprite.svg#icon-arena"></use>
-                  {'\n              '}
-                </svg>
-                {'\n              '}
-                <span>{'Арена'}</span>
-                {'\n            '}
-              </button>
-              {'\n            '}
-              <button
-                className="zones__tab button-reset"
-                id="zone-tab-vr"
-                type="button"
-                aria-pressed="false"
-                aria-controls="zone-panel-vr"
-                tabIndex="-1"
-                data-zone-tab=""
-              >
-                {'\n              '}
-                <svg className="zones__tab-icon" aria-hidden="true">
-                  {'\n                '}
-                  <use href="/img/sprite.svg#icon-vr"></use>
-                  {'\n              '}
-                </svg>
-                {'\n              '}
-                <span>{'Вр станция'}</span>
-                {'\n            '}
-              </button>
-              {'\n            '}
-              <button
-                className="zones__tab button-reset"
-                id="zone-tab-extreme"
-                type="button"
-                aria-pressed="false"
-                aria-controls="zone-panel-extreme"
-                tabIndex="-1"
-                data-zone-tab=""
-              >
-                {'\n              '}
-                <svg className="zones__tab-icon" aria-hidden="true">
-                  {'\n                '}
-                  <use href="/img/sprite.svg#icon-lightning"></use>
-                  {'\n              '}
-                </svg>
-                {'\n              '}
-                <span>{'Экстрим'}</span>
-                {'\n            '}
-              </button>
-              {'\n            '}
-              <button
-                className="zones__tab button-reset"
-                id="zone-tab-simulators"
-                type="button"
-                aria-pressed="false"
-                aria-controls="zone-panel-simulators"
-                tabIndex="-1"
-                data-zone-tab=""
-              >
-                {'\n              '}
-                <svg className="zones__tab-icon" aria-hidden="true">
-                  {'\n                '}
-                  <use href="/img/sprite.svg#icon-wheel"></use>
-                  {'\n              '}
-                </svg>
-                {'\n              '}
-                <span>{'Симуляторы'}</span>
-                {'\n            '}
-              </button>
-              {'\n            '}
-              <button
-                className="zones__tab button-reset"
-                id="zone-tab-lounge"
-                type="button"
-                aria-pressed="false"
-                aria-controls="zone-panel-lounge"
-                tabIndex="-1"
-                data-zone-tab=""
-              >
-                {'\n              '}
-                <svg className="zones__tab-icon" aria-hidden="true">
-                  {'\n                '}
-                  <use href="/img/sprite.svg#icon-confeti"></use>
-                  {'\n              '}
-                </svg>
-                {'\n              '}
-                <span>{'Лаунж'}</span>
-                {'\n            '}
-              </button>
-              {'\n          '}
-            </div>
-            {'\n        '}
-          </div>
-          {'\n\n        '}
-          <div className="zones__mobile-select" data-zone-mobile-select="">
-            {'\n          '}
-            <span className="zones__mobile-label" id="zones-mobile-select-label">
-              {'\n            Выберите свою игровую зону\n          '}
-            </span>
-            {'\n          '}
-            <button
-              className="zones__mobile-trigger button-reset"
-              type="button"
-              aria-haspopup="listbox"
-              aria-expanded="false"
-              aria-controls="zones-mobile-options"
-              aria-labelledby="zones-mobile-select-label zones-mobile-select-value"
-              data-zone-mobile-trigger=""
-            >
-              {'\n            '}
-              <span
-                className="zones__mobile-value"
-                id="zones-mobile-select-value"
-                data-zone-mobile-value=""
-              >
-                {'\n              '}
-                <svg className="zones__tab-icon" aria-hidden="true">
-                  {'\n                '}
-                  <use href="/img/sprite.svg#icon-gun"></use>
-                  {'\n              '}
-                </svg>
-                {'\n              '}
-                <span>{'Арена'}</span>
-                {'\n            '}
-              </span>
-              {'\n            '}
-              <span className="zones__mobile-chevron" aria-hidden="true"></span>
-              {'\n          '}
-            </button>
-            {'\n          '}
-            <div
-              className="zones__mobile-dropdown"
-              id="zones-mobile-options"
-              role="listbox"
-              aria-labelledby="zones-mobile-select-label"
-              data-zone-mobile-menu=""
-              hidden={true}
-            ></div>
-            {'\n        '}
-          </div>
-          {'\n\n        '}
-          <div className="zones__panels">
-            {'\n          '}
-            <section
-              className="zone zone--red"
-              id="zone-panel-arena"
-              role="region"
-              aria-labelledby="zone-tab-arena"
-              data-zone-panel=""
-            >
-              {'\n            '}
-              <div className="zone__row">
-                {'\n              '}
-                <div className="zone__image-container">
-                  {'\n                '}
-                  <img
-                    className="zone__image"
-                    src="/img/zones/арена.jpg"
-                    width="3000"
-                    height="1996"
-                    alt="Игроки на арене WARPOINT"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  {'\n                '}
-                  <button
-                    className="play-button play-button--centered"
-                    type="button"
-                    data-zone-video="arena"
-                    aria-label="Смотреть видео зоны «Арена»"
-                  >
-                    {'\n                  '}
-                    <svg className="play-button__icon" aria-hidden="true">
-                      {'\n                    '}
-                      <use href="/img/sprite.svg#icon-play"></use>
-                      {'\n                  '}
-                    </svg>
-                    {'\n                '}
-                  </button>
-                  {'\n              '}
-                </div>
-                {'\n              '}
-                <div className="zone__content">
-                  {'\n                '}
-                  <div className="zone__wrap">
-                    {'\n                  '}
-                    <h3 className="zone__title">
-                      <span>{'Арена'}</span>
-                      {' для командных сражений'}
-                    </h3>
-                    {'\n                  '}
-                    <p className="zone__desc">
-                      {
-                        '\n                    Совместные игры на большой площадке, по которой участники могут свободно\n                    перемещаться. В виртуальном мире все участники видят персонажей друг друга и\n                    могут взаимодействовать между собой\n                  '
-                      }
-                    </p>
-                    {'\n                  '}
-                    <ul className="zone__params">
-                      {'\n                    '}
-                      <li className="zone__params-item">{'площадь 350 м²'}</li>
-                      {'\n                    '}
-                      <li className="zone__params-item">{'2–10 человек'}</li>
-                      {'\n                    '}
-                      {fields.local && (
-                        <li className="zone__params-item" data-location-price="">
-                          {'1000 ₽'}
-                        </li>
-                      )}
-                      {'\n                    '}
-                      <li className="zone__params-item">{'12+'}</li>
-                      {'\n                  '}
-                    </ul>
-                    {'\n                  '}
-                    <div className="zone__bottom">
-                      {'\n                    '}
+    <svg className="zones__tab-icon" aria-hidden="true">
+      <use href={'/img/sprite.svg#icon-' + zone.icon} />
+    </svg>
+  );
+}
 
-                      {'\n\n                    '}
-                      <div className="zone__price">
-                        {fields.local ? '1000 ₽' : 'Цена по запросу'}
-                      </div>
-                      {'\n                  '}
-                    </div>
-                    {'\n                '}
-                  </div>
-                  {'\n                '}
-                  <span className="zone__watermark" aria-hidden="true">
-                    {'01'}
-                  </span>
-                  {'\n              '}
-                </div>
-                {'\n            '}
-              </div>
-              {'\n          '}
-            </section>
-            {'\n\n          '}
-            <section
-              className="zone zone--violet"
-              id="zone-panel-vr"
-              role="region"
-              aria-labelledby="zone-tab-vr"
-              data-zone-panel=""
-              hidden={true}
-            >
-              {'\n            '}
-              <div className="zone__row">
-                {'\n              '}
-                <div className="zone__image-container">
-                  {'\n                '}
-                  <img
-                    className="zone__image"
-                    src="/img/zones/2.jpg"
-                    alt="Игроки на VR-станции WARPOINT"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  {'\n                '}
-                  <button
-                    className="play-button play-button--centered"
-                    type="button"
-                    data-zone-video="vr"
-                    aria-label="Смотреть видео VR-станции"
-                  >
-                    {'\n                  '}
-                    <svg className="play-button__icon" aria-hidden="true">
-                      {'\n                    '}
-                      <use href="/img/sprite.svg#icon-play"></use>
-                      {'\n                  '}
-                    </svg>
-                    {'\n                '}
-                  </button>
-                  {'\n              '}
-                </div>
-                {'\n              '}
-                <div className="zone__content">
-                  {'\n                '}
-                  <div className="zone__wrap">
-                    {'\n                  '}
-                    <h3 className="zone__title">
-                      <span>{'VR станция'}</span>
-                      {' игры на прохождение'}
-                    </h3>
-                    {'\n                  '}
-                    <p className="zone__desc">
-                      {
-                        '\n                    Большой выбор игр разных жанров: победите плохих парней, спасите мир от зомби\n                    или пройдите увлекательный квест\n                  '
-                      }
-                    </p>
-                    {'\n                  '}
-                    <ul className="zone__params">
-                      {'\n                    '}
-                      <li className="zone__params-item">{'1–4 человека'}</li>
-                      {'\n                    '}
-                      <li className="zone__params-item">{'Oculus Quest'}</li>
-                      {'\n                    '}
-                      <li className="zone__params-item">{'Valve Index'}</li>
-                      {'\n                    '}
-                      {fields.local && (
-                        <li className="zone__params-item" data-location-price="">
-                          {'700 ₽'}
-                        </li>
-                      )}
-                      {'\n                    '}
-                      <li className="zone__params-item">{'6+'}</li>
-                      {'\n                  '}
-                    </ul>
-                    {'\n                  '}
-                    <div className="zone__bottom">
-                      {'\n                    '}
+export default function Zones({ site, variant }) {
+  const { location, openLocation } = useSiteLocation();
+  const zones = siteZones(site, location);
+  const isEvent = variant !== 'home';
+  const [activeId, setActiveId] = useState('arena');
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const tabs = useRef([]);
+  const mobileTrigger = useRef(null);
+  const activeZone = zones.find((zone) => zone.id === activeId);
+  const activate = (id) => {
+    setActiveId(id);
+    setMobileOpen(false);
+  };
+  const tabKeyDown = (event, index) => {
+    const keys = { ArrowRight: index + 1, ArrowLeft: index - 1, Home: 0, End: zones.length - 1 };
+    if (keys[event.key] === undefined) return;
+    event.preventDefault();
+    const next = (keys[event.key] + zones.length) % zones.length;
+    activate(zones[next].id);
+    tabs.current[next]?.focus({ preventScroll: true });
+  };
 
-                      {'\n\n                    '}
-                      <div className="zone__price">
-                        {fields.local ? '700 ₽' : 'Цена по запросу'}
-                      </div>
-                      {'\n                  '}
-                    </div>
-                    {'\n                '}
-                  </div>
-                  {'\n                '}
-                  <span className="zone__watermark" aria-hidden="true">
-                    {'02'}
-                  </span>
-                  {'\n              '}
-                </div>
-                {'\n            '}
-              </div>
-              {'\n          '}
-            </section>
-            {'\n\n          '}
-            <section
-              className="zone zone--red"
-              id="zone-panel-extreme"
-              role="region"
-              aria-labelledby="zone-tab-extreme"
-              data-zone-panel=""
-              hidden={true}
-            >
-              {'\n            '}
-              <div className="zone__row">
-                {'\n              '}
-                <div className="zone__image-container">
-                  {'\n                '}
-                  <img
-                    className="zone__image"
-                    src="/img/zones/3.jpg"
-                    alt="Игроки в экстрим-зоне WARPOINT"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  {'\n                '}
-                  <button
-                    className="play-button play-button--centered"
-                    type="button"
-                    data-zone-video="extreme"
-                    aria-label="Смотреть видео экстрим-зоны"
-                  >
-                    {'\n                  '}
-                    <svg className="play-button__icon" aria-hidden="true">
-                      {'\n                    '}
-                      <use href="/img/sprite.svg#icon-play"></use>
-                      {'\n                  '}
-                    </svg>
-                    {'\n                '}
-                  </button>
-                  {'\n              '}
-                </div>
-                {'\n              '}
-                <div className="zone__content">
-                  {'\n                '}
-                  <div className="zone__wrap">
-                    {'\n                  '}
-                    <h3 className="zone__title">
-                      {'\n                    '}
-                      <span>{'Экстрим-зона'}</span>
-                      {' для любителей острых ощущений\n                  '}
-                    </h3>
-                    {'\n                  '}
-                    <p className="zone__desc">
-                      {
-                        '\n                    Зона с аттракционами, от которых захватывает дух! Прокатитесь на безумных\n                    американских горках, полетайте на дельтаплане, погрузитесь на дно океана или\n                    покорите космос\n                  '
-                      }
-                    </p>
-                    {'\n                  '}
-                    <ul className="zone__params">
-                      {'\n                    '}
-                      <li className="zone__params-item">{'1–4 человека'}</li>
-                      {'\n                    '}
-                      {fields.local && (
-                        <li className="zone__params-item" data-location-price="">
-                          {'700 ₽'}
-                        </li>
-                      )}
-                      {'\n                    '}
-                      <li className="zone__params-item">{'6+'}</li>
-                      {'\n                  '}
-                    </ul>
-                    {'\n                  '}
-                    <div className="zone__bottom">
-                      {'\n                    '}
-
-                      {'\n\n                    '}
-                      <div className="zone__price">
-                        {fields.local ? '700 ₽' : 'Цена по запросу'}
-                      </div>
-                      {'\n                  '}
-                    </div>
-                    {'\n                '}
-                  </div>
-                  {'\n                '}
-                  <span className="zone__watermark" aria-hidden="true">
-                    {'03'}
-                  </span>
-                  {'\n              '}
-                </div>
-                {'\n            '}
-              </div>
-              {'\n          '}
-            </section>
-            {'\n\n          '}
-            <section
-              className="zone zone--violet"
-              id="zone-panel-simulators"
-              role="region"
-              aria-labelledby="zone-tab-simulators"
-              data-zone-panel=""
-              hidden={true}
-            >
-              {'\n            '}
-              <div className="zone__row">
-                {'\n              '}
-                <div className="zone__image-container">
-                  {'\n                '}
-                  <img
-                    className="zone__image"
-                    src="/img/zones/4.jpg"
-                    alt="Автосимуляторы WARPOINT"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  {'\n                '}
-                  <button
-                    className="play-button play-button--centered"
-                    type="button"
-                    data-zone-video="simulators"
-                    aria-label="Смотреть видео зоны симуляторов"
-                  >
-                    {'\n                  '}
-                    <svg className="play-button__icon" aria-hidden="true">
-                      {'\n                    '}
-                      <use href="/img/sprite.svg#icon-play"></use>
-                      {'\n                  '}
-                    </svg>
-                    {'\n                '}
-                  </button>
-                  {'\n              '}
-                </div>
-                {'\n              '}
-                <div className="zone__content">
-                  {'\n                '}
-                  <div className="zone__wrap">
-                    {'\n                  '}
-                    <h3 className="zone__title">
-                      <span>{'Симуляторы'}</span>
-                      {' для фанатов скорости'}
-                    </h3>
-                    {'\n                  '}
-                    <p className="zone__desc">
-                      {
-                        '\n                    Игровая зона с профессиональными автосимуляторами, где можно устроить\n                    соревновательные заезды с друзьями и показать, кто настоящий король скорости\n                  '
-                      }
-                    </p>
-                    {'\n                  '}
-                    <ul className="zone__params">
-                      {'\n                    '}
-                      <li className="zone__params-item">{'1–4 человека'}</li>
-                      {'\n                    '}
-                      {fields.local && (
-                        <li className="zone__params-item" data-location-price="">
-                          {'700 ₽'}
-                        </li>
-                      )}
-                      {'\n                    '}
-                      <li className="zone__params-item">{'6+'}</li>
-                      {'\n                  '}
-                    </ul>
-                    {'\n                  '}
-                    <div className="zone__bottom">
-                      {'\n                    '}
-
-                      {'\n\n                    '}
-                      <div className="zone__price">
-                        {fields.local ? '700 ₽' : 'Цена по запросу'}
-                      </div>
-                      {'\n                  '}
-                    </div>
-                    {'\n                '}
-                  </div>
-                  {'\n                '}
-                  <span className="zone__watermark" aria-hidden="true">
-                    {'04'}
-                  </span>
-                  {'\n              '}
-                </div>
-                {'\n            '}
-              </div>
-              {'\n          '}
-            </section>
-            {'\n\n          '}
-            <section
-              className="zone zone--red"
-              id="zone-panel-lounge"
-              role="region"
-              aria-labelledby="zone-tab-lounge"
-              data-zone-panel=""
-              hidden={true}
-            >
-              {'\n            '}
-              <div className="zone__row">
-                {'\n              '}
-                <div className="zone__image-container">
-                  {'\n                '}
-                  <img
-                    className="zone__image"
-                    src="/img/zones/лаунж.jpg"
-                    width="3000"
-                    height="1996"
-                    alt="Праздник в лаунж-зоне WARPOINT"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  {'\n                '}
-                  <button
-                    className="play-button play-button--centered"
-                    type="button"
-                    data-zone-video="lounge"
-                    aria-label="Смотреть видео лаунж-зоны"
-                  >
-                    {'\n                  '}
-                    <svg className="play-button__icon" aria-hidden="true">
-                      {'\n                    '}
-                      <use href="/img/sprite.svg#icon-play"></use>
-                      {'\n                  '}
-                    </svg>
-                    {'\n                '}
-                  </button>
-                  {'\n              '}
-                </div>
-                {'\n              '}
-                <div className="zone__content">
-                  {'\n                '}
-                  <div className="zone__wrap">
-                    {'\n                  '}
-                    <h3 className="zone__title">
-                      <span>{'Лаунж-зона'}</span>
-                      {' для проведения мероприятий'}
-                    </h3>
-                    {'\n                  '}
-                    <p className="zone__desc">
-                      {
-                        '\n                    Комфортное пространство, где можно весело провести время с друзьями и отметить\n                    любой праздник: день рождения, школьный выпускной или корпоратив с коллегами\n                  '
-                      }
-                    </p>
-                    {'\n                  '}
-                    <ul className="zone__params">
-                      {'\n                    '}
-                      <li className="zone__params-item">{'площадь 40 м²'}</li>
-                      {'\n                    '}
-                      <li className="zone__params-item">{'ТВ с приставкой'}</li>
-                      {'\n                    '}
-                      <li className="zone__params-item">{'до 30 человек'}</li>
-                      {'\n                  '}
-                    </ul>
-                    {'\n                  '}
-                    {'\n                '}
-                  </div>
-                  {'\n                '}
-                  <span className="zone__watermark" aria-hidden="true">
-                    {'05'}
-                  </span>
-                  {'\n              '}
-                </div>
-                {'\n            '}
-              </div>
-              {'\n          '}
-            </section>
-            {'\n        '}
-          </div>
-          {'\n      '}
+  return (
+    <section
+      className={isEvent ? 'zones zones--event' : 'zones'}
+      data-header-theme="brand"
+      aria-labelledby="zones-title"
+    >
+      <div className="zones__inner container">
+        <div className="zones__heading section-head">
+          <h2 className="section-head__title" id="zones-title">
+            <span>Игровые зоны</span>
+            <br />в нашем парке
+          </h2>
+          <p className="section-head__lead section-head__lead--big-width">
+            Выберите свою зону и погрузитесь в мир технологий, адреналина и незабываемых эмоций
+          </p>
         </div>
-        {'\n    '}
-      </section>
-    </>
+        <div className="zones__navigation">
+          <div className="zones__tabs" role="tablist" aria-label="Игровые зоны">
+            {zones.map((zone, index) => {
+              const unavailable = !siteZoneAvailable(site, location, zone.id);
+              return (
+                <button
+                  className={
+                    'zones__tab button-reset' +
+                    (zone.id === activeId ? ' is-active' : '') +
+                    (unavailable ? ' zones__tab--unavailable' : '')
+                  }
+                  type="button"
+                  role="tab"
+                  key={zone.id}
+                  id={'zone-tab-' + zone.id}
+                  aria-selected={zone.id === activeId}
+                  aria-controls={'zone-panel-' + zone.id}
+                  aria-label={
+                    unavailable ? zone.label + ' — недоступно в выбранной локации' : undefined
+                  }
+                  tabIndex={zone.id === activeId ? 0 : -1}
+                  ref={(element) => {
+                    tabs.current[index] = element;
+                  }}
+                  onKeyDown={(event) => tabKeyDown(event, index)}
+                  onClick={() => activate(zone.id)}
+                >
+                  <ZoneIcon zone={zone} />
+                  <span>{zone.label}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+        <div
+          className="zones__mobile-select"
+          onBlur={(event) => {
+            if (!event.currentTarget.contains(event.relatedTarget)) setMobileOpen(false);
+          }}
+        >
+          <span className="zones__mobile-label" id="zones-mobile-label">
+            Выберите свою игровую зону
+          </span>
+          <button
+            className="zones__mobile-trigger button-reset"
+            type="button"
+            ref={mobileTrigger}
+            aria-haspopup="listbox"
+            aria-expanded={mobileOpen}
+            aria-controls="zones-mobile-options"
+            aria-labelledby="zones-mobile-label zones-mobile-value"
+            onClick={() => setMobileOpen(!mobileOpen)}
+            onKeyDown={(event) => {
+              if (event.key === 'Escape') setMobileOpen(false);
+              if (event.key === 'ArrowDown') {
+                event.preventDefault();
+                setMobileOpen(true);
+                requestAnimationFrame(() =>
+                  document.getElementById('zone-mobile-' + activeId)?.focus(),
+                );
+              }
+            }}
+          >
+            <span className="zones__mobile-value" id="zones-mobile-value">
+              <ZoneIcon zone={activeZone} />
+              <span>{activeZone.label}</span>
+            </span>
+            <span className="zones__mobile-chevron" aria-hidden="true" />
+          </button>
+          <div
+            className="zones__mobile-dropdown"
+            id="zones-mobile-options"
+            role="listbox"
+            aria-label="Игровые зоны"
+            hidden={!mobileOpen}
+          >
+            {zones.map((zone, index) => (
+              <button
+                type="button"
+                role="option"
+                id={'zone-mobile-' + zone.id}
+                key={zone.id}
+                className={
+                  'zones__mobile-option button-reset' +
+                  (zone.id === activeId ? ' is-active' : '') +
+                  (!siteZoneAvailable(site, location, zone.id)
+                    ? ' zones__mobile-option--unavailable'
+                    : '')
+                }
+                aria-selected={zone.id === activeId}
+                onClick={() => {
+                  activate(zone.id);
+                  mobileTrigger.current?.focus();
+                }}
+                onKeyDown={(event) => {
+                  if (event.key === 'Escape') {
+                    setMobileOpen(false);
+                    mobileTrigger.current?.focus();
+                  } else if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+                    event.preventDefault();
+                    const next =
+                      (index + (event.key === 'ArrowDown' ? 1 : -1) + zones.length) % zones.length;
+                    document.getElementById('zone-mobile-' + zones[next].id)?.focus();
+                  }
+                }}
+              >
+                <ZoneIcon zone={zone} />
+                <span className="zones__mobile-option-label">{zone.label}</span>
+                <span className="zones__mobile-option-mark" aria-hidden="true" />
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="zones__panels">
+          {zones.map((zone, index) => {
+            const locked = !siteZoneAvailable(site, location, zone.id);
+            const price = variant === 'home' ? '1000 ₽' : zone.price;
+            return (
+              <section
+                className={'zone zone--red' + (locked ? ' zone--unavailable' : '')}
+                key={zone.id}
+                id={'zone-panel-' + zone.id}
+                role="tabpanel"
+                aria-labelledby={'zone-tab-' + zone.id}
+                hidden={activeId !== zone.id}
+                inert={activeId !== zone.id}
+              >
+                <div className="zone__row" inert={locked} aria-hidden={locked || undefined}>
+                  <div className="zone__image-container">
+                    <img
+                      className="zone__image"
+                      src={zone.image}
+                      width="3000"
+                      height="1996"
+                      alt={zone.alt}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                    <button
+                      className="play-button play-button--centered"
+                      type="button"
+                      data-zone-video={zone.id}
+                      aria-label={'Смотреть видео зоны «' + zone.label + '»'}
+                    >
+                      <svg className="play-button__icon" aria-hidden="true">
+                        <use href="/img/sprite.svg#icon-play" />
+                      </svg>
+                    </button>
+                  </div>
+                  <div className="zone__content">
+                    <div className="zone__wrap">
+                      <div className="zone__header">
+                        <ul className="zone__params">
+                          {zone.params.map((param) => (
+                            <li className="zone__params-item" key={param}>
+                              {param}
+                            </li>
+                          ))}
+                        </ul>
+                        <ZoneLocations zoneId={zone.id} />
+                      </div>
+                      <div className="zone__body">
+                        <h3 className="zone__title">
+                          <span>{zone.accent}</span>
+                          {zone.title}
+                        </h3>
+                        <p className="zone__desc">{zone.description}</p>
+                      </div>
+                      {(!isEvent || zone.id === 'lounge') && (
+                        <div className="zone__bottom">
+                          {zone.id === 'lounge' ? (
+                            <button
+                              className="zone__button btn btn--red"
+                              type="button"
+                              data-event-modal-open=""
+                              aria-haspopup="dialog"
+                              aria-controls="event-modal"
+                            >
+                              <svg width="24" height="28" aria-hidden="true">
+                                <use href="/img/sprite.svg#icon-calc" />
+                              </svg>
+                              Рассчитать стоимость
+                            </button>
+                          ) : (
+                            <>
+                              <button
+                                className="zone__button btn btn--red"
+                                type="button"
+                                data-booking-open={location ? '' : undefined}
+                                data-booking-event={zone.label}
+                                onClick={(event) => {
+                                  if (!location) openLocation(event.currentTarget);
+                                }}
+                                aria-haspopup="dialog"
+                                aria-controls={location ? 'booking-panel' : undefined}
+                              >
+                                <img src="/img/svg/game.svg" width="30" height="30" alt="" />
+                                Забронировать игру
+                              </button>
+                              <div className="zone__price">
+                                {usesSiteTariffs(site) ? (
+                                  zone.apiPrice ? (
+                                    <>
+                                      {zone.apiPrice.amount !== null && <small>от </small>}
+                                      {zone.apiPrice.value}
+                                      {zone.apiPrice.unitLabel && (
+                                        <small> {zone.apiPrice.unitLabel}</small>
+                                      )}
+                                    </>
+                                  ) : (
+                                    'Цена по запросу'
+                                  )
+                                ) : site.city === 'Екатеринбург' ? (
+                                  <>
+                                    <small>от</small> {price}
+                                  </>
+                                ) : (
+                                  'Цена по запросу'
+                                )}
+                              </div>
+                            </>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                    <span className="zone__watermark" aria-hidden="true">
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                  </div>
+                </div>
+                {locked && (
+                  <div className="zone__unavailable" role="status">
+                    <img
+                      className="zone__lock"
+                      src="/img/svg/zone-lock.svg"
+                      width="49"
+                      height="49"
+                      alt=""
+                    />
+                    <h3 className="zone__unavailable-title">
+                      Эта зона недоступна
+                      <br />
+                      {location ? 'в выбранной локации' : 'в парках города'}
+                    </h3>
+                    <ZoneLocations zoneId={zone.id} locked />
+                  </div>
+                )}
+              </section>
+            );
+          })}
+        </div>
+      </div>
+    </section>
   );
 }

@@ -3,6 +3,12 @@
   .hero-event__title {
     max-width: 640px;
   }
+  .hero-event__title-word {
+    display: inline;
+  }
+  .hero-event__title-break--mobile {
+    display: none;
+  }
   .hero-event__desc {
     max-width: 350px;
   }
@@ -60,45 +66,70 @@
   width: 24px;
   height: 24px;
 }
-@media (max-width: $breakpoint-mobile) {
+@media (max-width: 1023px) {
   .hero-event--adult {
     .hero-event__title {
       max-width: 100%;
     }
+
+    .hero-event__title-break--mobile {
+      display: initial;
+    }
+
+    .hero-event__title-break--desktop {
+      display: none;
+    }
+
+    .hero-event__desc {
+      max-width: 100%;
+    }
+
     .hero-event__line {
-      top: 10%;
-      left: -2%;
-      width: 105vw;
+      top: -3%;
+      left: 4%;
+      width: 92%;
+      transform: none;
     }
+
     .hero-event__character--adult-man {
-      top: 14%;
-      left: 16%;
-      width: 40vw;
+      top: 13%;
+      left: 17%;
+      width: auto;
+      height: 100%;
     }
+
     .hero-event__character--adult-woman {
-      top: 0;
-      left: 50%;
-      width: 50vw;
+      top: -11%;
+      left: 44%;
+      width: auto;
+      height: 122%;
     }
+
     .hero-event__character--adult-w {
-      top: 40%;
-      left: -7%;
-      width: 45vw;
+      top: auto;
+      bottom: -3%;
+      left: 4%;
+      width: 29%;
     }
+
     .hero-event__character--adult-dog {
-      top: 0;
-      left: 38%;
-      width: 28vw;
+      top: 16%;
+      left: 42%;
+      width: 16%;
     }
+
     .hero-event__character--adult-balloon-small {
-      top: 0;
-      left: 6%;
-      width: 20vw;
+      top: 10%;
+      left: 79%;
+      width: 16%;
     }
+
     .hero-event__character--adult-balloon-big {
-      top: 60%;
-      left: 75%;
-      width: 25vw;
+      top: auto;
+      right: 7%;
+      bottom: 5%;
+      left: auto;
+      width: 16%;
     }
   }
 }

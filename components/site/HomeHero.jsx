@@ -1,3 +1,4 @@
+import GoodPlaceBadge from './GoodPlaceBadge';
 import { siteFields } from '../../lib/site-fields';
 
 export default function HomeHero({ site }) {
@@ -66,31 +67,7 @@ export default function HomeHero({ site }) {
           {'\n        '}
           <div className="hero__allerts allerts">
             {'\n          '}
-            <div className="allert">
-              {'\n            '}
-              <div className="allert__row">
-                {'\n              '}
-                <div className="allert__pic">
-                  {'\n                '}
-                  <img src="/img/ypoint.png" alt="" />
-                  {'\n              '}
-                </div>
-                {'\n              '}
-                <div className="allert__content">
-                  {'\n                '}
-                  <div className="allert__title">{'5.0'}</div>
-                  {'\n                '}
-                  <div className="allert__desc">
-                    {
-                      '\n                  Средняя оценка наших гостей на основании 2048 отзывов\n                '
-                    }
-                  </div>
-                  {'\n              '}
-                </div>
-                {'\n            '}
-              </div>
-              {'\n          '}
-            </div>
+            <GoodPlaceBadge />
             {'\n        '}
           </div>
           {'\n      '}

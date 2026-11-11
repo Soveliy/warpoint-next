@@ -334,3 +334,9 @@
     transition: none;
   }
 }
+
+.reviews__rating-number {
+  font: 800 72px/1 var(--font-oceanic);
+  color: #f4f4f5;
+  white-space: nowrap;
+}

@@ -31,12 +31,12 @@
 .announcement-card {
   &__category {
     align-self: flex-start;
-    padding: 5px 9px;
-    border-radius: 16px;
-    background: #4a2130;
-    color: #f32966;
-    font-size: 14px;
-    font-weight: 650;
+    padding: 0.3125rem 0.625rem;
+    border-radius: 1.1875rem;
+    background: rgba(227, 27, 84, 0.2);
+    color: var(--red-600);
+    font-size: 0.875rem;
+    font-weight: 700;
     text-transform: uppercase;
   }
 }
@@ -88,7 +88,7 @@
 
   &__image {
     position: relative;
-    height: 246px;
+    height: 15.4375rem;
     flex: none;
     overflow: hidden;
   }
@@ -104,35 +104,40 @@
     top: 24px;
     left: 24px;
     display: grid;
-    width: 86px;
-    height: 90px;
+    width: 5.375rem;
+    height: 5.5rem;
     align-content: center;
     justify-items: center;
-    border-radius: 24px;
+    border-radius: 1.5rem;
     background: #fff;
     color: #17151b;
     text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.07);
   }
 
   &__day {
-    color: #e51452;
-    font: 800 34px/0.9 $font-family-heading;
+    color: var(--red-600);
+    letter-spacing: -0.02em;
+    font: 800 36px/0.88 $font-family-heading;
   }
 
   &__date-copy {
-    margin-top: 3px;
-    font-size: 14px;
+    margin-top: 2px;
+    font-size: 0.875rem;
     line-height: 1.1;
+    font-weight: 600;
   }
 
   &__month {
     display: block;
     font-weight: 600;
+
+    color: #000;
   }
 
   &__weekday {
     display: block;
-    color: #888;
+    color: rgba(0, 0, 0, 0.5);
     font-size: 12px;
   }
 
@@ -152,15 +157,16 @@
     min-height: 64px;
     max-width: 360px;
     margin: 16px 0 12px;
-    font: 800 36px/0.9 $font-family-heading;
+    font: 800 36px/0.88 $font-family-heading;
     text-transform: uppercase;
+    letter-spacing: -0.02em;
   }
 
   &__description {
-    margin: 0 0 20px;
+    margin: 0 0 0.9375rem;
     color: #a2a2a2;
-    font-size: 18px;
-    line-height: 1.25;
+    font-size: 1.125rem;
+    line-height: 1.2;
   }
 
   &__details {
@@ -315,4 +321,8 @@
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-gutter: stable;
+}
+
+.announcement-dialog__text {
+  white-space: pre-line;
 }

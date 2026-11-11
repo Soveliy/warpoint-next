@@ -13,7 +13,6 @@ import { initReviews } from './components/reviews.js';
 import { initSliders } from './components/sliders.js';
 import { initVideoParallax } from './components/video-parallax.js';
 import { initYandexMaps } from './components/yandex-map.js';
-import { initZoneSequence } from './components/zone-sequence.js';
 
 export function initPageInteractions() {
   ScrollTrigger.config({ ignoreMobileResize: true });
@@ -24,7 +23,6 @@ export function initPageInteractions() {
   initAnimations();
   initVideoParallax();
   initAboutGameSequence();
-  initZoneSequence();
   initEventsSequence();
   initReviews();
   initPixelTransitions();

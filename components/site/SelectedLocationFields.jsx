@@ -2,11 +2,20 @@
 
 import { useSiteLocation } from './SiteLocationProvider';
 
-export default function SelectedLocationFields({ summary = false }) {
-  const { locationId, location, openLocation } = useSiteLocation();
+export default function SelectedLocationFields({ summary = false, includeLocation = true }) {
+  const { site, locationId, location, openLocation } = useSiteLocation();
   return (
     <>
-      <input type="hidden" name="locationId" value={locationId} />
+      <input type="hidden" name="city" value={site.city} />
+      <input type="hidden" name="countryId" value={site.countryId} />
+      {site.cityId && <input type="hidden" name="cityId" value={site.cityId} />}
+      {includeLocation && location?.id && (
+        <input type="hidden" name="arenaId" value={location.id} />
+      )}
+      {includeLocation && location?.siteId && (
+        <input type="hidden" name="siteId" value={location.siteId} />
+      )}
+      {includeLocation && <input type="hidden" name="locationId" value={locationId} />}
       {summary && (
         <button
           className="location-selection__summary button-reset"

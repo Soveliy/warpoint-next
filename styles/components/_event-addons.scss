@@ -130,7 +130,7 @@
     top: rem(30px);
     left: rem(30px);
     display: grid;
-    grid-template-columns: repeat(8, minmax(0, 1fr));
+    grid-template-columns: repeat(var(--event-addons-count, 8), minmax(0, 1fr));
     gap: rem(3px);
     width: calc(50% - #{rem(76px)});
   }

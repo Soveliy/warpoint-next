@@ -1,127 +1,108 @@
+'use client';
+
+import { useEffect, useId, useRef, useState } from 'react';
+import { useSiteLocation } from './SiteLocationProvider';
+
+const messengers = [
+  { id: 'vk', icon: 'vk', label: 'Написать во ВКонтакте', href: '#' },
+  { id: 'max', icon: 'max', label: 'Написать в Макс', href: '#' },
+  { id: 'telegram', icon: 'tg', label: 'Написать в Telegram', href: '#' },
+  { id: 'whatsapp', icon: 'whatsapp', label: 'Написать в WhatsApp', href: '#' },
+];
+
 export default function MobileActions() {
+  const { selectedIndex } = useSiteLocation();
+  const [messengerOpen, setMessengerOpen] = useState(false);
+  const messengerRef = useRef(null);
+  const messengerToggle = useRef(null);
+  const messengerId = useId();
+
+  useEffect(() => {
+    setMessengerOpen(false);
+  }, [selectedIndex]);
+
+  useEffect(() => {
+    if (!messengerOpen) return;
+    const closeOutside = (event) => {
+      if (!messengerRef.current?.contains(event.target)) setMessengerOpen(false);
+    };
+    const closeOnEscape = (event) => {
+      if (event.key !== 'Escape') return;
+      event.preventDefault();
+      setMessengerOpen(false);
+      messengerToggle.current?.focus({ preventScroll: true });
+    };
+    document.addEventListener('pointerdown', closeOutside);
+    document.addEventListener('keydown', closeOnEscape);
+    return () => {
+      document.removeEventListener('pointerdown', closeOutside);
+      document.removeEventListener('keydown', closeOnEscape);
+    };
+  }, [messengerOpen]);
+
   return (
-    <>
-      <nav className="mobile-actions" aria-label="Быстрые действия">
-        {'\n  '}
+    <nav className="mobile-actions" aria-label="Быстрые действия">
+      <button className="mobile-actions__booking button-reset" type="button" data-booking-open="">
+        Забронировать
+      </button>
+      <div
+        className="mobile-actions__messengers messenger-menu"
+        ref={messengerRef}
+        onBlur={(event) => {
+          if (!event.currentTarget.contains(event.relatedTarget)) setMessengerOpen(false);
+        }}
+      >
         <button
-          className="mobile-actions__booking button-reset"
+          className="mobile-actions__button mobile-actions__button--message button-reset"
           type="button"
-          data-booking-open=""
+          aria-label="Мессенджеры"
+          aria-expanded={messengerOpen}
+          aria-controls={messengerId}
+          ref={messengerToggle}
+          onClick={() => setMessengerOpen((value) => !value)}
         >
-          {'\n    Забронировать\n  '}
-        </button>
-        {'\n  '}
-        <div className="mobile-actions__messengers messenger-menu" data-messenger-menu="">
-          {'\n    '}
-          <button
-            className="mobile-actions__button mobile-actions__button--message button-reset"
-            type="button"
-            aria-label="Мессенджеры"
-            aria-expanded="false"
-            aria-controls="mobile-messengers"
-            data-messenger-toggle=""
-          >
-            {'\n      '}
-            <svg className="mobile-actions__icon" aria-hidden="true">
-              {'\n        '}
-              <use href="/img/sprite.svg#icon-mess"></use>
-              {'\n      '}
-            </svg>
-            {'\n    '}
-          </button>
-          {'\n    '}
-          <ul
-            className="messenger-menu__dropdown"
-            id="mobile-messengers"
-            aria-label="Мессенджеры Warpoint"
-            data-messenger-dropdown=""
-            hidden={true}
-          >
-            {'\n      '}
-            <li>
-              {'\n        '}
-              <a className="messenger-menu__link" href="#" data-messenger-link="vk">
-                {'\n          '}
-                <svg className="messenger-menu__icon" aria-hidden="true">
-                  {'\n            '}
-                  <use href="/img/sprite.svg#icon-vk"></use>
-                  {'\n          '}
-                </svg>
-                {'\n          '}
-                <span>{'Написать во ВКонтакте'}</span>
-                {'\n        '}
-              </a>
-              {'\n      '}
-            </li>
-            {'\n      '}
-            <li>
-              {'\n        '}
-              <a className="messenger-menu__link" href="#" data-messenger-link="max">
-                {'\n          '}
-                <svg className="messenger-menu__icon" aria-hidden="true">
-                  {'\n            '}
-                  <use href="/img/sprite.svg#icon-max"></use>
-                  {'\n          '}
-                </svg>
-                {'\n          '}
-                <span>{'Написать в Макс'}</span>
-                {'\n        '}
-              </a>
-              {'\n      '}
-            </li>
-            {'\n      '}
-            <li>
-              {'\n        '}
-              <a className="messenger-menu__link" href="#" data-messenger-link="telegram">
-                {'\n          '}
-                <svg className="messenger-menu__icon" aria-hidden="true">
-                  {'\n            '}
-                  <use href="/img/sprite.svg#icon-tg"></use>
-                  {'\n          '}
-                </svg>
-                {'\n          '}
-                <span>{'Написать в Telegram'}</span>
-                {'\n        '}
-              </a>
-              {'\n      '}
-            </li>
-            {'\n      '}
-            <li>
-              {'\n        '}
-              <a className="messenger-menu__link" href="#" data-messenger-link="whatsapp">
-                {'\n          '}
-                <svg className="messenger-menu__icon" aria-hidden="true">
-                  {'\n            '}
-                  <use href="/img/sprite.svg#icon-whatsapp"></use>
-                  {'\n          '}
-                </svg>
-                {'\n          '}
-                <span>{'Написать в WhatsApp'}</span>
-                {'\n        '}
-              </a>
-              {'\n      '}
-            </li>
-            {'\n    '}
-          </ul>
-          {'\n  '}
-        </div>
-        {'\n  '}
-        <a
-          className="mobile-actions__button mobile-actions__button--phone"
-          href="tel:+73433000000"
-          aria-label="Позвонить в Warpoint"
-          title="Позвонить"
-        >
-          {'\n    '}
           <svg className="mobile-actions__icon" aria-hidden="true">
-            {'\n      '}
-            <use href="/img/sprite.svg#icon-phone"></use>
-            {'\n    '}
+            <use href="/img/sprite.svg#icon-mess" />
           </svg>
-          {'\n  '}
-        </a>
-        {'\n'}
-      </nav>
-    </>
+        </button>
+        <ul
+          className="messenger-menu__dropdown"
+          id={messengerId}
+          aria-label="Мессенджеры Warpoint"
+          aria-hidden={!messengerOpen}
+          inert={!messengerOpen}
+          hidden={!messengerOpen}
+        >
+          {messengers.map((messenger) => (
+            <li key={messenger.id}>
+              <a
+                className="messenger-menu__link"
+                href={messenger.href}
+                data-messenger-link={messenger.id}
+                onClick={(event) => {
+                  if (messenger.href === '#') event.preventDefault();
+                  setMessengerOpen(false);
+                }}
+              >
+                <svg className="messenger-menu__icon" aria-hidden="true">
+                  <use href={`/img/sprite.svg#icon-${messenger.icon}`} />
+                </svg>
+                <span>{messenger.label}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <a
+        className="mobile-actions__button mobile-actions__button--phone"
+        href="tel:+73433000000"
+        aria-label="Позвонить в Warpoint"
+        title="Позвонить"
+      >
+        <svg className="mobile-actions__icon" aria-hidden="true">
+          <use href="/img/sprite.svg#icon-phone" />
+        </svg>
+      </a>
+    </nav>
   );
 }

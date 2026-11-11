@@ -87,6 +87,13 @@ test('dates reject impossible days and the past but allow today and leap days', 
 test('consent, location and authentication use field-specific errors', () => {
   assert.ok(validateValue(false, consentRule));
   assert.equal(validateValue(true, consentRule), '');
+  const agreement = {
+    ...consentRule,
+    message: 'Подтвердите согласие с Пользовательским соглашением',
+  };
+  assert.equal(validateValue(false, agreement), agreement.message);
+  assert.equal(validateValue(true, agreement), '');
+  assert.equal(validateValue(false, { type: 'consent' }), '');
   assert.equal(
     validateValue('', { type: 'location', required: true }),
     validationMessages.location,

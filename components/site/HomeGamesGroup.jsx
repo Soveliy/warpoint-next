@@ -1,7 +1,34 @@
-import { siteFields } from '../../lib/site-fields';
+'use client';
+
+import { useEffect, useMemo, useRef } from 'react';
+import { GameCarouselCards } from './GameCarouselCard';
+import { games } from '../../lib/games';
+import { availableGames } from '../../lib/site-content';
+import { useSiteLocation } from './SiteLocationProvider';
 
 export default function HomeGamesGroup({ site }) {
-  const fields = siteFields(site);
+  const { location, locationId } = useSiteLocation();
+  const root = useRef(null);
+  const items = useMemo(
+    () => (site.source === 'wp-sites' ? availableGames(site, location, games) : undefined),
+    [site, location],
+  );
+  const sliderKey = site.source + ':' + locationId;
+
+  useEffect(() => {
+    const element = root.current;
+    if (!element) return;
+    let active = true;
+    import('../../interactions/components/sliders').then(({ initSliders }) => {
+      if (active) initSliders();
+    });
+    return () => {
+      active = false;
+      element.querySelector('[data-slider]')?.swiper?.destroy(true, true);
+    };
+  }, [sliderKey, items]);
+
+  if (items?.length === 0) return null;
   return (
     <>
       <div className="games-group" data-games-group="" data-pixel-section="">
@@ -15,6 +42,8 @@ export default function HomeGamesGroup({ site }) {
         </div>
         {'\n      '}
         <section
+          key={sliderKey}
+          ref={root}
           className="games-catalog"
           data-header-theme="dark"
           aria-labelledby="games-catalog-title"
@@ -35,331 +64,7 @@ export default function HomeGamesGroup({ site }) {
               {'\n            '}
               <div className="swiper-wrapper">
                 {'\n              '}
-                <article className="game-card swiper-slide">
-                  {'\n                '}
-                  <img
-                    className="game-card__image"
-                    src="/img/games/1.jpg"
-                    width="436"
-                    height="624"
-                    alt="WARPOINT АРЕНА"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  {'\n                '}
-                  <div className="game-card__meta">
-                    {'\n                  '}
-                    <span className="game-card__tag game-card__tag--accent">{'Арена'}</span>
-                    {'\n                  '}
-                    <span className="game-card__tag">{'Стрелялка'}</span>
-                    {'\n                  '}
-                    <span className="game-card__tag">{'2–10 игроков'}</span>
-                    {'\n                  '}
-                    <span className="game-card__tag game-card__tag--age">{'12+'}</span>
-                    {'\n                '}
-                  </div>
-                  {'\n                '}
-                  <div className="game-card__content">
-                    {'\n                  '}
-                    <h3 className="game-card__title">{'WARPOINT АРЕНА'}</h3>
-                    {'\n                  '}
-                    <p className="game-card__description">
-                      {
-                        'Для фанатов реалистичных шутеров, мощного оружия, стратегии и\n                    тактики'
-                      }
-                    </p>
-                    {'\n                  '}
-                    <button
-                      className="game-card__more button-reset"
-                      type="button"
-                      data-game-open="warpoint-arena"
-                      aria-haspopup="dialog"
-                      aria-controls="game-modal"
-                    >
-                      {'Подробнее'}
-                    </button>
-                    {'\n                '}
-                  </div>
-                  {'\n              '}
-                </article>
-                {'\n              '}
-                <article className="game-card swiper-slide">
-                  {'\n                '}
-                  <img
-                    className="game-card__image"
-                    src="/img/games/vert/snow-battle.png"
-                    width="1080"
-                    height="1920"
-                    alt="СНЕЖНАЯ БИТВА"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  {'\n                '}
-                  <div className="game-card__meta">
-                    {'\n                  '}
-                    <span className="game-card__tag game-card__tag--accent">{'Арена'}</span>
-                    {'\n                  '}
-                    <span className="game-card__tag">{'Активная'}</span>
-                    {'\n                  '}
-                    <span className="game-card__tag">{'2–10 игроков'}</span>
-                    {'\n                  '}
-                    <span className="game-card__tag game-card__tag--age">{'6+'}</span>
-                    {'\n                '}
-                  </div>
-                  {'\n                '}
-                  <div className="game-card__content">
-                    {'\n                  '}
-                    <h3 className="game-card__title">{'СНЕЖНАЯ БИТВА'}</h3>
-                    {'\n                  '}
-                    <p className="game-card__description">
-                      {'Постройте снежную крепость и разбейте снеговиков противника'}
-                    </p>
-                    {'\n                  '}
-                    <button
-                      className="game-card__more button-reset"
-                      type="button"
-                      data-game-open="snow-battle"
-                      aria-haspopup="dialog"
-                      aria-controls="game-modal"
-                    >
-                      {'Подробнее'}
-                    </button>
-                    {'\n                '}
-                  </div>
-                  {'\n              '}
-                </article>
-                {'\n              '}
-                <article className="game-card swiper-slide">
-                  {'\n                '}
-                  <img
-                    className="game-card__image"
-                    src="/img/games/vert/farm.png"
-                    width="1080"
-                    height="1920"
-                    alt="ВЕСЕЛАЯ ФЕРМА"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  {'\n                '}
-                  <div className="game-card__meta">
-                    {'\n                  '}
-                    <span className="game-card__tag game-card__tag--accent">{'Арена'}</span>
-                    {'\n                  '}
-                    <span className="game-card__tag">{'Казуал'}</span>
-                    {'\n                  '}
-                    <span className="game-card__tag">{'2–10 игроков'}</span>
-                    {'\n                  '}
-                    <span className="game-card__tag game-card__tag--age">{'6+'}</span>
-                    {'\n                '}
-                  </div>
-                  {'\n                '}
-                  <div className="game-card__content">
-                    {'\n                  '}
-                    <h3 className="game-card__title">{'ВЕСЕЛАЯ ФЕРМА'}</h3>
-                    {'\n                  '}
-                    <p className="game-card__description">
-                      {'Вырастите урожай всей командой и сдайте его раньше соперника'}
-                    </p>
-                    {'\n                  '}
-                    <button
-                      className="game-card__more button-reset"
-                      type="button"
-                      data-game-open="farm"
-                      aria-haspopup="dialog"
-                      aria-controls="game-modal"
-                    >
-                      {'Подробнее'}
-                    </button>
-                    {'\n                '}
-                  </div>
-                  {'\n              '}
-                </article>
-                {'\n              '}
-                <article className="game-card swiper-slide">
-                  {'\n                '}
-                  <img
-                    className="game-card__image"
-                    src="/img/games/vert/diamonds.png"
-                    width="1080"
-                    height="1920"
-                    alt="ПОИСК АЛМАЗОВ"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  {'\n                '}
-                  <div className="game-card__meta">
-                    {'\n                  '}
-                    <span className="game-card__tag game-card__tag--accent">{'Арена'}</span>
-                    {'\n                  '}
-                    <span className="game-card__tag">{'Активная'}</span>
-                    {'\n                  '}
-                    <span className="game-card__tag">{'2–10 игроков'}</span>
-                    {'\n                  '}
-                    <span className="game-card__tag game-card__tag--age">{'6+'}</span>
-                    {'\n                '}
-                  </div>
-                  {'\n                '}
-                  <div className="game-card__content">
-                    {'\n                  '}
-                    <h3 className="game-card__title">{'ПОИСК АЛМАЗОВ'}</h3>
-                    {'\n                  '}
-                    <p className="game-card__description">
-                      {'Прорубайте туннели в скале и добывайте алмазы быстрее соперника'}
-                    </p>
-                    {'\n                  '}
-                    <button
-                      className="game-card__more button-reset"
-                      type="button"
-                      data-game-open="diamonds"
-                      aria-haspopup="dialog"
-                      aria-controls="game-modal"
-                    >
-                      {'Подробнее'}
-                    </button>
-                    {'\n                '}
-                  </div>
-                  {'\n              '}
-                </article>
-                {'\n              '}
-                <article className="game-card swiper-slide">
-                  {'\n                '}
-                  <img
-                    className="game-card__image"
-                    src="/img/games/vert/paint-battle.png"
-                    width="1080"
-                    height="1920"
-                    alt="БИТВА КРАСОК"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  {'\n                '}
-                  <div className="game-card__meta">
-                    {'\n                  '}
-                    <span className="game-card__tag game-card__tag--accent">{'Арена'}</span>
-                    {'\n                  '}
-                    <span className="game-card__tag">{'Активная'}</span>
-                    {'\n                  '}
-                    <span className="game-card__tag">{'2–10 игроков'}</span>
-                    {'\n                  '}
-                    <span className="game-card__tag game-card__tag--age">{'6+'}</span>
-                    {'\n                '}
-                  </div>
-                  {'\n                '}
-                  <div className="game-card__content">
-                    {'\n                  '}
-                    <h3 className="game-card__title">{'БИТВА КРАСОК'}</h3>
-                    {'\n                  '}
-                    <p className="game-card__description">
-                      {'Захватите арену своим цветом — и не дайте закрасить её обратно'}
-                    </p>
-                    {'\n                  '}
-                    <button
-                      className="game-card__more button-reset"
-                      type="button"
-                      data-game-open="paint-battle"
-                      aria-haspopup="dialog"
-                      aria-controls="game-modal"
-                    >
-                      {'Подробнее'}
-                    </button>
-                    {'\n                '}
-                  </div>
-                  {'\n              '}
-                </article>
-                {'\n              '}
-                <article className="game-card swiper-slide">
-                  {'\n                '}
-                  <img
-                    className="game-card__image"
-                    src="/img/games/vert/flying-saucers.jpg"
-                    width="557"
-                    height="714"
-                    alt="ЛЕТАЮЩИЕ ТАРЕЛКИ"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  {'\n                '}
-                  <div className="game-card__meta">
-                    {'\n                  '}
-                    <span className="game-card__tag game-card__tag--accent">{'Арена'}</span>
-                    {'\n                  '}
-                    <span className="game-card__tag">{'Казуал'}</span>
-                    {'\n                  '}
-                    <span className="game-card__tag">{'2–10 игроков'}</span>
-                    {'\n                  '}
-                    <span className="game-card__tag game-card__tag--age">{'6+'}</span>
-                    {'\n                '}
-                  </div>
-                  {'\n                '}
-                  <div className="game-card__content">
-                    {'\n                  '}
-                    <h3 className="game-card__title">{'ЛЕТАЮЩИЕ ТАРЕЛКИ'}</h3>
-                    {'\n                  '}
-                    <p className="game-card__description">
-                      {'Похищайте добычу гравитационным лучом с борта НЛО'}
-                    </p>
-                    {'\n                  '}
-                    <button
-                      className="game-card__more button-reset"
-                      type="button"
-                      data-game-open="flying-saucers"
-                      aria-haspopup="dialog"
-                      aria-controls="game-modal"
-                    >
-                      {'Подробнее'}
-                    </button>
-                    {'\n                '}
-                  </div>
-                  {'\n              '}
-                </article>
-                {'\n              '}
-                <article className="game-card swiper-slide">
-                  {'\n                '}
-                  <img
-                    className="game-card__image"
-                    src="/img/games/vert/kids-arena.png"
-                    width="1080"
-                    height="1920"
-                    alt="ДЕТСКАЯ АРЕНА"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  {'\n                '}
-                  <div className="game-card__meta">
-                    {'\n                  '}
-                    <span className="game-card__tag game-card__tag--accent">{'Арена'}</span>
-                    {'\n                  '}
-                    <span className="game-card__tag">{'Стрелялка'}</span>
-                    {'\n                  '}
-                    <span className="game-card__tag">{'2–10 игроков'}</span>
-                    {'\n                  '}
-                    <span className="game-card__tag game-card__tag--age">{'6+'}</span>
-                    {'\n                '}
-                  </div>
-                  {'\n                '}
-                  <div className="game-card__content">
-                    {'\n                  '}
-                    <h3 className="game-card__title">{'ДЕТСКАЯ АРЕНА'}</h3>
-                    {'\n                  '}
-                    <p className="game-card__description">
-                      {
-                        'Мультяшные герои, разнообразные пушки и командный бой на всю\n                    площадку'
-                      }
-                    </p>
-                    {'\n                  '}
-                    <button
-                      className="game-card__more button-reset"
-                      type="button"
-                      data-game-open="kids-arena"
-                      aria-haspopup="dialog"
-                      aria-controls="game-modal"
-                    >
-                      {'Подробнее'}
-                    </button>
-                    {'\n                '}
-                  </div>
-                  {'\n              '}
-                </article>
+                <GameCarouselCards items={items} />
                 {'\n            '}
               </div>
               {'\n          '}

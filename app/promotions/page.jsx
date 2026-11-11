@@ -36,7 +36,7 @@ export default async function PromotionsPage() {
           </>
         }
       />
-      <PromotionsListing promotions={site.city === 'Екатеринбург' ? promotions : []} />
+      <PromotionsListing site={site} promotions={site.city === 'Екатеринбург' ? promotions : []} />
     </ListingPageShell>
   );
 }

@@ -19,14 +19,37 @@ export default function TariffDetail({ dialogRef, detail, local, onClose, onDism
       {detail && (
         <>
           <div className="tariffs-listing__tags">
-            <span className="tariffs-listing__tag">{detail.duration}</span>
-            <span className="tariffs-listing__tag">{detail.players}</span>
+            {[detail.duration, detail.players, detail.age].filter(Boolean).map((tag) => (
+              <span className="tariffs-listing__tag" key={tag}>
+                {tag}
+              </span>
+            ))}
           </div>
           <h2 className="listing-detail__title" id="listing-detail-title">
             {detail.title}
           </h2>
           <p className="listing-detail__description">{detail.description}</p>
           <TariffPriceBox tariff={detail} local={local} />
+          {detail.included?.length > 0 && (
+            <section className="listing-detail__section">
+              <h3 className="listing-detail__section-title">В программу включено</h3>
+              <ul className="listing-detail__list">
+                {detail.included.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </section>
+          )}
+          {detail.benefits?.length > 0 && (
+            <section className="listing-detail__section">
+              <h3 className="listing-detail__section-title">Преимущества тарифа</h3>
+              <ul className="listing-detail__list">
+                {detail.benefits.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </section>
+          )}
           <a
             className="listing-button listing-button--solid listing-detail__request"
             href="#contacts"

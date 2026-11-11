@@ -35,7 +35,9 @@ export default function ArticleCard({ article, featured = false, headingLevel = 
             Читать статью
           </a>
         ) : (
-          <span className="articles-card__pending">Материал готовится</span>
+          <a className="articles-card__read" href='#'>
+            Читать статью
+          </a>
         )}
       </div>
     </article>

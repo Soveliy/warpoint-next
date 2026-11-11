@@ -2,11 +2,14 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { siteFields } from '../../lib/site-fields';
+import { eventVideoPosters } from '../../lib/event-media';
+import { eventQuizExtras } from '../../lib/event-addons';
 import { toggleScrollLock } from '../../interactions/_functions';
 import { Calendar } from './ProgramPicker';
 import useFormValidation from './useFormValidation';
 import FormError from './FormError';
 import { useSiteLocation } from './SiteLocationProvider';
+import SelectedLocationFields from './SelectedLocationFields';
 import { contactRules, consentRule } from '../../lib/form-validation';
 
 export default function EventModal({ site, defaultEventType = '' }) {
@@ -204,6 +207,7 @@ export default function EventModal({ site, defaultEventType = '' }) {
               if (event.target.name === 'guestCount') setGuestCount(event.target.value);
             }}
           >
+            <SelectedLocationFields includeLocation={false} />
             {'\n      '}
             <main className="event-modal__content" ref={content}>
               {'\n        '}
@@ -238,9 +242,9 @@ export default function EventModal({ site, defaultEventType = '' }) {
                     />
                     {'\n              '}
                     <img
-                      src="/img/events_modal/1.jpg"
-                      width="284"
-                      height="425"
+                      src={eventVideoPosters.birthday.src}
+                      width={eventVideoPosters.birthday.width}
+                      height={eventVideoPosters.birthday.height}
                       alt=""
                       loading="lazy"
                       decoding="async"
@@ -260,9 +264,9 @@ export default function EventModal({ site, defaultEventType = '' }) {
                     />
                     {'\n              '}
                     <img
-                      src="/img/events_modal/2.jpg"
-                      width="284"
-                      height="425"
+                      src={eventVideoPosters['adult-birthday'].src}
+                      width={eventVideoPosters['adult-birthday'].width}
+                      height={eventVideoPosters['adult-birthday'].height}
                       alt=""
                       loading="lazy"
                       decoding="async"
@@ -282,9 +286,9 @@ export default function EventModal({ site, defaultEventType = '' }) {
                     />
                     {'\n              '}
                     <img
-                      src="/img/events_modal/3.jpg"
-                      width="284"
-                      height="425"
+                      src={eventVideoPosters.corporate.src}
+                      width={eventVideoPosters.corporate.width}
+                      height={eventVideoPosters.corporate.height}
                       alt=""
                       loading="lazy"
                       decoding="async"
@@ -304,9 +308,9 @@ export default function EventModal({ site, defaultEventType = '' }) {
                     />
                     {'\n              '}
                     <img
-                      src="/img/events_modal/4.jpg"
-                      width="284"
-                      height="425"
+                      src={eventVideoPosters.graduation.src}
+                      width={eventVideoPosters.graduation.width}
+                      height={eventVideoPosters.graduation.height}
                       alt=""
                       loading="lazy"
                       decoding="async"
@@ -444,144 +448,21 @@ export default function EventModal({ site, defaultEventType = '' }) {
                 </h3>
                 {'\n          '}
                 <fieldset className="event-modal__options event-modal__options--services">
-                  {'\n            '}
-                  <legend className="visually-hidden">{'Дополнительные услуги'}</legend>
-                  {'\n\n            '}
-                  <label className="event-modal__card event-modal__card--service">
-                    {'\n              '}
-                    <input
-                      className="visually-hidden"
-                      type="checkbox"
-                      name="services"
-                      value="master-class"
-                    />
-                    {'\n              '}
-                    <img
-                      src="/img/events_modal/moctail.png"
-                      width="153"
-                      height="153"
-                      alt=""
-                      loading="lazy"
-                      decoding="async"
-                    />
-                    {'\n              '}
-                    <span className="event-modal__card-label">{'Мастер-класс'}</span>
-                    {'\n            '}
-                  </label>
-                  {'\n            '}
-                  <label className="event-modal__card event-modal__card--service">
-                    {'\n              '}
-                    <input
-                      className="visually-hidden"
-                      type="checkbox"
-                      name="services"
-                      value="photographer"
-                    />
-                    {'\n              '}
-                    <span className="event-modal__card-label">{'Фотограф'}</span>
-                    {'\n            '}
-                  </label>
-                  {'\n            '}
-                  <label className="event-modal__card event-modal__card--service">
-                    {'\n              '}
-                    <input
-                      className="visually-hidden"
-                      type="checkbox"
-                      name="services"
-                      value="story-maker"
-                    />
-                    {'\n              '}
-                    <span className="event-modal__card-label">{'Сторисмейкер'}</span>
-                    {'\n            '}
-                  </label>
-                  {'\n            '}
-                  <label className="event-modal__card event-modal__card--service">
-                    {'\n              '}
-                    <input
-                      className="visually-hidden"
-                      type="checkbox"
-                      name="services"
-                      value="cake"
-                    />
-                    {'\n              '}
-                    <span className="event-modal__card-label">{'Праздничный торт'}</span>
-                    {'\n            '}
-                  </label>
-                  {'\n            '}
-                  <label className="event-modal__card event-modal__card--service">
-                    {'\n              '}
-                    <input
-                      className="visually-hidden"
-                      type="checkbox"
-                      name="services"
-                      value="balloons"
-                    />
-                    {'\n              '}
-                    <img
-                      src="/img/events_modal/baloon.png"
-                      width="231"
-                      height="234"
-                      alt=""
-                      loading="lazy"
-                      decoding="async"
-                    />
-                    {'\n              '}
-                    <span className="event-modal__card-label">{'Украшение шарами'}</span>
-                    {'\n            '}
-                  </label>
-                  {'\n            '}
-                  <label className="event-modal__card event-modal__card--service">
-                    {'\n              '}
-                    <input
-                      className="visually-hidden"
-                      type="checkbox"
-                      name="services"
-                      value="pinata"
-                    />
-                    {'\n              '}
-                    <span className="event-modal__card-label">{'Пиньята'}</span>
-                    {'\n            '}
-                  </label>
-                  {'\n            '}
-                  <label className="event-modal__card event-modal__card--service">
-                    {'\n              '}
-                    <input
-                      className="visually-hidden"
-                      type="checkbox"
-                      name="services"
-                      value="host-dj"
-                    />
-                    {'\n              '}
-                    <span className="event-modal__card-label">{'DJ и ведущий'}</span>
-                    {'\n            '}
-                  </label>
-                  {'\n            '}
-                  <label className="event-modal__card event-modal__card--service">
-                    {'\n              '}
-                    <input
-                      className="visually-hidden"
-                      type="checkbox"
-                      name="services"
-                      value="mirror-show"
-                    />
-                    {'\n              '}
-                    <span className="event-modal__card-label">{'Шоу «Зеркальный человек»'}</span>
-                    {'\n            '}
-                  </label>
-                  {'\n            '}
-                  <label className="event-modal__card event-modal__card--service">
-                    {'\n              '}
-                    <input
-                      className="visually-hidden"
-                      type="checkbox"
-                      name="services"
-                      value="cryo-show"
-                    />
-                    {'\n              '}
-                    <span className="event-modal__card-label">{'Крио шоу'}</span>
-                    {'\n            '}
-                  </label>
-                  {'\n          '}
+                  <legend className="visually-hidden">Дополнительные услуги</legend>
+                  {eventQuizExtras.map((extra) => (
+                    <label
+                      className="event-modal__card event-modal__card--service"
+                      key={extra.value}
+                    >
+                      <input
+                        className="visually-hidden"
+                        type="checkbox"
+                        name="services"
+                        value={extra.value}
+                      />
+                      <span className="event-modal__card-label">{extra.title}</span>
+                    </label>
+                  ))}
                 </fieldset>
                 {'\n        '}
               </section>
@@ -671,7 +552,6 @@ export default function EventModal({ site, defaultEventType = '' }) {
                     {'\n              '}
                     <select
                       {...validation.fieldProps('locationId')}
-                      defaultValue=""
                       name="locationId"
                       value={locationId}
                       onChange={(event) => {
@@ -696,34 +576,34 @@ export default function EventModal({ site, defaultEventType = '' }) {
                     <FormError validation={validation} name="locationId" />
                   </label>
                   {'\n            '}
-                  <label className="event-modal__field">
-                    {'\n              '}
-                    <span className="visually-hidden">
-                      {'Куда отправить расчёт '}
-                      <span aria-hidden="true">{'*'}</span>
-                    </span>
-                    {'\n              '}
-                    <select
-                      {...validation.fieldProps('messenger')}
-                      defaultValue=""
-                      name="messenger"
-                      required={true}
-                    >
-                      {'\n                '}
-                      <option value="" disabled={true}>
-                        {'Куда отправить расчёт'}
-                      </option>
-                      {'\n                '}
-                      <option value="whatsapp">{'WhatsApp'}</option>
-                      {'\n                '}
-                      <option value="telegram">{'Telegram'}</option>
-                      {'\n                '}
-                      <option value="max">{'Max'}</option>
-                      {'\n              '}
-                    </select>
-                    {'\n            '}
-                    <FormError validation={validation} name="messenger" />
-                  </label>
+                  <fieldset className="event-modal__contact-methods">
+                    <legend className="event-modal__contact-methods-title">
+                      Как удобнее связаться?
+                    </legend>
+                    {[
+                      ['call', 'Звонок'],
+                      ['telegram', 'Telegram'],
+                      ['whatsapp', 'WhatsApp'],
+                      ['max', 'Макс'],
+                    ].map(([value, label]) => (
+                      <label className="event-modal__contact-method" key={value}>
+                        <input
+                          {...validation.fieldProps(
+                            'messenger',
+                            'visually-hidden event-modal__contact-method-input',
+                          )}
+                          type="radio"
+                          name="messenger"
+                          value={value}
+                          aria-label={label}
+                          defaultChecked={value === 'call'}
+                          required
+                        />
+                        <span className="event-modal__contact-method-label">{label}</span>
+                      </label>
+                    ))}
+                  </fieldset>
+                  <FormError validation={validation} name="messenger" />
                   {'\n            '}
                   <label className="event-modal__consent">
                     {'\n              '}

@@ -18,6 +18,11 @@
     margin-bottom: $section-title-gap;
   }
 
+  &__lead {
+    width: min(100%, rem(400px));
+    max-width: none;
+  }
+
   &__grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));

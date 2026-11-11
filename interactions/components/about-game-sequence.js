@@ -9,7 +9,7 @@ const hoverQuery = '(hover: hover) and (pointer: fine)';
 const revealProperties = 'clipPath,opacity,scale,transform,transformOrigin,visibility,willChange';
 const revealedElements = new WeakSet();
 
-const getTitleLines = (section) => [...section.querySelectorAll('.about-game__title > span')];
+const getTitleElements = (section) => [section.querySelector('.about-game__title')].filter(Boolean);
 
 const getBenefitParts = (benefits) =>
   benefits.map((benefit) => ({
@@ -56,27 +56,26 @@ const addOnceTrigger = (timeline, triggerElement, start, relatedElements = []) =
 };
 
 function setupDesktopReveal(section) {
-  const titleLines = getTitleLines(section);
+  const titleElements = getTitleElements(section);
   const lead = section.querySelector('.about-game__lead');
   const visual = section.querySelector('.about-game__visual-wrap');
   const benefits = [...section.querySelectorAll('.about-game__benefit')];
   const benefitParts = getBenefitParts(benefits);
   const animatedElements = [
-    ...titleLines,
+    ...titleElements,
     lead,
     visual,
     ...benefits,
     ...benefitParts.flatMap(({ content, number }) => [content, number]),
   ];
 
-  if (!titleLines.length || !visual || !benefits.length) return null;
+  if (!titleElements.length || !visual || !benefits.length) return null;
 
   const context = gsap.context(() => {
-    gsap.set(titleLines, {
+    gsap.set(titleElements, {
       autoAlpha: 0,
-      clipPath: 'inset(100% 0 0 0)',
-      willChange: 'transform, opacity, clip-path',
-      y: 36,
+      willChange: 'transform, opacity',
+      y: 24,
     });
     gsap.set(lead, {
       autoAlpha: 0,
@@ -121,12 +120,10 @@ function setupDesktopReveal(section) {
     });
 
     timeline
-      .to(titleLines, {
+      .to(titleElements, {
         autoAlpha: 1,
-        clipPath: 'inset(0 0 0 0)',
-        duration: 0.88,
+        duration: 0.72,
         ease: 'power3.out',
-        stagger: 0.14,
         y: 0,
       })
       .to(
@@ -198,19 +195,18 @@ function setupDesktopReveal(section) {
 }
 
 function setupCompactReveal(section) {
-  const titleLines = getTitleLines(section);
+  const titleElements = getTitleElements(section);
   const lead = section.querySelector('.about-game__lead');
   const visual = section.querySelector('.about-game__visual-wrap');
   const benefits = [...section.querySelectorAll('.about-game__benefit')];
   const benefitParts = getBenefitParts(benefits);
   const context = gsap.context(() => {
-    const headingElements = [...titleLines, lead, visual];
+    const headingElements = [...titleElements, lead, visual];
 
-    gsap.set(titleLines, {
+    gsap.set(titleElements, {
       autoAlpha: 0,
-      clipPath: 'inset(100% 0 0 0)',
-      willChange: 'transform, opacity, clip-path',
-      y: 28,
+      willChange: 'transform, opacity',
+      y: 18,
     });
     gsap.set(lead, {
       autoAlpha: 0,
@@ -232,12 +228,10 @@ function setupCompactReveal(section) {
     });
 
     headingTimeline
-      .to(titleLines, {
+      .to(titleElements, {
         autoAlpha: 1,
-        clipPath: 'inset(0 0 0 0)',
-        duration: 0.82,
+        duration: 0.68,
         ease: 'power3.out',
-        stagger: 0.12,
         y: 0,
       })
       .to(

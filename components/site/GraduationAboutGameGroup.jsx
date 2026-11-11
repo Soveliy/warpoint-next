@@ -1,14 +1,17 @@
 import { siteFields } from '../../lib/site-fields';
+import { eventAboutInitialState } from '../../lib/event-about-game';
+import AboutGameVisual from './AboutGameVisual';
 
 export default function GraduationAboutGameGroup({ site }) {
   const fields = siteFields(site);
+  const initialState = eventAboutInitialState.graduation;
   return (
     <>
       <div className="about-game-group" data-about-game-group="">
         {'\n      '}
         <section
           className="about-game"
-          data-about-initial-state="team"
+          data-about-initial-state={initialState}
           data-header-theme="brand"
           aria-labelledby="about-game-title"
         >
@@ -38,90 +41,7 @@ export default function GraduationAboutGameGroup({ site }) {
             {'\n          '}
             <div className="about-game__stage">
               {'\n            '}
-              <div className="about-game__visual-wrap" data-about-game-scene="">
-                {'\n              '}
-                <span className="about-game__visual-aura" aria-hidden="true"></span>
-                {'\n              '}
-                <span className="about-game__visual-shadow" aria-hidden="true"></span>
-                {'\n              '}
-                <div className="about-game__visual-model">
-                  {'\n                '}
-                  <div
-                    className="about-game__visual-state about-game__visual-state--team is-active"
-                    data-about-scene-state="team"
-                  >
-                    {'\n                  '}
-                    <img
-                      className="about-game__visual"
-                      src="/img/about/2.png"
-                      width="1080"
-                      height="1440"
-                      alt="Командная игра в виртуальной реальности"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                    {'\n                '}
-                  </div>
-                  {'\n                '}
-                  <div
-                    className="about-game__visual-state about-game__visual-state--immersion"
-                    data-about-scene-state="immersion"
-                    aria-hidden="true"
-                  >
-                    {'\n                  '}
-                    <img
-                      className="about-game__visual"
-                      src="/img/about/4.png"
-                      width="1080"
-                      height="1440"
-                      alt="Погружение в виртуальный игровой мир"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                    {'\n                '}
-                  </div>
-                  {'\n                '}
-                  <div
-                    className="about-game__visual-state about-game__visual-state--family"
-                    data-about-scene-state="family"
-                    aria-hidden="true"
-                  >
-                    {'\n                  '}
-                    <img
-                      className="about-game__visual"
-                      src="/img/about/1.png"
-                      width="1080"
-                      height="1440"
-                      alt="Семья играет в виртуальной реальности"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                    {'\n                '}
-                  </div>
-                  {'\n                '}
-                  <div
-                    className="about-game__visual-state about-game__visual-state--events"
-                    data-about-scene-state="events"
-                    aria-hidden="true"
-                  >
-                    {'\n                  '}
-                    <img
-                      className="about-game__visual"
-                      src="/img/about/3.png"
-                      width="1080"
-                      height="1440"
-                      alt="День рождения в парке виртуальной реальности"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                    {'\n                '}
-                  </div>
-                  {'\n                '}
-                  <span className="about-game__visual-light" aria-hidden="true"></span>
-                  {'\n              '}
-                </div>
-                {'\n            '}
-              </div>
+              <AboutGameVisual initialState={initialState} />
               {'\n            '}
               <ol className="about-game__benefits">
                 {'\n              '}

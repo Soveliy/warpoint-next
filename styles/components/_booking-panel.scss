@@ -1,4 +1,3 @@
-@use '../fluid' as *;
 @use '../mixins/disable-mob-hover' as *;
 @use '../vars' as *;
 
@@ -29,317 +28,242 @@
     inset: 0;
     width: 100%;
     height: 100%;
-    background-color: rgb(var(--black-rgb) / 0.72);
-    backdrop-filter: blur(rem(8px));
+    background: rgb(var(--black-rgb) / 0.72);
+    backdrop-filter: blur(8px);
   }
 
   &__dialog {
     position: absolute;
     top: 50%;
     left: 50%;
-    isolation: isolate;
-    width: min(rem(500px), calc(100vw - #{rem(32px)}));
-    max-height: calc(100dvh - #{rem(32px)});
-    padding: rem(42px) rem(32px) rem(38px);
+    width: min(500px, calc(100vw - 32px));
+    max-height: calc(100dvh - 32px);
+    padding: 40px;
     overflow-y: auto;
     overscroll-behavior: contain;
-    border: rem(1px) solid rgb(var(--white-rgb) / 0.12);
-    border-radius: rem(48px);
+    border: 1px solid rgb(var(--white-rgb) / 0.15);
+    border-radius: 28px;
     outline: 0;
-    background: var(--gray-950) url('/img/pop-up-bg.jpg') center / cover no-repeat;
-    box-shadow: 0 rem(28px) rem(80px) rgb(var(--black-rgb) / 0.55);
+    background:
+      radial-gradient(ellipse at top right, rgb(var(--red-500-rgb) / 0.08), transparent 65%),
+      #111115;
+    box-shadow: 0 28px 80px rgb(var(--black-rgb) / 0.55);
     opacity: 0;
-    transform: translate(-50%, calc(-50% + #{rem(24px)})) scale(0.98);
+    transform: translate(-50%, calc(-50% + 24px)) scale(0.98);
     transition:
       opacity 280ms $ease-base,
       transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
   }
 
   &__close {
-    @include hover {
-      border-color: var(--red-400);
-      color: var(--red-400);
-      transform: rotate(90deg);
-    }
-
     position: absolute;
-    top: rem(18px);
-    right: rem(18px);
-    z-index: 4;
-    width: rem(38px);
-    height: rem(38px);
-    border: rem(1px) solid rgb(var(--white-rgb) / 0.48);
-    border-radius: 50%;
-    background-color: rgb(var(--gray-950-rgb) / 0.34);
-    color: var(--white);
-    backdrop-filter: blur(rem(8px));
-    transition:
-      border-color $duration-fast $ease-base,
-      color $duration-fast $ease-base,
-      transform $duration-fast $ease-base;
+    top: 16px;
+    right: 16px;
+    width: 28px;
+    height: 28px;
+    color: var(--gray-400);
+    transition: color $duration-fast $ease-base;
+
+    @include hover {
+      color: var(--white);
+    }
 
     span {
       position: absolute;
       top: 50%;
       left: 50%;
-      width: rem(15px);
-      height: rem(1.5px);
-      border-radius: $radius-pill;
-      background-color: currentcolor;
-
-      &:first-child {
-        transform: translate(-50%, -50%) rotate(45deg);
-      }
+      width: 14px;
+      height: 2px;
+      border-radius: 2px;
+      background: currentColor;
+      transform: translate(-50%, -50%) rotate(45deg);
 
       &:last-child {
         transform: translate(-50%, -50%) rotate(-45deg);
       }
     }
-
-    &:focus-visible {
-      outline: $focus-outline-width solid var(--focus-color);
-      outline-offset: rem(2px);
-    }
-  }
-
-  &__online,
-  &__request {
-    position: relative;
-    z-index: 1;
   }
 
   &__title {
-    max-width: calc(100% - #{rem(44px)});
-    margin: 0 auto;
+    margin: 0;
     color: var(--white);
-    font-family: $font-family-heading;
-    font-size: fluid(54px, 68px, 375px, 768px);
-    font-weight: 800;
-    line-height: 0.78;
+    font: 800 36px/1.1 $font-family-heading;
     text-align: center;
     text-transform: uppercase;
-
-    span {
-      display: block;
-    }
   }
 
   &__subtitle {
-    margin: rem(24px) auto 0;
-    color: var(--white);
-    font-size: rem(18px);
-    font-weight: 400;
-    line-height: 1.25;
+    margin: 14px 0 0;
+    color: var(--gray-400);
+    font-size: 14px;
+    line-height: 1.4;
     text-align: center;
   }
 
   &__button {
-    position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     width: 100%;
-    min-height: rem(76px);
-    padding: rem(14px) rem(20px);
-    border: rem(1px) solid transparent;
-    border-radius: rem(20px);
+    min-height: 48px;
+    padding: 12px 18px;
+    border: 1px solid transparent;
+    border-radius: 28px;
     color: var(--white);
-    font-size: rem(12px);
-    font-weight: 750;
-    line-height: 1;
-    letter-spacing: 0.05em;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.2;
     text-align: center;
-    text-transform: uppercase;
     transition:
       background-color $duration-fast $ease-base,
-      border-color $duration-fast $ease-base,
-      color $duration-fast $ease-base,
-      transform $duration-fast $ease-base;
-
-    &:active {
-      transform: scale(0.985);
-    }
-
-    &:focus-visible {
-      outline: $focus-outline-width solid var(--focus-color);
-      outline-offset: rem(3px);
-    }
+      border-color $duration-fast $ease-base;
 
     &--online {
-      @include hover {
-        background-color: var(--red-600);
-      }
+      margin-top: 24px;
+      background: linear-gradient(110deg, #ef3546, #ed1055);
 
-      margin-top: rem(26px);
-      background-color: var(--red-500);
+      @include hover {
+        background: var(--red-600);
+      }
     }
 
     &--submit {
+      margin-top: 20px;
+      border-color: rgb(var(--red-500-rgb) / 0.6);
+      background: rgb(var(--white-rgb) / 0.03);
+
       @include hover {
         border-color: var(--red-500);
-        background-color: var(--red-500);
+        background: rgb(var(--red-500-rgb) / 0.1);
       }
+    }
+  }
 
-      margin-top: rem(20px);
-      border-color: rgb(var(--white-rgb) / 0.8);
-      background-color: transparent;
+  &__separator {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 24px 0 20px;
+    color: var(--gray-400);
+    font-size: 12px;
+    line-height: 1.4;
+    text-align: center;
 
-      &:disabled {
-        border-color: rgb(var(--white-rgb) / 0.42);
-        background-color: transparent;
-        color: rgb(var(--white-rgb) / 0.58);
-        cursor: not-allowed;
-        pointer-events: none;
-      }
+    &::before,
+    &::after {
+      content: '';
+      flex: 1;
+      min-width: 16px;
+      height: 1px;
+      background: rgb(var(--white-rgb) / 0.1);
     }
   }
 
   &__request {
-    margin-top: rem(36px);
+    margin-top: 24px;
   }
 
-  &__request-title {
-    margin: 0;
-    color: var(--gray-400);
-    font-size: rem(18px);
-    font-weight: 700;
-    line-height: 1.2;
-    text-align: center;
+  &__separator + &__request {
+    margin-top: 0;
   }
 
   &__form {
-    margin-top: rem(20px);
+    padding: 22px;
+    border: 1px solid rgb(var(--white-rgb) / 0.12);
+    border-radius: 20px;
+    background: rgb(var(--white-rgb) / 0.03);
   }
 
   &__fields {
     display: grid;
-    gap: rem(20px);
+    gap: 20px;
+  }
+
+  &__field {
+    display: block;
+    min-width: 0;
+  }
+
+  &__field-label {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--gray-400);
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
   }
 
   &__input {
     width: 100%;
-    height: rem(54px);
-    padding: 0 rem(20px);
-    border: rem(1px) solid transparent;
-    border-radius: rem(8px);
+    min-height: 44px;
+    padding: 10px 0;
+    border: 0;
+    border-bottom: 1px solid #3d3d43;
+    border-radius: 0;
     outline: 0;
-    background-color: var(--gray-50);
-    color: var(--gray-950);
-    font-size: rem(18px);
-    font-weight: 600;
-    transition:
-      border-color $duration-fast $ease-base,
-      box-shadow $duration-fast $ease-base;
+    background: transparent;
+    color: var(--white);
+    font: inherit;
+    font-size: 16px;
+    line-height: 1.3;
 
     &::placeholder {
-      color: var(--gray-500);
+      color: var(--gray-400);
       opacity: 1;
     }
 
     &:focus {
-      border-color: var(--red-400);
-      box-shadow: 0 0 0 rem(3px) rgb(var(--red-500-rgb) / 0.18);
+      border-bottom-color: var(--white);
     }
+  }
 
-    &.is-invalid {
-      border-color: var(--red-500);
-    }
+  & &__form .booking-panel__input[aria-invalid='true'] {
+    border-bottom-color: var(--red-500);
+    outline: none;
+    box-shadow: none;
   }
 
   &__agreement {
     display: grid;
-    grid-template-columns: rem(18px) minmax(0, 1fr);
-    gap: rem(10px);
+    grid-template-columns: 18px minmax(0, 1fr);
     align-items: start;
-    margin-top: rem(20px);
-    color: var(--white);
-    font-size: rem(11px);
-    font-weight: 500;
-    line-height: 1.18;
+    gap: 10px;
+    margin-top: 20px;
+    color: var(--gray-400);
+    font-size: 12px;
+    line-height: 1.4;
     cursor: pointer;
 
     a {
-      color: var(--red-500);
-      text-decoration: none;
-
-      &:hover {
-        text-decoration: underline;
-      }
-
-      &:focus-visible {
-        outline: $focus-outline-width solid var(--focus-color);
-        outline-offset: rem(2px);
-      }
+      color: inherit;
+      text-decoration: underline;
+      text-underline-offset: 2px;
     }
   }
 }
 
 @media (max-width: $breakpoint-mobile) {
   .booking-panel {
-    &__backdrop {
-      background-color: rgb(var(--black-rgb) / 0.82);
-    }
-
     &__dialog {
-      width: min(rem(450px), 100vw);
-      max-height: 100dvh;
-      padding: rem(38px) rem(24px) rem(32px);
-      border-radius: rem(42px);
-    }
-
-    &__close {
-      top: rem(14px);
-      right: rem(14px);
-      width: rem(34px);
-      height: rem(34px);
+      width: calc(100vw - 24px);
+      max-height: calc(100dvh - 24px);
+      padding: 36px 20px 24px;
+      border-radius: 24px;
     }
 
     &__title {
-      font-size: fluid(48px, 60px, 320px, 450px);
+      font-size: 30px;
     }
 
-    &__subtitle {
-      margin-top: rem(22px);
-      font-size: rem(16px);
+    &__form {
+      padding: 20px;
     }
 
-    &__button {
-      min-height: rem(74px);
-    }
-
-    &__request {
-      margin-top: rem(34px);
-    }
-
-    &__request-title {
-      font-size: rem(17px);
-    }
-
-    &__input {
-      height: rem(50px);
-      font-size: rem(17px);
-    }
-  }
-}
-
-@media (width <= 374px) {
-  .booking-panel {
-    &__dialog {
-      padding-right: rem(18px);
-      padding-left: rem(18px);
-      border-radius: rem(34px);
-    }
-
-    &__title {
-      font-size: rem(40px);
-    }
-
-    &__request-title {
-      font-size: rem(16px);
-    }
-
-    &__agreement {
-      font-size: rem(10px);
+    &__separator {
+      gap: 8px;
     }
   }
 }
@@ -348,8 +272,7 @@
   .booking-panel,
   .booking-panel__dialog,
   .booking-panel__close,
-  .booking-panel__button,
-  .booking-panel__input {
+  .booking-panel__button {
     transition: none;
   }
 }

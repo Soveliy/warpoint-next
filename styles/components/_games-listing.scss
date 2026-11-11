@@ -289,6 +289,7 @@
 @media (max-width: 767px) {
   .games-listing {
     &__toolbar {
+      justify-content: space-between;
       display: grid;
     }
 
@@ -381,6 +382,9 @@
     margin-top: 24px;
   }
   &__page {
+    display: inline-grid;
+    place-items: center;
+    padding: 0;
     width: 2.1875rem;
     height: 2.1875rem;
     border: 1px solid rgba(255, 255, 255, 0.07);
@@ -393,12 +397,17 @@
     color: #fff;
     cursor: pointer;
   }
+  &__page-icon {
+    display: block;
+    width: 9px;
+    height: 9px;
+  }
   &__page[aria-current='page'] {
     background: var(--red-600);
     border-color: var(--red-600);
   }
   &__page:disabled {
-    opacity: 0.35;
+    color: rgba(255, 255, 255, 0.07);
     cursor: default;
   }
 }

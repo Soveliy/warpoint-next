@@ -1,5 +1,26 @@
 export default function TariffPriceBox({ tariff, local, event = false }) {
-  if (tariff.rows)
+  if (tariff.isApiTariff) {
+    if (!tariff.priceItems.length) {
+      return <p className="tariffs-listing__price-label">Стоимость по запросу</p>;
+    }
+    return (
+      <div
+        className={`tariffs-listing__prices${tariff.priceItems.length === 1 ? ' tariffs-listing__prices--single' : ''}`}
+      >
+        {tariff.priceItems.map((price) => (
+          <div className="tariffs-listing__price" key={price.label}>
+            <span className="tariffs-listing__price-label">{price.label}</span>
+            {price.oldAmount > price.amount && (
+              <del className="tariffs-listing__old-price">{price.oldValue}</del>
+            )}
+            <strong className="tariffs-listing__price-value">{price.value}</strong>
+            <small className="tariffs-listing__price-unit">{tariff.priceUnitLabel}</small>
+          </div>
+        ))}
+      </div>
+    );
+  }
+  if (tariff.rows) {
     return (
       <div className="tariffs-listing__matrix">
         <div className="tariffs-listing__matrix-head">
@@ -21,7 +42,8 @@ export default function TariffPriceBox({ tariff, local, event = false }) {
         <small className="tariffs-listing__matrix-note">Цена с человека</small>
       </div>
     );
-  if (tariff.prices)
+  }
+  if (tariff.prices) {
     return (
       <div className="tariffs-listing__prices">
         {tariff.prices.map(([label, value]) => (
@@ -35,6 +57,7 @@ export default function TariffPriceBox({ tariff, local, event = false }) {
         ))}
       </div>
     );
+  }
   return (
     <div className="tariffs-listing__single-price">
       <span className="tariffs-listing__single-label">

@@ -774,3 +774,26 @@
     }
   }
 }
+
+.event-tariffs {
+  &__empty {
+    padding: 32px 0;
+    text-align: center;
+  }
+  &__old-price {
+    display: block;
+    color: var(--gray-400);
+    font-size: 14px;
+  }
+  &__price-unit {
+    display: block;
+    margin-top: 6px;
+    color: var(--gray-400);
+    font-size: 12px;
+    font-weight: 400;
+  }
+}
+
+.event-tariffs__card-prices--single {
+  grid-template-columns: minmax(0, 1fr);
+}

@@ -224,8 +224,13 @@
 }
 
 @media (min-width: 768px) {
-  .hero-event__allerts,
   .hero__allerts {
+    transform: translateY(calc(0px - var(--cookie-notice-height, 0px)));
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-event__allerts {
     transform: translateY(calc(0px - var(--cookie-notice-height, 0px)));
   }
 }

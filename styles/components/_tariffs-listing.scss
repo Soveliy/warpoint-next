@@ -55,10 +55,11 @@
   &__tags {
     display: flex;
     gap: 5px;
-    margin-bottom: 26px;
+    margin-bottom: 1.875rem;
     font-family: $font-family-heading;
-    font-size: 12px;
-    font-weight: 800;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
     line-height: 1;
     text-transform: uppercase;
   }
@@ -66,15 +67,14 @@
   &__tag {
     display: inline-flex;
     align-items: center;
-    min-height: 28px;
-    padding: 6px 10px;
+    padding: 0.375rem 0.625rem;
     border: 1px solid #fff;
-    border-radius: 999px;
+    border-radius: 1.5625rem;
   }
 
   &__tag:first-child {
-    border-color: #f23764;
-    background: #f23764;
+    border-color: var(--red-500);
+    background: var(--red-500);
   }
 
   &__title,
@@ -274,4 +274,15 @@
       grid-template-columns: 0.8fr 1.2fr;
     }
   }
+}
+
+.tariffs-listing {
+  &__old-price {
+    color: #99989e;
+    font-size: 14px;
+  }
+}
+
+.tariffs-listing__prices--single {
+  grid-template-columns: minmax(0, 1fr);
 }

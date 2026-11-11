@@ -20,21 +20,36 @@ export default function AnnouncementDialog({ event, onClose }) {
         <h2 className="announcement-dialog__title" id="announcement-dialog-title">
           {event.title}
         </h2>
-        <p className="announcement-dialog__text">{event.description}</p>
+        <p className="announcement-dialog__text">
+          {event.detailedDescription || event.description}
+        </p>
         <p className="announcement-dialog__text">
           {event.day} {event.month}, {event.time}
           <br />
           {event.location}
+          {event.city && (
+            <>
+              <br />
+              {event.city}
+            </>
+          )}
         </p>
-        <button
-          className="listing-button listing-button--solid announcement-dialog__request"
-          type="button"
-          data-booking-open=""
-          data-booking-event={event.title}
-          onClick={onClose}
-        >
-          Оставить заявку
-        </button>
+        {event.phone && (
+          <p className="announcement-dialog__text">
+            <a href={'tel:' + event.phone.replace(/[^+\d]/g, '')}>{event.phone}</a>
+          </p>
+        )}
+        {event.showRequestButton !== false && (
+          <button
+            className="listing-button listing-button--solid announcement-dialog__request"
+            type="button"
+            data-booking-open=""
+            data-booking-event={event.title}
+            onClick={onClose}
+          >
+            Оставить заявку
+          </button>
+        )}
       </div>
     </SiteContentDialog>
   );

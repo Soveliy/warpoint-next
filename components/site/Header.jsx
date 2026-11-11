@@ -687,6 +687,9 @@ export default function Header({ site }) {
                     <button
                       className="menu__booking button-reset"
                       type="button"
+                      aria-haspopup="dialog"
+                      aria-controls="booking-panel"
+                      data-booking-form="online"
                       data-booking-open=""
                       data-mobile-menu-close=""
                     >
@@ -746,7 +749,14 @@ export default function Header({ site }) {
                   {'\n          '}
                 </button>
                 {'\n          '}
-                <button className="header__booking button-reset" type="button" data-booking-open="">
+                <button
+                  className="header__booking button-reset"
+                  type="button"
+                  aria-haspopup="dialog"
+                  aria-controls="booking-panel"
+                  data-booking-form="online"
+                  data-booking-open=""
+                >
                   {'\n            Забронировать\n          '}
                 </button>
                 {'\n        '}

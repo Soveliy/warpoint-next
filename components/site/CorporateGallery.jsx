@@ -1,3 +1,4 @@
+import { eventGalleries } from '../../lib/event-media';
 import { siteFields } from '../../lib/site-fields';
 
 export default function CorporateGallery({ site }) {
@@ -23,91 +24,19 @@ export default function CorporateGallery({ site }) {
           </div>
           {'\n\n        '}
           <div className="gallery__grid">
-            {'\n          '}
-            <a className="gallery__item" href="/img/gallery/1.jpg" data-fancybox="moments">
-              {'\n            '}
-              <img
-                className="gallery__image gallery__image--birthday"
-                src="/img/gallery/1.jpg"
-                width="3000"
-                height="1996"
-                alt="Игроки с VR-шлемами на синей арене Warpoint"
-                loading="lazy"
-                decoding="async"
-              />
-              {'\n          '}
-            </a>
-            {'\n\n          '}
-            <a className="gallery__item" href="/img/gallery/2.jpg" data-fancybox="moments">
-              {'\n            '}
-              <img
-                className="gallery__image gallery__image--corporate"
-                src="/img/gallery/2.jpg"
-                width="3000"
-                height="1996"
-                alt="Участница командной VR-игры с контроллерами"
-                loading="lazy"
-                decoding="async"
-              />
-              {'\n          '}
-            </a>
-            {'\n\n          '}
-            <a className="gallery__item" href="/img/gallery/3.jpg" data-fancybox="moments">
-              {'\n            '}
-              <img
-                className="gallery__image gallery__image--graduation"
-                src="/img/gallery/3.jpg"
-                width="3000"
-                height="1996"
-                alt="Команда игроков на красной стороне арены"
-                loading="lazy"
-                decoding="async"
-              />
-              {'\n          '}
-            </a>
-            {'\n\n          '}
-            <a className="gallery__item" href="/img/gallery/4.jpg" data-fancybox="moments">
-              {'\n            '}
-              <img
-                className="gallery__image gallery__image--arena"
-                src="/img/gallery/4.jpg"
-                width="3000"
-                height="1996"
-                alt="Игроки на большой VR-арене Warpoint"
-                loading="lazy"
-                decoding="async"
-              />
-              {'\n          '}
-            </a>
-            {'\n\n          '}
-            <a className="gallery__item" href="/img/gallery/5.jpg" data-fancybox="moments">
-              {'\n            '}
-              <img
-                className="gallery__image gallery__image--station"
-                src="/img/gallery/5.jpg"
-                width="3000"
-                height="1996"
-                alt="Командное сражение на площадке Warpoint"
-                loading="lazy"
-                decoding="async"
-              />
-              {'\n          '}
-            </a>
-            {'\n\n          '}
-            <a className="gallery__item" href="/img/gallery/6.jpg" data-fancybox="moments">
-              {'\n            '}
-              <img
-                className="gallery__image gallery__image--extreme"
-                src="/img/gallery/6.jpg"
-                width="3000"
-                height="1996"
-                alt="Гости играют в виртуальной реальности на арене"
-                loading="lazy"
-                decoding="async"
-              />
-              {'\n          '}
-            </a>
-            {'\n        '}
+            {eventGalleries.corporate.map((photo) => (
+              <a className="gallery__item" href={photo.src} data-fancybox="moments" key={photo.src}>
+                <img
+                  className="gallery__image"
+                  src={photo.src}
+                  width={photo.width}
+                  height={photo.height}
+                  alt={photo.alt}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </a>
+            ))}
           </div>
           {'\n      '}
         </div>

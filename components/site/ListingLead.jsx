@@ -11,6 +11,8 @@ export default function ListingLead({
   site,
   title,
   accent,
+  id = 'contacts',
+  className = '',
   description = 'Оставьте заявку — менеджер подберёт игры под возраст и количество гостей',
 }) {
   const [prepared, setPrepared] = useState(false);
@@ -18,22 +20,30 @@ export default function ListingLead({
   const form = useRef(null);
   const validation = useFormValidation(
     form,
-    { ...contactRules, consent: consentRule },
+    {
+      ...contactRules,
+      consent: consentRule,
+    },
     { countryId: site.countryId },
   );
   const submit = (event) => {
     event.preventDefault();
     if (!validation.validate()) return;
     const values = new FormData(form.current);
-    const subject = encodeURIComponent(`Заявка WARPOINT — ${site.city}`);
+    const city = String(values.get('city') || '');
+    const subject = encodeURIComponent(`Заявка WARPOINT — ${city}`);
     const body = encodeURIComponent(
-      `Имя: ${String(values.get('name')).trim()}\nТелефон: ${values.get('phone')}\nГород: ${site.city}\nЛокация: ${location ? location.title + ', ' + location.address : 'Не выбрана'}\nРаздел: ${title} ${accent}`,
+      `Имя: ${String(values.get('name')).trim()}\nТелефон: ${values.get('phone')}\nГород: ${city}\nЛокация: ${location ? location.title + ', ' + location.address : 'Не выбрана'}\nРаздел: ${title} ${accent}`,
     );
     window.location.href = `mailto:feedback@warpoint.ru?subject=${subject}&body=${body}`;
     setPrepared(true);
   };
   return (
-    <section className="listing-lead container" id="contacts" aria-labelledby="listing-lead-title">
+    <section
+      className={`listing-lead container ${className}`}
+      id={id}
+      aria-labelledby="listing-lead-title"
+    >
       <div className="listing-lead__copy">
         <h2 className="listing-lead__title" id="listing-lead-title">
           {title}
@@ -48,7 +58,7 @@ export default function ListingLead({
         {...validation.formProps}
         onSubmit={submit}
       >
-        <SelectedLocationFields summary />
+        <SelectedLocationFields />
         <div className="listing-lead__fields">
           <label className="listing-lead__field">
             <span className="visually-hidden">Ваше имя</span>

@@ -26,7 +26,7 @@ export default function SitePage({ page, site, event = false }) {
       <BodyPageClass event={event} />
       <Sections site={site} />
       <LocationModal site={site} />
-      <BookingPanel site={site} />
+      <BookingPanel site={site} allowOnline={page === 'home'} />
       <SiteBehaviors site={site} />
     </SiteLocationProvider>
   );

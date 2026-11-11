@@ -1,14 +1,17 @@
 import { siteFields } from '../../lib/site-fields';
+import { eventAboutInitialState } from '../../lib/event-about-game';
+import AboutGameVisual from './AboutGameVisual';
 
 export default function CorporateAboutGameGroup({ site, adult = false }) {
   const fields = siteFields(site);
+  const initialState = eventAboutInitialState[adult ? 'adult-birthday' : 'corporate'];
   return (
     <>
       <div className="about-game-group" data-about-game-group="">
         {'\n      '}
         <section
           className="about-game"
-          data-about-initial-state="team"
+          data-about-initial-state={initialState}
           data-header-theme="brand"
           aria-labelledby="about-game-title"
         >
@@ -29,99 +32,16 @@ export default function CorporateAboutGameGroup({ site, adult = false }) {
               </h2>
               {'\n            '}
               <p className="about-game__lead">
-                {
-                  adult ? 'Командные VR-игры и праздник для вашей компании.' : '\n              Командные VR-игры, которые объединяют коллег и дают повод для общих побед.\n            '
-                }
+                {adult
+                  ? 'Командные VR-игры и праздник для вашей компании.'
+                  : '\n              Командные VR-игры, которые объединяют коллег и дают повод для общих побед.\n            '}
               </p>
               {'\n          '}
             </div>
             {'\n          '}
             <div className="about-game__stage">
               {'\n            '}
-              <div className="about-game__visual-wrap" data-about-game-scene="">
-                {'\n              '}
-                <span className="about-game__visual-aura" aria-hidden="true"></span>
-                {'\n              '}
-                <span className="about-game__visual-shadow" aria-hidden="true"></span>
-                {'\n              '}
-                <div className="about-game__visual-model">
-                  {'\n                '}
-                  <div
-                    className="about-game__visual-state about-game__visual-state--team is-active"
-                    data-about-scene-state="team"
-                  >
-                    {'\n                  '}
-                    <img
-                      className="about-game__visual"
-                      src="/img/about/2.png"
-                      width="1080"
-                      height="1440"
-                      alt="Командная игра в виртуальной реальности"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                    {'\n                '}
-                  </div>
-                  {'\n                '}
-                  <div
-                    className="about-game__visual-state about-game__visual-state--immersion"
-                    data-about-scene-state="immersion"
-                    aria-hidden="true"
-                  >
-                    {'\n                  '}
-                    <img
-                      className="about-game__visual"
-                      src="/img/about/4.png"
-                      width="1080"
-                      height="1440"
-                      alt="Погружение в виртуальный игровой мир"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                    {'\n                '}
-                  </div>
-                  {'\n                '}
-                  <div
-                    className="about-game__visual-state about-game__visual-state--family"
-                    data-about-scene-state="family"
-                    aria-hidden="true"
-                  >
-                    {'\n                  '}
-                    <img
-                      className="about-game__visual"
-                      src="/img/about/1.png"
-                      width="1080"
-                      height="1440"
-                      alt="Семья играет в виртуальной реальности"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                    {'\n                '}
-                  </div>
-                  {'\n                '}
-                  <div
-                    className="about-game__visual-state about-game__visual-state--events"
-                    data-about-scene-state="events"
-                    aria-hidden="true"
-                  >
-                    {'\n                  '}
-                    <img
-                      className="about-game__visual"
-                      src="/img/about/3.png"
-                      width="1080"
-                      height="1440"
-                      alt="День рождения в парке виртуальной реальности"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                    {'\n                '}
-                  </div>
-                  {'\n                '}
-                  <span className="about-game__visual-light" aria-hidden="true"></span>
-                  {'\n              '}
-                </div>
-                {'\n            '}
-              </div>
+              <AboutGameVisual initialState={initialState} />
               {'\n            '}
               <ol className="about-game__benefits">
                 {'\n              '}
@@ -197,7 +117,9 @@ export default function CorporateAboutGameGroup({ site, adult = false }) {
                   {'\n                '}
                   <div className="about-game__benefit-content">
                     {'\n                  '}
-                    <h3 className="about-game__benefit-title">{adult ? 'Подходит любой компании' : 'Подходит любой команде'}</h3>
+                    <h3 className="about-game__benefit-title">
+                      {adult ? 'Подходит любой компании' : 'Подходит любой команде'}
+                    </h3>
                     {'\n                  '}
                     <p className="about-game__benefit-description">
                       {
@@ -243,9 +165,9 @@ export default function CorporateAboutGameGroup({ site, adult = false }) {
                     <h3 className="about-game__benefit-title">{'Организация под ключ'}</h3>
                     {'\n                  '}
                     <p className="about-game__benefit-description about-game__benefit-description--lit">
-                      {
-                        adult ? 'Развлечение для всей семьи: подходит для детей от 6 лет и взрослых любого возраста' : '\n                    Подберём сценарий, проведём инструктаж и турнир — вам останется играть и\n                    болеть за коллег.\n                  '
-                      }
+                      {adult
+                        ? 'Развлечение для всей семьи: подходит для детей от 6 лет и взрослых любого возраста'
+                        : '\n                    Подберём сценарий, проведём инструктаж и турнир — вам останется играть и\n                    болеть за коллег.\n                  '}
                     </p>
                     {'\n                '}
                   </div>

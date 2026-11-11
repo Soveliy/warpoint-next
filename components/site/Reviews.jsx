@@ -1,3 +1,4 @@
+import ReviewScore from './ReviewScore';
 import { siteFields } from '../../lib/site-fields';
 
 export default function Reviews({ site }) {
@@ -24,97 +25,99 @@ export default function Reviews({ site }) {
               {'Взгляните на реальные эмоции наших гостей и развейте все сомнения'}
             </p>
             {'\n\n      '}
-            <aside
-              className="reviews__score"
-              aria-label="Средняя оценка гостей 5 из 5"
-              data-review-score=""
-            >
-              {'\n        '}
-              <div className="reviews__services">
-                {'\n          '}
-                <a
-                  href="https://go.2gis.com/upU86"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                  className="reviews__service"
-                  data-review-link="2gis"
-                >
-                  {'\n            '}
-                  <img
-                    className="reviews__service-icon"
-                    src="/img/2gis.png"
-                    width="39"
-                    height="39"
-                    alt=""
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  {'\n            '}
-                  <span className="reviews__service-name">{'2ГИС'}</span>
-                  {'\n            '}
-                  <span className="reviews__service-count">{'1798 отзывов'}</span>
-                  {'\n          '}
-                </a>
-                {'\n\n          '}
-                <a
-                  href="https://yandex.ru/maps/-/CXaiu2k2"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                  className="reviews__service"
-                  data-review-link="yandex"
-                >
-                  {'\n            '}
-                  <img
-                    className="reviews__service-icon"
-                    src="/img/ymaps.svg"
-                    width="36"
-                    height="44"
-                    alt=""
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  {'\n            '}
-                  <span className="reviews__service-name">{'Карты'}</span>
-                  {'\n            '}
-                  <span className="reviews__service-count">{'2 495 отзывов'}</span>
-                  {'\n          '}
-                </a>
+            <ReviewScore>
+              <aside
+                className="reviews__score"
+                aria-label="Средняя оценка гостей 5 из 5"
+                data-review-score=""
+              >
                 {'\n        '}
-              </div>
-              {'\n\n        '}
-              <div className="reviews__rating">
-                {'\n          '}
-                <p className="reviews__rating-label">{'Средняя оценка наших гостей'}</p>
-                {'\n\n          '}
-                <svg
-                  className="reviews__rating-value"
-                  width="87"
-                  height="60"
-                  viewBox="0 0 87 60"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  {'\n            '}
-                  <path
-                    d="M0 41.2397L13.8127 40.6612C13.8949 45.6198 15.4571 48.3471 17.9236 48.3471C20.7191 48.3471 22.1168 45.2893 22.1168 39.5868C22.1168 33.719 20.9657 30.5785 18.0058 30.5785C16.1148 30.5785 14.6349 31.9835 13.9771 35.2893L1.15106 33.8017L4.68645 1.07438H33.7918V12.562H14.9638L13.8949 21.5703C15.4571 20.0826 17.5125 19.2562 20.5546 19.2562C30.1742 19.2562 36.2584 26.6116 36.2584 39.3388C36.2584 51.9835 29.1876 60 18.0881 60C6.6597 60 0.657748 51.8182 0 41.2397Z"
-                    fill="#F4F4F5"
-                  ></path>
-                  {'\n            '}
-                  <path
-                    d="M43.5707 59.9174C38.9664 59.9174 35.8421 56.6942 35.8421 52.0661C35.8421 47.438 38.9664 44.2149 43.5707 44.2149C48.0927 44.2149 51.2992 47.438 51.2992 52.0661C51.2992 56.6942 48.0927 59.9174 43.5707 59.9174Z"
-                    fill="#F4F4F5"
-                  ></path>
-                  {'\n            '}
-                  <path
-                    d="M68.5008 60C56.1681 60 50.0017 49.0909 50.0017 29.9174C50.0017 10.8264 56.1681 0 68.5008 0C80.8336 0 87 10.8264 87 29.9174C87 49.0909 80.8336 60 68.5008 60ZM68.5008 48.1818C71.4607 48.1818 72.9406 44.7107 72.9406 29.9174C72.9406 15.3719 71.4607 11.8182 68.5008 11.8182C65.541 11.8182 64.061 15.3719 64.061 29.9174C64.061 44.7107 65.541 48.1818 68.5008 48.1818Z"
-                    fill="#F4F4F5"
-                  ></path>
+                <div className="reviews__services">
                   {'\n          '}
-                </svg>
-                {'\n        '}
-              </div>
-              {'\n      '}
-            </aside>
+                  <a
+                    href="https://go.2gis.com/upU86"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                    className="reviews__service"
+                    data-review-link="2gis"
+                  >
+                    {'\n            '}
+                    <img
+                      className="reviews__service-icon"
+                      src="/img/2gis.png"
+                      width="39"
+                      height="39"
+                      alt=""
+                      loading="lazy"
+                      decoding="async"
+                    />
+                    {'\n            '}
+                    <span className="reviews__service-name">{'2ГИС'}</span>
+                    {'\n            '}
+                    <span className="reviews__service-count">{'1798 отзывов'}</span>
+                    {'\n          '}
+                  </a>
+                  {'\n\n          '}
+                  <a
+                    href="https://yandex.ru/maps/-/CXaiu2k2"
+                    rel="noopener noreferrer"
+                    target="_blank"
+                    className="reviews__service"
+                    data-review-link="yandex"
+                  >
+                    {'\n            '}
+                    <img
+                      className="reviews__service-icon"
+                      src="/img/ymaps.svg"
+                      width="36"
+                      height="44"
+                      alt=""
+                      loading="lazy"
+                      decoding="async"
+                    />
+                    {'\n            '}
+                    <span className="reviews__service-name">{'Карты'}</span>
+                    {'\n            '}
+                    <span className="reviews__service-count">{'2 495 отзывов'}</span>
+                    {'\n          '}
+                  </a>
+                  {'\n        '}
+                </div>
+                {'\n\n        '}
+                <div className="reviews__rating">
+                  {'\n          '}
+                  <p className="reviews__rating-label">{'Средняя оценка наших гостей'}</p>
+                  {'\n\n          '}
+                  <svg
+                    className="reviews__rating-value"
+                    width="87"
+                    height="60"
+                    viewBox="0 0 87 60"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    {'\n            '}
+                    <path
+                      d="M0 41.2397L13.8127 40.6612C13.8949 45.6198 15.4571 48.3471 17.9236 48.3471C20.7191 48.3471 22.1168 45.2893 22.1168 39.5868C22.1168 33.719 20.9657 30.5785 18.0058 30.5785C16.1148 30.5785 14.6349 31.9835 13.9771 35.2893L1.15106 33.8017L4.68645 1.07438H33.7918V12.562H14.9638L13.8949 21.5703C15.4571 20.0826 17.5125 19.2562 20.5546 19.2562C30.1742 19.2562 36.2584 26.6116 36.2584 39.3388C36.2584 51.9835 29.1876 60 18.0881 60C6.6597 60 0.657748 51.8182 0 41.2397Z"
+                      fill="#F4F4F5"
+                    ></path>
+                    {'\n            '}
+                    <path
+                      d="M43.5707 59.9174C38.9664 59.9174 35.8421 56.6942 35.8421 52.0661C35.8421 47.438 38.9664 44.2149 43.5707 44.2149C48.0927 44.2149 51.2992 47.438 51.2992 52.0661C51.2992 56.6942 48.0927 59.9174 43.5707 59.9174Z"
+                      fill="#F4F4F5"
+                    ></path>
+                    {'\n            '}
+                    <path
+                      d="M68.5008 60C56.1681 60 50.0017 49.0909 50.0017 29.9174C50.0017 10.8264 56.1681 0 68.5008 0C80.8336 0 87 10.8264 87 29.9174C87 49.0909 80.8336 60 68.5008 60ZM68.5008 48.1818C71.4607 48.1818 72.9406 44.7107 72.9406 29.9174C72.9406 15.3719 71.4607 11.8182 68.5008 11.8182C65.541 11.8182 64.061 15.3719 64.061 29.9174C64.061 44.7107 65.541 48.1818 68.5008 48.1818Z"
+                      fill="#F4F4F5"
+                    ></path>
+                    {'\n          '}
+                  </svg>
+                  {'\n        '}
+                </div>
+                {'\n      '}
+              </aside>
+            </ReviewScore>
             {'\n    '}
           </div>
           {'\n\n    '}

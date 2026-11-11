@@ -2,10 +2,13 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useSiteLocation } from './SiteLocationProvider';
+import SelectedLocationFields from './SelectedLocationFields';
 import { getLocations } from '../../interactions/data/location-data';
 import useFormValidation from './useFormValidation';
 import FormError from './FormError';
 import { contactRules, consentRule } from '../../lib/form-validation';
+import { eventVideoPosters } from '../../lib/event-media';
+import { programExtras } from '../../lib/event-site-content';
 
 const hints = [
   'Праздники в WARPOINT — это командные VR-игры, лаунж-зона и координатор, который всё организует за вас.',
@@ -17,9 +20,9 @@ const hints = [
 ];
 
 const events = [
-  { value: 'birthday', title: 'День рождения', image: '/img/events_modal/1.jpg' },
-  { value: 'graduation', title: 'Школьный выпускной', image: '/img/events_modal/4.jpg' },
-  { value: 'other', title: 'Другое', image: '/img/events_modal/2.jpg' },
+  { value: 'birthday', title: 'День рождения', image: eventVideoPosters.birthday.src },
+  { value: 'graduation', title: 'Школьный выпускной', image: eventVideoPosters.graduation.src },
+  { value: 'other', title: 'Другое', image: eventVideoPosters['adult-birthday'].src },
 ];
 const ages = [
   { value: '6-10', title: '6–10', suffix: 'лет' },
@@ -33,14 +36,6 @@ const guests = [
   { value: '21-30', title: 'от 21 до 30', suffix: 'человек' },
   { value: '30+', title: 'Более 30', suffix: 'человек' },
 ];
-const extras = [
-  { value: 'pizza', title: 'Пицца' },
-  { value: 'cake', title: 'Торт' },
-  { value: 'host', title: 'Ведущий' },
-  { value: 'photographer', title: 'Фотограф' },
-  { value: 'balloons', title: 'Украшение шарами' },
-  { value: 'master-class', title: 'Мастер-класс' },
-];
 
 function ChoiceGroup({ name, options, value, onChange, image = false }) {
   return (
@@ -50,7 +45,7 @@ function ChoiceGroup({ name, options, value, onChange, image = false }) {
       <legend className="visually-hidden">{name}</legend>
       {options.map((option) => (
         <label
-          className={`program-picker__choice${image ? ' program-picker__choice--image' : name === 'services' ? ' program-picker__choice--extra' : ''}`}
+          className={`program-picker__choice${image ? ' program-picker__choice--image' : name === 'services' ? ' program-picker__choice--extra' : ' program-picker__choice--number'}`}
           key={option.value}
         >
           <input
@@ -63,18 +58,23 @@ function ChoiceGroup({ name, options, value, onChange, image = false }) {
           />
           <span className="program-picker__choice-body">
             {image && <img src={option.image} width="284" height="425" alt="" loading="lazy" />}
-            {name === 'services' && (
-              <span className="program-picker__choice-icon" aria-hidden="true">
-                <img src={`/img/quiz/${option.value}.svg`} width="22" height="22" alt="" />
-              </span>
-            )}
-            <span className={image ? 'program-picker__choice-title' : undefined}>
+            <span
+              className={
+                image
+                  ? 'program-picker__choice-title'
+                  : name === 'services'
+                    ? 'program-picker__choice-label'
+                    : 'program-picker__choice-copy'
+              }
+            >
               {image || name === 'services' ? (
                 option.title
               ) : (
                 <>
-                  <strong>{option.title}</strong>
-                  {option.suffix && <span>{option.suffix}</span>}
+                  <strong className="program-picker__choice-value">{option.title}</strong>
+                  {option.suffix && (
+                    <span className="program-picker__choice-suffix">{option.suffix}</span>
+                  )}
                 </>
               )}
             </span>
@@ -129,8 +129,20 @@ export default function ProgramPicker({ site }) {
   const [guestCount, setGuestCount] = useState('');
   const [services, setServices] = useState([]);
   const [date, setDate] = useState(null);
-  const { locationId, selectLocation } = useSiteLocation();
+  const { location, locationId, selectLocation } = useSiteLocation();
+  const extras = useMemo(() => programExtras(site, location), [site, location]);
+  const selectedServices = services.filter((value) =>
+    extras.some((extra) => extra.value === value),
+  );
+  useEffect(() => {
+    setServices((current) =>
+      current.filter((value) => extras.some((extra) => extra.value === value)),
+    );
+  }, [extras]);
   const [locationsOpen, setLocationsOpen] = useState(false);
+  const locationSelect = useRef(null);
+  const locationTrigger = useRef(null);
+  const locationOptions = useRef([]);
   const [name, setName] = useState('');
   const [messenger, setMessenger] = useState('call');
   const [consent, setConsent] = useState(false);
@@ -158,6 +170,36 @@ export default function ProgramPicker({ site }) {
     [site],
   );
   const selectedLocation = locations.find((location) => location.id === locationId);
+
+  useEffect(() => {
+    if (!locationsOpen) return;
+    const closeOutside = (event) => {
+      if (!locationSelect.current?.contains(event.target)) setLocationsOpen(false);
+    };
+    document.addEventListener('pointerdown', closeOutside);
+    return () => document.removeEventListener('pointerdown', closeOutside);
+  }, [locationsOpen]);
+
+  const focusLocation = (index) => {
+    if (!locations.length) return;
+    locationOptions.current[(index + locations.length) % locations.length]?.focus();
+  };
+  const locationKeyDown = (event, index) => {
+    if (event.key === 'Escape') {
+      event.preventDefault();
+      setLocationsOpen(false);
+      locationTrigger.current?.focus({ preventScroll: true });
+    } else if (['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) {
+      event.preventDefault();
+      focusLocation(
+        event.key === 'Home'
+          ? 0
+          : event.key === 'End'
+            ? locations.length - 1
+            : index + (event.key === 'ArrowDown' ? 1 : -1),
+      );
+    }
+  };
   const complete =
     step === 1
       ? Boolean(eventType)
@@ -171,6 +213,7 @@ export default function ProgramPicker({ site }) {
 
   const changeStep = (next) => {
     setStep(Math.max(1, Math.min(6, next)));
+    setLocationsOpen(false);
     setStatus('');
     requestAnimationFrame(() => heading.current?.focus({ preventScroll: true }));
   };
@@ -185,16 +228,17 @@ export default function ProgramPicker({ site }) {
       if (!locationId) setLocationsOpen(true);
       return;
     }
-    const phone = String(new FormData(form.current).get('phone'));
+    const values = new FormData(form.current);
+    const phone = String(values.get('phone'));
     document.dispatchEvent(
       new CustomEvent('warpoint:event-quiz-complete', {
         detail: {
-          city: site.city,
-          countryId: site.countryId,
+          city: String(values.get('city') || ''),
+          countryId: String(values.get('countryId') || ''),
           eventType,
           ageRange,
           guestCount,
-          services,
+          services: selectedServices,
           date: dateKey(date),
           locationId,
           location: selectedLocation,
@@ -231,6 +275,7 @@ export default function ProgramPicker({ site }) {
             if (step === 6) submit();
           }}
         >
+          <SelectedLocationFields includeLocation={false} />
           <div className="program-picker__main">
             <section className="program-picker__step" hidden={step !== 1}>
               <h3
@@ -296,7 +341,7 @@ export default function ProgramPicker({ site }) {
               <ChoiceGroup
                 name="services"
                 options={extras}
-                value={services}
+                value={selectedServices}
                 onChange={toggleService}
               />
             </section>
@@ -345,7 +390,14 @@ export default function ProgramPicker({ site }) {
                 <div className="program-picker__field program-picker__field--location">
                   <input type="hidden" name="locationId" value={locationId} />
                   <span id="program-location-label">Локация</span>
-                  <div className={`program-picker__location${locationsOpen ? ' is-open' : ''}`}>
+                  <div
+                    className="program-picker__location"
+                    ref={locationSelect}
+                    onBlur={(event) => {
+                      if (!event.currentTarget.contains(event.relatedTarget))
+                        setLocationsOpen(false);
+                    }}
+                  >
                     <button
                       {...validation.fieldProps(
                         'locationId',
@@ -356,6 +408,23 @@ export default function ProgramPicker({ site }) {
                       aria-haspopup="listbox"
                       aria-controls="program-location-options"
                       aria-expanded={locationsOpen}
+                      ref={locationTrigger}
+                      onKeyDown={(event) => {
+                        if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
+                          event.preventDefault();
+                          setLocationsOpen(true);
+                          const selected = locations.findIndex((item) => item.id === locationId);
+                          requestAnimationFrame(() =>
+                            focusLocation(
+                              selected >= 0
+                                ? selected
+                                : event.key === 'ArrowUp'
+                                  ? locations.length - 1
+                                  : 0,
+                            ),
+                          );
+                        } else if (event.key === 'Escape') setLocationsOpen(false);
+                      }}
                       onClick={() => setLocationsOpen((open) => !open)}
                     >
                       <span id="program-location-value">
@@ -379,10 +448,15 @@ export default function ProgramPicker({ site }) {
                           type="button"
                           role="option"
                           aria-selected={location.id === locationId}
+                          ref={(element) => {
+                            locationOptions.current[index] = element;
+                          }}
+                          onKeyDown={(event) => locationKeyDown(event, index)}
                           onClick={() => {
                             selectLocation(Number(location.id.replace('erp-', '')));
                             validation.clearError('locationId');
                             setLocationsOpen(false);
+                            locationTrigger.current?.focus({ preventScroll: true });
                             setStatus('');
                           }}
                         >
@@ -499,7 +573,7 @@ export default function ProgramPicker({ site }) {
                 >
                   {step === 6
                     ? 'Получить расчёт'
-                    : step === 4 && services.length === 0
+                    : step === 4 && selectedServices.length === 0
                       ? 'Пропустить'
                       : 'Следующий вопрос'}
                 </button>
